@@ -6,18 +6,18 @@ On some Windows 7 machines, in the c:\windows\logs\CBS folder, there can be a co
 
 Open a CMD as admin and paste the following commands. This will delete all CAB files and the corrupted one that generating the files.
 
-
-    net stop wuauserv
-    cd %systemroot%
-    rename SoftwareDistribution SoftwareDistribution.old
-    rmdir /q /s c:\windows\temp
-    net stop trustedinstaller
-    c:
-    cd c:\windows\logs\CBS
-    del *.cab
-    del *.log
-    rem regenerate cab files
-    c:\windows\system32\wuauclt.exe /detectnow
-    net start wuauserv
-    echo this is a dummy line
-
+``` powershell
+net stop wuauserv
+cd %systemroot%
+rename SoftwareDistribution SoftwareDistribution.old
+rmdir /q /s c:\windows\temp
+net stop trustedinstaller
+c:
+cd c:\windows\logs\CBS
+del *.cab
+del *.log
+rem regenerate cab files
+c:\windows\system32\wuauclt.exe /detectnow
+net start wuauserv
+echo this is a dummy line
+```
