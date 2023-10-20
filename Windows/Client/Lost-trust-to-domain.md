@@ -14,11 +14,16 @@ Test-ComputerSecureChannel -Verbose
 ```
 
 If trust is lost/bad, run the following command to fix it:
-
 __The specified user needs to have permissions to reset computer passwords in the domain__
 
 ```powershell
-Reset-ComputerMachinePassword -Server "AD-Server-Hostname" -navn -Credential domain\server-administrator-user
+# Dosnt require reboot
+Test-ComputerSecureChannel -Repair -Credential DomainName\Administrator
 ```
 
-Reboot machine and test trust to domain again
+If the above dosnt work
+
+```powershell
+Reset-ComputerMachinePassword -Server "AD-Server-Hostname" -navn -Credential domain\server-administrator-user
+# Reboot machine and test trust to domain again
+```
