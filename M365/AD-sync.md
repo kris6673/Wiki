@@ -8,7 +8,7 @@ This should run every 2 minutes, the [FAQ says it does](https://learn.microsoft.
 
 Installed as an agent on member servers of the domain, does not have to be on DC's.
 
-I havn't figured out how to force it to run a sync yet. Something about finding the service principal called the FQDN of the local AD domain, and running a start sync command at it.
+I havn't figured out how to force it to run a sync yet. Something about finding the service principal called the FQDN of the local AD domain, and running a start sync command at it. :
 
 ### Reset password on next login - Cloud Sync
 
@@ -50,7 +50,7 @@ ___
 
 ### In-place upgrade server the sync is on
 
-When upgrading the server from 2012 R2 to a newer version, the installation does not survive and needs to be uninstalled and reconfigured afterward. This is done by
+When upgrading the server from 2012 R2 to a newer version, the installation does not survive and needs to be uninstalled and reconfigured afterward.
 
 1. Exporting the settings
 2. Noting the user sign-in options, since these don't get exported
