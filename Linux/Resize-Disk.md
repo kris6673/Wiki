@@ -1,5 +1,10 @@
 # Resize disk in Ubuntu
 
+## Table of Contents
+
+- [Resize disk in Ubuntu](#resize-disk-in-ubuntu)
+  - [Table of Contents](#table-of-contents)
+
 Info found [here](https://packetpushers.net/ubuntu-extend-your-default-lvm-space/)
 
 |Command|Used for|

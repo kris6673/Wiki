@@ -1,5 +1,16 @@
 # Exclaimer - Email Signature Management
 
+## Table of Contents
+
+- [Exclaimer - Email Signature Management](#exclaimer---email-signature-management)
+  - [Table of Contents](#table-of-contents)
+  - [Recommended setup](#recommended-setup)
+  - [Server side](#server-side)
+  - [Client side](#client-side)
+    - [Add-in for Outlook](#add-in-for-outlook)
+    - [Exclaimer Signature Manager Outlook Edition](#exclaimer-signature-manager-outlook-edition)
+  - [Troubleshooting](#troubleshooting)
+
 ## Recommended setup
 
 - Cloud and server side signatures enabled.

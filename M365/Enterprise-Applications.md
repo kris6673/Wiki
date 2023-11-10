@@ -1,5 +1,12 @@
 # App registrations / Enterprise applications
 
+## Table of Contents
+
+- [App registrations / Enterprise applications](#app-registrations--enterprise-applications)
+  - [Table of Contents](#table-of-contents)
+  - [Grant tenant-wide admin consent to an application](#grant-tenant-wide-admin-consent-to-an-application)
+    - [Commonly used application ID's](#commonly-used-application-ids)
+
 ## Grant tenant-wide admin consent to an application
 
 [Docs](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/grant-admin-consent?pivots=portal)
