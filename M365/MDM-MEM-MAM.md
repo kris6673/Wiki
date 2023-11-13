@@ -18,7 +18,8 @@
 
 [Map network drives via Intune](https://tech.nicolonsky.ch/next-level-network-drive-mapping-with-intune/)
 
-Does not require hybrid join/device writeback to the local AD to work.
+Does not require hybrid join/device writeback to the local AD to work.  
+Making updates to the script and having it apply to the machine again, will overwrite the current scheduled task.
 
 **Important:** Requires Windows Pro, an equivalent or above edition.
 
