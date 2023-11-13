@@ -2,6 +2,19 @@
 
 **Note:** Both Cloud sync and Connect sync requires a Server 2016 as minimum
 
+## Table of Contents
+
+- [Ad sync for M365](#ad-sync-for-m365)
+  - [Table of Contents](#table-of-contents)
+  - [Cloud sync aka. the new one](#cloud-sync-aka-the-new-one)
+    - [Reset password on next login - Cloud Sync](#reset-password-on-next-login---cloud-sync)
+  - [Connect sync aka. the old one](#connect-sync-aka-the-old-one)
+    - [In-place upgrade server the sync is on](#in-place-upgrade-server-the-sync-is-on)
+    - [Migrate to a new server](#migrate-to-a-new-server)
+    - [Reset password on next login - Connect Sync](#reset-password-on-next-login---connect-sync)
+  - [Cloud Kerberos trust](#cloud-kerberos-trust)
+  - [Breaking AD sync](#breaking-ad-sync)
+
 ## Cloud sync aka. the new one
 
 This should run every 2 minutes, the [FAQ says it does](https://learn.microsoft.com/en-us/entra/identity/hybrid/cloud-sync/reference-cloud-sync-faq#how-often-does-cloud-sync-run-), MS says it does, but it does not. Only the password sync runs every 2 minutes, the identity sync runs every 30 minutes or so. Sometimes it runs every 2 minutes too, but other times it takes 5-30 minutes.

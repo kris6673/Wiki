@@ -1,5 +1,19 @@
 # Intune
 
+## Table of Contents
+
+- [Intune](#intune)
+  - [Table of Contents](#table-of-contents)
+  - [Maps drives via Intune script](#maps-drives-via-intune-script)
+  - [Win32 apps](#win32-apps)
+  - [Apple things](#apple-things)
+    - [Apple Business Manager](#apple-business-manager)
+      - [VPP token](#vpp-token)
+      - [Apple Push Certifikat](#apple-push-certifikat)
+      - [MDM server certifikat](#mdm-server-certifikat)
+  - [Autopilot](#autopilot)
+    - [Danish writeup about Autopilot](#danish-writeup-about-autopilot)
+
 ## Maps drives via Intune script
 
 [Map network drives via Intune](https://tech.nicolonsky.ch/next-level-network-drive-mapping-with-intune/)
