@@ -21,6 +21,22 @@
 Does not require hybrid join/device writeback to the local AD to work.  
 Making updates to the script and having it apply to the machine again, will overwrite the current scheduled task.
 
+Add the following to the script to remove any wrong drive mappings:
+
+```powershell
+if ($process) {
+    Write-Host "Testing if drives are mapped correctly..."
+    $WrongDrives = Get-PSDrive | Where-Object { $_.DisplayRoot -ne "$($drive.Path)" -and $_.Name -eq $drive.Driveletter }
+    if ($WrongDrives) {
+     foreach ($WrongDrive in $WrongDrives) {
+      Write-Host "Wrong drive config for $($WrongDrive.Name) found. Removing it..." -ForegroundColor Yellow
+      cmd /r "net use $($WrongDrive.Name): /delete"
+      Start-Sleep 3
+     }
+    }
+    Write-Output "Mapping network drive $($drive.Path)"
+```
+
 **Important:** Requires Windows Pro, an equivalent or above edition.
 
 ## Win32 apps
