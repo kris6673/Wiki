@@ -5,6 +5,8 @@
 - [Intune](#intune)
   - [Table of Contents](#table-of-contents)
   - [Maps drives via Intune script](#maps-drives-via-intune-script)
+    - [Notes](#notes)
+    - [Remove any wrong drive mappings](#remove-any-wrong-drive-mappings)
   - [Win32 apps](#win32-apps)
   - [Apple things](#apple-things)
     - [Apple Business Manager](#apple-business-manager)
@@ -18,8 +20,14 @@
 
 [Map network drives via Intune](https://tech.nicolonsky.ch/next-level-network-drive-mapping-with-intune/)
 
-Does not require hybrid join/device writeback to the local AD to work.  
-Making updates to the script and having it apply to the machine again, will overwrite the current scheduled task.
+### Notes
+
+- Does not require hybrid join/device writeback to the local AD to work.  
+- Making updates to the script and having it apply to the machine again, will overwrite the current scheduled task.
+- If the users password is expired, the script will fail to map the drives.
+- **Important:** Requires Windows Pro, an equivalent or above edition. (Since Intune scripts cant run on Windows Home edition)
+
+### Remove any wrong drive mappings
 
 Add the following to the script to remove any wrong drive mappings:
 
@@ -36,8 +44,6 @@ if ($process) {
     }
     Write-Output "Mapping network drive $($drive.Path)"
 ```
-
-**Important:** Requires Windows Pro, an equivalent or above edition.
 
 ## Win32 apps
 
