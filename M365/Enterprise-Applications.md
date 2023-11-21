@@ -2,10 +2,9 @@
 
 ## Table of Contents
 
-- [App registrations / Enterprise applications](#app-registrations--enterprise-applications)
-  - [Table of Contents](#table-of-contents)
-  - [Grant tenant-wide admin consent to an application](#grant-tenant-wide-admin-consent-to-an-application)
-    - [Commonly used application ID's](#commonly-used-application-ids)
+1. [Table of Contents](#table-of-contents)
+2. [Grant tenant-wide admin consent to an application](#grant-tenant-wide-admin-consent-to-an-application)
+   1. [Commonly used application ID's](#commonly-used-application-ids)
 
 ## Grant tenant-wide admin consent to an application
 
