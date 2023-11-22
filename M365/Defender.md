@@ -1,12 +1,10 @@
 # Defender
 
-## Table of Contents
+## Table of Contents<!-- omit in toc -->
 
-- [Defender](#defender)
-  - [Table of Contents](#table-of-contents)
-  - [Defender for Endpoint](#defender-for-endpoint)
-  - [Defender for Office 365](#defender-for-office-365)
-    - [Restrictions](#restrictions)
+1. [Defender for Endpoint](#defender-for-endpoint)
+2. [Defender for Office 365](#defender-for-office-365)
+   1. [Restrictions](#restrictions)
 
 ## Defender for Endpoint
 

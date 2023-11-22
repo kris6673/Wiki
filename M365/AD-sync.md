@@ -2,18 +2,16 @@
 
 **Note:** Both Cloud sync and Connect sync requires a Server 2016 as minimum
 
-## Table of Contents
+## Table of Contents <!-- omit in toc -->
 
-- [Ad sync for M365](#ad-sync-for-m365)
-  - [Table of Contents](#table-of-contents)
-  - [Cloud sync aka. the new one](#cloud-sync-aka-the-new-one)
-    - [Reset password on next login - Cloud Sync](#reset-password-on-next-login---cloud-sync)
-  - [Connect sync aka. the old one](#connect-sync-aka-the-old-one)
-    - [In-place upgrade server the sync is on](#in-place-upgrade-server-the-sync-is-on)
-    - [Migrate to a new server](#migrate-to-a-new-server)
-    - [Reset password on next login - Connect Sync](#reset-password-on-next-login---connect-sync)
-  - [Cloud Kerberos trust](#cloud-kerberos-trust)
-  - [Breaking AD sync](#breaking-ad-sync)
+1. [Cloud sync aka. the new one](#cloud-sync-aka-the-new-one)
+   1. [Reset password on next login - Cloud Sync](#reset-password-on-next-login---cloud-sync)
+2. [Connect sync aka. the old one](#connect-sync-aka-the-old-one)
+   1. [In-place upgrade server the sync is on](#in-place-upgrade-server-the-sync-is-on)
+   2. [Migrate to a new server](#migrate-to-a-new-server)
+   3. [Reset password on next login - Connect Sync](#reset-password-on-next-login---connect-sync)
+3. [Cloud Kerberos trust](#cloud-kerberos-trust)
+4. [Breaking AD sync](#breaking-ad-sync)
 
 ## Cloud sync aka. the new one
 
@@ -25,7 +23,7 @@ I havn't figured out how to force it to run a sync yet. Something about finding 
 
 ### Reset password on next login - Cloud Sync
 
-___
+---
 
 **Symptom:** You would like to know if the ForcePasswordChangeOnLogOn is supported in Cloud Sync.
 
@@ -47,15 +45,17 @@ ___
 
 7. You can select to create a new account or pre-create an account in ad to delete later and use the option "**Use existing account**".
 
-8. Go through the next section without making any changes. When reaching the page "Domain and OU filtering", select the radio button "Sync selected domains and OUs". Then remove the selection from the root of the domain.  :warning: ***Make sure no OU's are selected***.
+8. Go through the next section without making any changes. When reaching the page "Domain and OU filtering", select the radio button "Sync selected domains and OUs". Then remove the selection from the root of the domain. :warning: **_Make sure no OU's are selected_**.
 
 9. Go through the rest of the wizard without making any changes. At the end of the wizard, in the "**Ready to configure**" page, select the option "Enable staging mode:.." to guarantee there will not be any exports from this server.
 
 10. Once complete, you can open Windows PowerShell and import the ADSync module:
-    1. ```Import-Module ADSync```
+
+    1. `Import-Module ADSync`
 
 11. And run the command to enable the required feature.
-    1. ```Set-ADSyncAADCompanyFeature -ForcePasswordChangeOnLogOn $true```
+
+    1. `Set-ADSyncAADCompanyFeature -ForcePasswordChangeOnLogOn $true`
 
 12. Once the command completes successfully (It will return the features current state), You can un-install AADConnect
 
@@ -90,7 +90,7 @@ When upgrading the server from 2012 R2 to a newer version, the installation does
 Get-ADSyncAADCompanyFeature
 
 # Enable the feature
-Set-ADSyncAADCompanyFeature -ForcePasswordChangeOnLogOn $true 
+Set-ADSyncAADCompanyFeature -ForcePasswordChangeOnLogOn $true
 ```
 
 ## Cloud Kerberos trust
@@ -106,8 +106,8 @@ Set-ADSyncAADCompanyFeature -ForcePasswordChangeOnLogOn $true
 Breaking the sync converts all synced users into cloud only users. It's done with the following powershell commands:
 
 ```powershell
-Connect-MsolService 
-Set-MsolDirSyncEnabled -EnableDirSync $false 
+Connect-MsolService
+Set-MsolDirSyncEnabled -EnableDirSync $false
 ```
 
 :x: No known Graph replacement yet
