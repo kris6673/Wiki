@@ -4,12 +4,11 @@ This is a help page for the different types of migrations that can be done.
 
 ## Table of Contents
 
-- [Migrations](#migrations)
-  - [Table of Contents](#table-of-contents)
-  - [Bittitan](#bittitan)
-    - [Disable throttling in EXO](#disable-throttling-in-exo)
-    - [Turn off Calendar assistant](#turn-off-calendar-assistant)
-  - [Links to guides](#links-to-guides)
+1. [Table of Contents](#table-of-contents)
+2. [Bittitan](#bittitan)
+   1. [Disable throttling in EXO](#disable-throttling-in-exo)
+   2. [Turn off Calendar assistant](#turn-off-calendar-assistant)
+3. [Links to guides](#links-to-guides)
 
 ## Bittitan
 
@@ -42,4 +41,6 @@ Get-Mailbox -ResultSize unlimited | Set-Mailbox -CalendarRepairDisabled $false
 [IP lockdown of migrations](https://help.bittitan.com/hc/en-us/articles/115008252928-IP-Addresses-Connected-to-During-IP-LockDown#set-advanced-options-for-the-project-in-migrationwiz-0-0)  
 [Mailboxes over 100 GB/Large mailboxes](https://help.bittitan.com/hc/en-us/articles/360044916654-Microsoft-365-Mailbox-Migration-FAQ#-migrating-mailboxes-larger-than-100gb-0-22)  
 [M365 to M365](https://help.bittitan.com/hc/en-us/articles/6488570876955-Exchange-Online-Microsoft-365-to-Exchange-Online-Microsoft-365-Mailbox-Migration-Guide)  
-[On-Prem and Hosted Exchange to M365](https://help.bittitan.com/hc/en-us/articles/115008266088-Exchange-2007-Hosted-and-On-Premises-to-Microsoft-365-Migration-Guide)
+[On-Prem and Hosted Exchange to M365](https://help.bittitan.com/hc/en-us/articles/115008266088-Exchange-2007-Hosted-and-On-Premises-to-Microsoft-365-Migration-Guide)  
+[Scoped inpersonation](https://help.bittitan.com/hc/en-us/articles/115015661147-MigrationWiz-Impersonation-and-Delegation-for-Microsoft-365-Exchange-Migrations#scoped-impersonation-with-ews-0-3)  
+[OneDrive to OneDrive](https://help.bittitan.com/hc/en-us/articles/360011172673-OneDrive-to-OneDrive-for-Business-without-Versions-and-Metadata-migration-guide)

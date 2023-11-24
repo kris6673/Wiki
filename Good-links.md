@@ -15,3 +15,8 @@
 ## Markdown
 
 [Emoji cheat sheet](https://github.com/ikatyang/emoji-cheat-sheet#table-of-contents)
+
+## Powershell
+
+[PowerShell Gallery](https://www.powershellgallery.com/)  
+[Online HTML editor](https://html5-editor.net/)
