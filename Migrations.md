@@ -2,13 +2,12 @@
 
 This is a help page for the different types of migrations that can be done.
 
-## Table of Contents
+## Table of Contents <!-- omit in toc -->
 
-1. [Table of Contents](#table-of-contents)
-2. [Bittitan](#bittitan)
+1. [Bittitan](#bittitan)
    1. [Disable throttling in EXO](#disable-throttling-in-exo)
    2. [Turn off Calendar assistant](#turn-off-calendar-assistant)
-3. [Links to guides](#links-to-guides)
+2. [Links to guides](#links-to-guides)
 
 ## Bittitan
 

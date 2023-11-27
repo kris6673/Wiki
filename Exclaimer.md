@@ -1,15 +1,13 @@
 # Exclaimer - Email Signature Management
 
-## Table of Contents
+## Table of Contents <!-- omit in toc -->
 
-- [Exclaimer - Email Signature Management](#exclaimer---email-signature-management)
-  - [Table of Contents](#table-of-contents)
-  - [Recommended setup](#recommended-setup)
-  - [Server side](#server-side)
-  - [Client side](#client-side)
-    - [Add-in for Outlook](#add-in-for-outlook)
-    - [Exclaimer Signature Manager Outlook Edition](#exclaimer-signature-manager-outlook-edition)
-  - [Troubleshooting](#troubleshooting)
+1. [Recommended setup](#recommended-setup)
+2. [Server side](#server-side)
+3. [Client side](#client-side)
+   1. [Add-in for Outlook](#add-in-for-outlook)
+   2. [Exclaimer Signature Manager Outlook Edition](#exclaimer-signature-manager-outlook-edition)
+4. [Troubleshooting](#troubleshooting)
 
 ## Recommended setup
 
@@ -33,7 +31,7 @@ include:spf.EU.exclaimer.net
 
 ### Add-in for Outlook
 
-___
+---
 
 [Deployment guide from exclaimer](https://support.exclaimer.com/hc/en-gb/articles/360020741398-Install-Exclaimer-Cloud-Outlook-Add-in-Public-channel)
 
@@ -49,7 +47,7 @@ ___
 
 ### Exclaimer Signature Manager Outlook Edition
 
-___
+---
 
 [Documentation](https://support.exclaimer.com/hc/en-gb/articles/7238574049437-Exclaimer-Cloud-Signature-Update-Agent)
 

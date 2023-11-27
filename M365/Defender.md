@@ -1,6 +1,6 @@
 # Defender
 
-## Table of Contents<!-- omit in toc -->
+## Table of Contents <!-- omit in toc -->
 
 1. [Defender for Endpoint](#defender-for-endpoint)
 2. [Defender for Office 365](#defender-for-office-365)
