@@ -5,13 +5,18 @@ This is a help page for the different types of migrations that can be done.
 ## Table of Contents <!-- omit in toc -->
 
 1. [Bittitan](#bittitan)
-   1. [Disable throttling in EXO](#disable-throttling-in-exo)
-   2. [Turn off Calendar assistant](#turn-off-calendar-assistant)
+   1. [General info](#general-info)
+   2. [Disable throttling in EXO](#disable-throttling-in-exo)
+   3. [Turn off Calendar assistant](#turn-off-calendar-assistant)
 2. [Links to guides](#links-to-guides)
 
 ## Bittitan
 
 Everything useful I've found for Bittitan migrations.
+
+### General info
+
+Mailbox data is migrated from newest to oldest items. So the user gets their newest emails first.
 
 ### Disable throttling in EXO
 
