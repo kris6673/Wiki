@@ -7,7 +7,8 @@ This is a help page for the different types of migrations that can be done.
 1. [Bittitan](#bittitan)
    1. [General info](#general-info)
    2. [Disable throttling in EXO](#disable-throttling-in-exo)
-   3. [Turn off Calendar assistant](#turn-off-calendar-assistant)
+   3. [Timeout issues causing migration to fail](#timeout-issues-causing-migration-to-fail)
+   4. [Turn off Calendar assistant](#turn-off-calendar-assistant)
 2. [Links to guides](#links-to-guides)
 
 ## Bittitan
@@ -25,6 +26,17 @@ Mailbox data is migrated from newest to oldest items. So the user gets their new
 1. Log into the admin center as a GA for the customer.
 2. Write "Increase EWS Throttling Policy" in the support search field.
 3. Run tests and set the days to 90 and press "Update settings".
+
+### Timeout issues causing migration to fail
+
+Add the following to the advanced options of the project.
+
+```text
+ExtendedEwsTimeout=1
+InitializationTimeout=8
+```
+
+Read more about the support options [here](#links-to-guides)
 
 ### Turn off Calendar assistant
 
@@ -47,4 +59,5 @@ Get-Mailbox -ResultSize unlimited | Set-Mailbox -CalendarRepairDisabled $false
 [M365 to M365](https://help.bittitan.com/hc/en-us/articles/6488570876955-Exchange-Online-Microsoft-365-to-Exchange-Online-Microsoft-365-Mailbox-Migration-Guide)  
 [On-Prem and Hosted Exchange to M365](https://help.bittitan.com/hc/en-us/articles/115008266088-Exchange-2007-Hosted-and-On-Premises-to-Microsoft-365-Migration-Guide)  
 [Scoped inpersonation](https://help.bittitan.com/hc/en-us/articles/115015661147-MigrationWiz-Impersonation-and-Delegation-for-Microsoft-365-Exchange-Migrations#scoped-impersonation-with-ews-0-3)  
-[OneDrive to OneDrive](https://help.bittitan.com/hc/en-us/articles/360011172673-OneDrive-to-OneDrive-for-Business-without-Versions-and-Metadata-migration-guide)
+[OneDrive to OneDrive](https://help.bittitan.com/hc/en-us/articles/360011172673-OneDrive-to-OneDrive-for-Business-without-Versions-and-Metadata-migration-guide)  
+[All Bititan support options](https://help.bittitan.com/hc/en-us/articles/360043369293-MigrationWiz-Support-Options)
