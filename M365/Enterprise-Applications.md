@@ -9,7 +9,7 @@
 
 [Docs](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/grant-admin-consent?pivots=portal)
 
-Fill out the blanks: `https://login.microsoftonline.com/{organization}/adminconsent?client_id={client-id}`
+Fill out the blanks: `https://login.microsoftonline.com/{tenant-id}/adminconsent?client_id={client-id}`
 
 ### Commonly used application ID's
 
