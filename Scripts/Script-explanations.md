@@ -1,10 +1,8 @@
 # Explanation for scripts in this folder
 
-## Table of contents
+## Table of contents <!-- omit in toc -->
 
-- [Explanation for scripts in this folder](#explanation-for-scripts-in-this-folder)
-  - [Table of contents](#table-of-contents)
-  - [Install-RequiredModules.ps1](#install-requiredmodulesps1)
+1. [Install-RequiredModules.ps1](#install-requiredmodulesps1)
 
 ## Install-RequiredModules.ps1
 

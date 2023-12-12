@@ -6,6 +6,9 @@
    1. [Notes](#notes)
    2. [Remove any wrong drive mappings](#remove-any-wrong-drive-mappings)
 2. [Win32 apps](#win32-apps)
+   1. [Powershell install script for MSI Win32 apps](#powershell-install-script-for-msi-win32-apps)
+   2. [Find ProductCode for detection method for MSI Win32 apps](#find-productcode-for-detection-method-for-msi-win32-apps)
+   3. [Find uninstall string for installed programs](#find-uninstall-string-for-installed-programs)
 3. [Apple things](#apple-things)
    1. [Apple Business Manager](#apple-business-manager)
       1. [VPP token](#vpp-token)
@@ -53,6 +56,66 @@ if ($process) {
 ## Win32 apps
 
 Detection method runs as SYSTEM, so the user folder and user variables are not available to use.
+
+### Powershell install script for MSI Win32 apps
+
+```powershell
+# Get msi file
+$File = Get-ChildItem -Path $PSScriptRoot -Filter *.msi
+# Prepare log file
+$DataStamp = Get-Date -Format yyyy-MM-dd-THHmmss
+$logFile = "$env:ALLUSERSPROFILE\$($File.fullname)-$DataStamp.log"
+# List of arguments for msi file install
+$MSIArguments = @(
+    '/i'
+    $File.fullname
+    '/qn'
+    '/norestart'
+    '/L*v'
+    $logFile
+    'ALLUSERS=1'
+)
+# Install msi file with arguments and wait for it to finish
+Start-Process 'msiexec.exe' -ArgumentList $MSIArguments -Wait -NoNewWindow
+
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "MSI install failed with ExitCode:$LASTEXITCODE. See log file: $logFile"
+    Exit $LASTEXITCODE
+}
+Write-Host "MSI install exit code: $LASTEXITCODE"
+Return $LASTEXITCODE
+
+```
+
+### Find ProductCode for detection method for MSI Win32 apps
+
+```powershell
+$Installer = New-Object -ComObject WindowsInstaller.Installer; $InstallerProducts = $Installer.ProductsEx("", "", 7); $InstalledProducts = ForEach($Product in $InstallerProducts){[PSCustomObject]@{ProductCode = $Product.ProductCode(); LocalPackage = $Product.InstallProperty("LocalPackage"); VersionString = $Product.InstallProperty("VersionString"); ProductPath = $Product.InstallProperty("ProductName")}} $InstalledProducts
+```
+
+### Find uninstall string for installed programs
+
+Find the uninstall string key in one of these paths.
+
+For x64 apps:
+
+```batch
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall
+```
+
+For x86 apps:
+
+```batch
+KEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall
+```
+
+If its an MSI app, the uninstall string will be something like:
+
+```batch
+MsiExec.exe /X "{c803ba69-51e1-4dcd-b432-6f652f7ba684}"
+```
+
+Add /qn to the end of the string to make it silent.
 
 ## Apple things
 

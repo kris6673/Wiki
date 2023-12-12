@@ -1,5 +1,10 @@
 # Unifi controller
 
+## Table of contents <!-- omit in toc -->
+
+1. [Ubuntu install](#ubuntu-install)
+   1. [Links to guides](#links-to-guides)
+
 ## Ubuntu install
 
 Common commands for updating the unifi controller on Ubuntu

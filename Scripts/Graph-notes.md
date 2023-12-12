@@ -1,10 +1,8 @@
 # Graph
 
-## Table of Contents
+## Table of Contents <!-- omit in toc -->
 
-- [Graph](#graph)
-  - [Table of Contents](#table-of-contents)
-  - [Links](#links)
+1. [Links](#links)
 
 ## Links
 
