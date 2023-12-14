@@ -64,7 +64,7 @@ Detection method runs as SYSTEM, so the user folder and user variables are not a
 $File = Get-ChildItem -Path $PSScriptRoot -Filter *.msi
 # Prepare log file
 $DataStamp = Get-Date -Format yyyy-MM-dd-THHmmss
-$logFile = "$env:ALLUSERSPROFILE\$($File.fullname)-$DataStamp.log"
+$logFile = "$env:ALLUSERSPROFILE\$($File.Name)-$DataStamp.log"
 # List of arguments for msi file install
 $MSIArguments = @(
     '/i'
@@ -72,7 +72,7 @@ $MSIArguments = @(
     '/qn'
     '/norestart'
     '/L*v'
-    $logFile
+    '{0}' -f $logFile
     'ALLUSERS=1'
 )
 # Install msi file with arguments and wait for it to finish
