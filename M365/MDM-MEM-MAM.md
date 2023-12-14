@@ -76,13 +76,14 @@ $MSIArguments = @(
     'ALLUSERS=1'
 )
 # Install msi file with arguments and wait for it to finish
+Write-Host "Installing $($File.Name)..."
 Start-Process 'msiexec.exe' -ArgumentList $MSIArguments -Wait -NoNewWindow
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "MSI install failed with ExitCode:$LASTEXITCODE. See log file: $logFile"
     Exit $LASTEXITCODE
 }
-Write-Host "MSI install exit code: $LASTEXITCODE"
+Write-Host "Success: MSI install exit code: $LASTEXITCODE"
 Return $LASTEXITCODE
 
 ```
