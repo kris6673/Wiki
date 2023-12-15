@@ -15,7 +15,8 @@
       2. [Apple Push Certifikat](#apple-push-certifikat)
       3. [MDM server certifikat](#mdm-server-certifikat)
 4. [Autopilot](#autopilot)
-   1. [Danish writeup about Autopilot](#danish-writeup-about-autopilot)
+   1. [Links](#links)
+   2. [Danish writeup about Autopilot](#danish-writeup-about-autopilot)
 
 ## Maps drives via Intune script
 
@@ -144,6 +145,11 @@ Laves under Apple enrollment fanen.
 ## Autopilot
 
 It's not the same as Intune!
+
+### Links
+
+[Autopilot, ESP and extra login/reboots](https://blog.onevinn.com/autopilot-esp-and-extra-login-reboots)  
+[Autopilot extra signins](https://www.reddit.com/r/Intune/comments/10y3715/autopilot_oobe_is_requiring_3_sign_ins_and_the/)
 
 ### Danish writeup about Autopilot
 
