@@ -16,7 +16,8 @@
       3. [MDM server certifikat](#mdm-server-certifikat)
 4. [Autopilot](#autopilot)
    1. [Links](#links)
-   2. [Danish writeup about Autopilot](#danish-writeup-about-autopilot)
+   2. [Skip App install during Autopilot ESP](#skip-app-install-during-autopilot-esp)
+   3. [Danish writeup about Autopilot](#danish-writeup-about-autopilot)
 
 ## Maps drives via Intune script
 
@@ -150,6 +151,16 @@ It's not the same as Intune!
 
 [Autopilot, ESP and extra login/reboots](https://blog.onevinn.com/autopilot-esp-and-extra-login-reboots)  
 [Autopilot extra sign-ins](https://www.reddit.com/r/Intune/comments/10y3715/autopilot_oobe_is_requiring_3_sign_ins_and_the/)
+
+### [Skip App install during Autopilot ESP](https://call4cloud.nl/2022/08/autopilot-is-mine-all-others-pay-time/)
+
+Add this to the requirement section of the app in Intune, if the app is unable to install silently during ESP:
+
+```powershell
+$ProcessActive = Get-Process "WWAHost" -ErrorAction silentlycontinue
+$CheckNull = $ProcessActive -eq $null
+$CheckNull
+```
 
 ### Danish writeup about Autopilot
 
