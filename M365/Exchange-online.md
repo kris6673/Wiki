@@ -3,6 +3,7 @@
 ## Table of Contents <!-- omit in toc -->
 
 1. [Start managed folder assistant](#start-managed-folder-assistant)
+2. [Force enable SMTP AUTH for a user](#force-enable-smtp-auth-for-a-user)
 
 ### Start managed folder assistant
 
@@ -18,5 +19,13 @@ Get-Mailbox -ResultSize unlimited | ForEach-Object { Start-ManagedFolderAssistan
 For one user:
 
 ```powershell
-Start-ManagedFolderAssistant -Identity <user UPN>
+Start-ManagedFolderAssistant -Identity <User UPN>
+```
+
+### Force enable SMTP AUTH for a user
+
+If SMTP auth is disabled on tenant level, but not blocked by a CA policy, you can force enable it for a user:
+
+```powershell
+Set-CASMailbox <User UPN> -SmtpClientAuthenticationDisabled $false
 ```
