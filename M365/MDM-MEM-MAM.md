@@ -69,7 +69,7 @@ $logFile = "$env:ALLUSERSPROFILE\$($File.Name)-$DataStamp.log"
 # List of arguments for msi file install
 $MSIArguments = @(
     '/i'
-    $File.fullname
+    $File.FullName
     '/qn'
     '/norestart'
     '/L*v'
@@ -149,7 +149,7 @@ It's not the same as Intune!
 ### Links
 
 [Autopilot, ESP and extra login/reboots](https://blog.onevinn.com/autopilot-esp-and-extra-login-reboots)  
-[Autopilot extra signins](https://www.reddit.com/r/Intune/comments/10y3715/autopilot_oobe_is_requiring_3_sign_ins_and_the/)
+[Autopilot extra sign-ins](https://www.reddit.com/r/Intune/comments/10y3715/autopilot_oobe_is_requiring_3_sign_ins_and_the/)
 
 ### Danish writeup about Autopilot
 
@@ -162,10 +162,10 @@ Enheder kan registreres i AutoPilot på 4 måder:
 2. Via Partner portal.
    - Her laves der en CSV fil med følgende info i: Device serial number,Windows product ID*(optional)*,Hardware hash*(optional)*,Manufacturer name,Device Model. Info fåes her fra der hvor den er købt, såsom Computersalg/CBC. Preben eller Søren vil kunne fremskaffe denne info, ellers skal den indhentes fra hvad der står på kasserne som PC'erne blev leveret i. Dette er en god mulighed hvis kunden skal have mange PC'er skiftet på én gang, eller hvis de køber mange PC'er ad gangen, og stille og roligt bruger dem som de skiftes.
 3. Via manuel registrering med CSV fil i kunden Intune portal.
-   - Powershell command installeres på PC til at lave et hardware hash, som kan uploades til Intune portalen. Kommanoerne til dette kan findes i SupportScripts mappen, under scriptet Enroll-ComputerInAutopilot.ps1. Det kan være lidt besværligt, da man skal have en CSV fil ud af PC'en, inden den er kommet forbi OOBE'en. Efter upload af CSV fil kan det tage op til 1 time inden sync er færdig og AutoPilot profil er tildelt.
+   - Powershell command installeres på PC til at lave et hardware hash, som kan uploades til Intune portalen. Kommandoerne til dette kan findes i SupportScripts mappen, under scriptet Enroll-ComputerInAutopilot.ps1. Det kan være lidt besværligt, da man skal have en CSV fil ud af PC'en, inden den er kommet forbi OOBE'en. Efter upload af CSV fil kan det tage op til 1 time inden sync er færdig og AutoPilot profil er tildelt.
      Denne mulighed anbefales kun hvis man ikke har mulighed for at bruge kommandoen i næste step.
    - **Reminder:** Shift+F10 i OOBE'en får en cmd frem hvor du kan skrive "powershell" + enter i, så har du en powershell shell.
 4. Via manuel registrering i kundens tenant med powershell + login i 365.
-   - Her installes powershell command ligesom i step 3, men der bruges i stedet direkte login og registrering i 365. Her vil der skulle logges ind med en Intune admin/global admin konto, og så venter den på at den får en AutoPilot profil tildelt og genstarter automatisk når den er klar. Herefter er den klar til at logge ind og blive Azure AD joined + Intune enrolled. Kommanoerne til dette kan findes i SupportScripts mappen, under scriptet Enroll-ComputerInAutopilot.ps1.
+   - Her installes powershell command ligesom i step 3, men der bruges i stedet direkte login og registrering i 365. Her vil der skulle logges ind med en Intune admin/global admin konto, og så venter den på at den får en AutoPilot profil tildelt og genstarter automatisk når den er klar. Herefter er den klar til at logge ind og blive Azure AD joined + Intune enrolled. Kommandoerne til dette kan findes i SupportScripts mappen, under scriptet Enroll-ComputerInAutopilot.ps1.
      Denne metode anbefales hvis der ikke er voldsomt mange PC'er som skal enrolles/deployes samtidigt.
    - **Reminder:** Shift+F10 i OOBE'en får en cmd frem hvor du kan skrive "powershell" + enter i, så har du en powershell shell.
