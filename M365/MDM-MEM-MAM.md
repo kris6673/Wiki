@@ -162,6 +162,9 @@ $CheckNull = $ProcessActive -eq $null
 $CheckNull
 ```
 
+Requirement settings should be setup like this:  
+![Requirements script settings](/Pics/Intune_MDM_Requirement.png)
+
 ### Danish writeup about Autopilot
 
 Først, AutoPilot servicen har INTET at gøre med Intune, MEN AutoPilot kan opsættes til at enrolle enheden i Intune. Dette gøres i 99,99% af alle tilfælde.
