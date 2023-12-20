@@ -60,4 +60,5 @@ Get-Mailbox -ResultSize unlimited | Set-Mailbox -CalendarRepairDisabled $false
 [On-Prem and Hosted Exchange to M365](https://help.bittitan.com/hc/en-us/articles/115008266088-Exchange-2007-Hosted-and-On-Premises-to-Microsoft-365-Migration-Guide)  
 [Scoped inpersonation](https://help.bittitan.com/hc/en-us/articles/115015661147-MigrationWiz-Impersonation-and-Delegation-for-Microsoft-365-Exchange-Migrations#scoped-impersonation-with-ews-0-3)  
 [OneDrive to OneDrive](https://help.bittitan.com/hc/en-us/articles/360011172673-OneDrive-to-OneDrive-for-Business-without-Versions-and-Metadata-migration-guide)  
-[All Bititan support options](https://help.bittitan.com/hc/en-us/articles/360043369293-MigrationWiz-Support-Options)
+[All Bititan support options](https://help.bittitan.com/hc/en-us/articles/360043369293-MigrationWiz-Support-Options)  
+[MigrationWiz - Advanced Options & General Options](https://help.bittitan.com/hc/en-us/articles/360043891714-MigrationWiz-Advanced-Options-General-Options#h_01HC38V3KNNRY4TEJG0AW70QVC)
