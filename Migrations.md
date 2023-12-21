@@ -40,16 +40,16 @@ Read more about the support options [here](#links-to-guides)
 
 ### Turn off Calendar assistant
 
-**Note:** This will disable the calendar assistant for all users in the tenant. This will need to be turned back on after the migration is complete.
+**Note:** This will disable the calendar assistant for all users in the tenant. This will need to be turned back on after the migration is complete. This is done to ensure that the calendar assistant doesn't interfere with the migration and break meetings and recurring meetings.
 
 ```powershell
-Get-Mailbox -ResultSize unlimited | Set-Mailbox -CalendarRepairDisabled $true
+Get-EXOMailbox -ResultSize unlimited | Set-Mailbox -CalendarRepairDisabled $true
 ```
 
 **Note:** Turn back on Calendar assistant for all users.
 
 ```powershell
-Get-Mailbox -ResultSize unlimited | Set-Mailbox -CalendarRepairDisabled $false
+Get-EXOMailbox -ResultSize unlimited | Set-Mailbox -CalendarRepairDisabled $false
 ```
 
 ## Links to guides
