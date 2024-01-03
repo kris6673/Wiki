@@ -7,6 +7,7 @@
 3. [Client side](#client-side)
    1. [Add-in for Outlook](#add-in-for-outlook)
    2. [Exclaimer Signature Manager Outlook Edition](#exclaimer-signature-manager-outlook-edition)
+   3. [Custom fonts in signatures](#custom-fonts-in-signatures)
 4. [Troubleshooting](#troubleshooting)
 
 ## Recommended setup
@@ -54,6 +55,17 @@ include:spf.EU.exclaimer.net
 **NOTE:** This install type does not support server side and client side signatures at the same time. You have to choose one or the other. Deploy the add-in instead if you want both.
 
 This is because the check/test to see if the signature has already been applied, does not work correctly when it gets to the server side, and you end up with double signatures.
+
+### Custom fonts in signatures
+
+You do this by either uploading a font file to Exclaimer, or by using a font stack/Font fallback. [See this guide](https://support.exclaimer.com/hc/en-gb/articles/4587213492637-How-to-use-custom-fonts-without-rendering-as-bitmaps-) for more info.  
+**Example:** Adding the Aptos font to the signature, uses a font stack that could look like this:
+
+```html
+Aptos, Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif
+```
+
+This font stack is added to the Font Family field in the signature editor, and causes it to try the first font in the list, and if it is not available, it tries the next one, and so on.
 
 ## Troubleshooting
 
