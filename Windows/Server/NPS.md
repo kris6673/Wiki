@@ -18,10 +18,11 @@
    ```
 
 5. **Optional:** Setup approved/deny without number matching by setting the following [reg key](#fallback-to-approvedeny-without-number-matching) on the NPS server
-   ```powershell
-   New-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\AzureMfa" -Name "OVERRIDE_NUMBER_MATCHING_WITH_OTP" -Value "FALSE" -PropertyType String -Force
-   Restart-Service IAS
-   ```
+
+```powershell
+New-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\AzureMfa" -Name "OVERRIDE_NUMBER_MATCHING_WITH_OTP" -Value "FALSE" -PropertyType String -Force
+Restart-Service IAS
+```
 
 ### Fallback to approve/deny without number matching
 
