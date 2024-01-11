@@ -40,16 +40,16 @@ Read more about the support options [here](#links-to-guides)
 
 ### Turn off Calendar assistant
 
-**Note:** This will disable the calendar assistant for all users in the tenant. This will need to be turned back on after the migration is complete.
+**Note:** This will disable the calendar assistant for all users in the tenant. This will need to be turned back on after the migration is complete. This is done to ensure that the calendar assistant doesn't interfere with the migration and break meetings and recurring meetings.
 
 ```powershell
-Get-Mailbox -ResultSize unlimited | Set-Mailbox -CalendarRepairDisabled $true
+Get-EXOMailbox -ResultSize unlimited | Set-Mailbox -CalendarRepairDisabled $true
 ```
 
 **Note:** Turn back on Calendar assistant for all users.
 
 ```powershell
-Get-Mailbox -ResultSize unlimited | Set-Mailbox -CalendarRepairDisabled $false
+Get-EXOMailbox -ResultSize unlimited | Set-Mailbox -CalendarRepairDisabled $false
 ```
 
 ## Links to guides
@@ -60,4 +60,5 @@ Get-Mailbox -ResultSize unlimited | Set-Mailbox -CalendarRepairDisabled $false
 [On-Prem and Hosted Exchange to M365](https://help.bittitan.com/hc/en-us/articles/115008266088-Exchange-2007-Hosted-and-On-Premises-to-Microsoft-365-Migration-Guide)  
 [Scoped inpersonation](https://help.bittitan.com/hc/en-us/articles/115015661147-MigrationWiz-Impersonation-and-Delegation-for-Microsoft-365-Exchange-Migrations#scoped-impersonation-with-ews-0-3)  
 [OneDrive to OneDrive](https://help.bittitan.com/hc/en-us/articles/360011172673-OneDrive-to-OneDrive-for-Business-without-Versions-and-Metadata-migration-guide)  
-[All Bititan support options](https://help.bittitan.com/hc/en-us/articles/360043369293-MigrationWiz-Support-Options)
+[All Bititan support options](https://help.bittitan.com/hc/en-us/articles/360043369293-MigrationWiz-Support-Options)  
+[MigrationWiz - Advanced Options & General Options](https://help.bittitan.com/hc/en-us/articles/360043891714-MigrationWiz-Advanced-Options-General-Options#h_01HC38V3KNNRY4TEJG0AW70QVC)

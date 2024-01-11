@@ -15,7 +15,9 @@
       2. [Apple Push Certifikat](#apple-push-certifikat)
       3. [MDM server certifikat](#mdm-server-certifikat)
 4. [Autopilot](#autopilot)
-   1. [Danish writeup about Autopilot](#danish-writeup-about-autopilot)
+   1. [Links](#links)
+   2. [Skip App install during Autopilot ESP](#skip-app-install-during-autopilot-esp)
+   3. [Danish writeup about Autopilot](#danish-writeup-about-autopilot)
 
 ## Maps drives via Intune script
 
@@ -64,25 +66,26 @@ Detection method runs as SYSTEM, so the user folder and user variables are not a
 $File = Get-ChildItem -Path $PSScriptRoot -Filter *.msi
 # Prepare log file
 $DataStamp = Get-Date -Format yyyy-MM-dd-THHmmss
-$logFile = "$env:ALLUSERSPROFILE\$($File.fullname)-$DataStamp.log"
+$logFile = "$env:ALLUSERSPROFILE\$($File.Name)-$DataStamp.log"
 # List of arguments for msi file install
 $MSIArguments = @(
     '/i'
-    $File.fullname
+    $File.FullName
     '/qn'
     '/norestart'
     '/L*v'
-    $logFile
+    '{0}' -f $logFile
     'ALLUSERS=1'
 )
 # Install msi file with arguments and wait for it to finish
+Write-Host "Installing $($File.Name)..."
 Start-Process 'msiexec.exe' -ArgumentList $MSIArguments -Wait -NoNewWindow
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "MSI install failed with ExitCode:$LASTEXITCODE. See log file: $logFile"
     Exit $LASTEXITCODE
 }
-Write-Host "MSI install exit code: $LASTEXITCODE"
+Write-Host "Success: MSI install exit code: $LASTEXITCODE"
 Return $LASTEXITCODE
 
 ```
@@ -106,7 +109,7 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall
 For x86 apps:
 
 ```batch
-KEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall
+HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall
 ```
 
 If its an MSI app, the uninstall string will be something like:
@@ -134,7 +137,7 @@ Er bundet på moms nummer for virksomheden og kræver et tilknyttet kort.
 #### Apple Push Certifikat
 
 LAV FOR GUDS SKYLD DETTE MED EN IKKE-PERSONLIG APPLE ID.
-Udstedes til ét specifik apple id og kan ikke skiftes medmindre alle enheder genenrolles i MDM'en/Intune.
+Udstedes til ét specifik apple id og kan ikke skiftes medmindre **alle** enheder genenrolles i MDM'en/Intune.
 
 #### MDM server certifikat
 
@@ -143,6 +146,24 @@ Laves under Apple enrollment fanen.
 ## Autopilot
 
 It's not the same as Intune!
+
+### Links
+
+[Autopilot, ESP and extra login/reboots](https://blog.onevinn.com/autopilot-esp-and-extra-login-reboots)  
+[Autopilot extra sign-ins](https://www.reddit.com/r/Intune/comments/10y3715/autopilot_oobe_is_requiring_3_sign_ins_and_the/)
+
+### [Skip App install during Autopilot ESP](https://call4cloud.nl/2022/08/autopilot-is-mine-all-others-pay-time/)
+
+Add this to the requirement section of the app in Intune, if the app is unable to install silently during ESP:
+
+```powershell
+$ProcessActive = Get-Process "WWAHost" -ErrorAction silentlycontinue
+$CheckNull = $ProcessActive -eq $null
+$CheckNull
+```
+
+Requirement settings should be setup like this:  
+![Requirements script settings](/Pics/Intune_MDM_Requirement.png)
 
 ### Danish writeup about Autopilot
 
@@ -155,10 +176,10 @@ Enheder kan registreres i AutoPilot på 4 måder:
 2. Via Partner portal.
    - Her laves der en CSV fil med følgende info i: Device serial number,Windows product ID*(optional)*,Hardware hash*(optional)*,Manufacturer name,Device Model. Info fåes her fra der hvor den er købt, såsom Computersalg/CBC. Preben eller Søren vil kunne fremskaffe denne info, ellers skal den indhentes fra hvad der står på kasserne som PC'erne blev leveret i. Dette er en god mulighed hvis kunden skal have mange PC'er skiftet på én gang, eller hvis de køber mange PC'er ad gangen, og stille og roligt bruger dem som de skiftes.
 3. Via manuel registrering med CSV fil i kunden Intune portal.
-   - Powershell command installeres på PC til at lave et hardware hash, som kan uploades til Intune portalen. Kommanoerne til dette kan findes i SupportScripts mappen, under scriptet Enroll-ComputerInAutopilot.ps1. Det kan være lidt besværligt, da man skal have en CSV fil ud af PC'en, inden den er kommet forbi OOBE'en. Efter upload af CSV fil kan det tage op til 1 time inden sync er færdig og AutoPilot profil er tildelt.
+   - Powershell command installeres på PC til at lave et hardware hash, som kan uploades til Intune portalen. Kommandoerne til dette kan findes i SupportScripts mappen, under scriptet Enroll-ComputerInAutopilot.ps1. Det kan være lidt besværligt, da man skal have en CSV fil ud af PC'en, inden den er kommet forbi OOBE'en. Efter upload af CSV fil kan det tage op til 1 time inden sync er færdig og AutoPilot profil er tildelt.
      Denne mulighed anbefales kun hvis man ikke har mulighed for at bruge kommandoen i næste step.
    - **Reminder:** Shift+F10 i OOBE'en får en cmd frem hvor du kan skrive "powershell" + enter i, så har du en powershell shell.
 4. Via manuel registrering i kundens tenant med powershell + login i 365.
-   - Her installes powershell command ligesom i step 3, men der bruges i stedet direkte login og registrering i 365. Her vil der skulle logges ind med en Intune admin/global admin konto, og så venter den på at den får en AutoPilot profil tildelt og genstarter automatisk når den er klar. Herefter er den klar til at logge ind og blive Azure AD joined + Intune enrolled. Kommanoerne til dette kan findes i SupportScripts mappen, under scriptet Enroll-ComputerInAutopilot.ps1.
+   - Her installes powershell command ligesom i step 3, men der bruges i stedet direkte login og registrering i 365. Her vil der skulle logges ind med en Intune admin/global admin konto, og så venter den på at den får en AutoPilot profil tildelt og genstarter automatisk når den er klar. Herefter er den klar til at logge ind og blive Azure AD joined + Intune enrolled. Kommandoerne til dette kan findes i SupportScripts mappen, under scriptet Enroll-ComputerInAutopilot.ps1.
      Denne metode anbefales hvis der ikke er voldsomt mange PC'er som skal enrolles/deployes samtidigt.
    - **Reminder:** Shift+F10 i OOBE'en får en cmd frem hvor du kan skrive "powershell" + enter i, så har du en powershell shell.
