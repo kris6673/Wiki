@@ -89,23 +89,23 @@ Open Component Services and navigate to the following path:
 
     Component Services > Computers > My Computer > Permissions > DCOM Config
 
-1.  See if there is multiple unknown SIDs in the permissions, and if there is, try removing them and try again.
-2.  ADsync groups are most likely missing from the DCOM permissions in Component Services.  
-    You can try adding them to the DCOM permissions manually.  
-    You need to add the following groups to all 4 of the DCOM permissions:
+1. See if there is multiple unknown SIDs in the permissions, and if there is, try removing them and try again.
+2. ADsync groups are most likely missing from the DCOM permissions in Component Services.  
+   You can try adding them to the DCOM permissions manually.  
+   You need to add the following groups to all 4 of the DCOM permissions:
 
-    - ADSyncAdmins
-    - ADSyncOperators
-    - ADSyncBrowse
-    - ADSyncPasswordSet
+   - ADSyncAdmins
+   - ADSyncOperators
+   - ADSyncBrowse
+   - ADSyncPasswordSet
 
-    If when you add the groups and press OK, and the groups are removed again, probalby have corrupt permissions on the reg keys.
+   If when you add the groups and press OK, and the groups are removed again, probalby have corrupt permissions on the reg keys.
 
-3.  If it still does not work, goto the registry and find the following keys on the server:  
-    Path: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Ole
+3. If it still does not work, goto the registry and find the following keys on the server:  
+   Path: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Ole
 
-    - MachineLaunchRestrictionOld
-    - MachineAccessRestrictionOld
+   - MachineLaunchRestrictionOld
+   - MachineAccessRestrictionOld
 
 Make a backup/export of the keys. Try renaming them to without the "Old" at the end, and try changing permissions again. If the name changes back to "Old" you need to export the keys, rename them in the exported file to without the "Old" at the end, and import them again. This should fix the issue.
 
