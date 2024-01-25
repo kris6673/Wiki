@@ -3,6 +3,7 @@
 1. [Dynamic groups](#dynamic-groups)
    1. [All Users group](#all-users-group)
    2. [Based off membership in another group](#based-off-membership-in-another-group)
+   3. [Based off a device manufacturer](#based-off-a-device-manufacturer)
 
 ## Dynamic groups
 
@@ -31,4 +32,24 @@ user.memberof -any (group.objectId -in ['objectID of group here'])
 
 ```bash
 device.memberof -any (group.objectId -in ['objectID of group here'])
+```
+
+### Based off a device manufacturer
+
+HP
+
+```bash
+(device.deviceOSVersion -startsWith "10.0") -and (device.DeviceOSType -startsWith "Windows") -and (device.managementType -eq "MDM") -and (device.deviceManufacturer -contains "HP")
+```
+
+Lenovo
+
+```bash
+(device.deviceOSVersion -startsWith "10.0") -and (device.DeviceOSType -startsWith "Windows") -and (device.managementType -eq "MDM") -and (device.deviceManufacturer -contains "Lenovo")
+```
+
+Dell
+
+```bash
+(device.deviceOSVersion -startsWith "10.0") -and (device.DeviceOSType -startsWith "Windows") -and (device.managementType -eq "MDM") -and (device.deviceManufacturer -contains "Dell")
 ```
