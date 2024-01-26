@@ -18,6 +18,7 @@
    1. [Links](#links)
    2. [Skip App install during Autopilot ESP](#skip-app-install-during-autopilot-esp)
    3. [Danish writeup about Autopilot](#danish-writeup-about-autopilot)
+5. [Links to stuff](#links-to-stuff)
 
 ## Maps drives via Intune script
 
@@ -185,3 +186,7 @@ Enheder kan registreres i AutoPilot på 4 måder:
    - **Reminder:** Shift+F10 i OOBE'en får en cmd frem hvor du kan skrive "powershell" + enter i, så har du en powershell shell.
 
 ![Autopilot chart](/Pics/AutoPilotDeployment.png)
+
+## Links to stuff
+
+[WindowsHardening - CIS standard for Windows computers](https://github.com/R33Dfield/WindowsHardening)

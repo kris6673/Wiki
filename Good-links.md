@@ -5,11 +5,12 @@
 1. [M365](#m365)
    1. [Intune](#intune)
 2. [Markdown](#markdown)
-3. [Drawing and diagramming](#drawing-and-diagramming)
-4. [Git](#git)
-5. [Powershell](#powershell)
+3. [Timezones](#timezones)
+4. [Drawing and diagramming](#drawing-and-diagramming)
+5. [Git](#git)
+6. [Powershell](#powershell)
    1. [Powershell modules](#powershell-modules)
-6. [Development tools](#development-tools)
+7. [Development tools](#development-tools)
 
 ## M365
 
@@ -28,6 +29,10 @@
 ## Markdown
 
 [Emoji cheat sheet](https://github.com/ikatyang/emoji-cheat-sheet#table-of-contents)
+
+## Timezones
+
+[List of timezones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 
 ## Drawing and diagramming
 
