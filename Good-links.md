@@ -6,9 +6,10 @@
    1. [Intune](#intune)
 2. [Markdown](#markdown)
 3. [Drawing and diagramming](#drawing-and-diagramming)
-4. [Powershell](#powershell)
+4. [Git](#git)
+5. [Powershell](#powershell)
    1. [Powershell modules](#powershell-modules)
-5. [Development tools](#development-tools)
+6. [Development tools](#development-tools)
 
 ## M365
 
@@ -31,6 +32,10 @@
 ## Drawing and diagramming
 
 [Excalidraw](https://excalidraw.com/) - Great for quick drawings
+
+## Git
+
+[Oh shit git / Un-fucking your git repo when mistakes were made](https://ohshitgit.com/)
 
 ## Powershell
 
