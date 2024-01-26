@@ -22,6 +22,7 @@
 
 [Intunewin file / Content prep tool](https://svrooij.io/2023/10/19/open-source-intune-content-prep/)  
 <https://api.vdwegen.app/api/reverseAADapp?appid={ApplicationID-here}> - Get info on apps in M365 via API
+[Intune install commands for Win32 apps](https://silentinstallhq.com/)
 
 ## Markdown
 
