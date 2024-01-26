@@ -190,3 +190,4 @@ Enheder kan registreres i AutoPilot på 4 måder:
 ## Links to stuff
 
 [WindowsHardening - CIS standard for Windows computers](https://github.com/R33Dfield/WindowsHardening)
+[More CIS standard stuff](https://www.everything365.online/2023/09/18/cis-microsoft-intune-for-windows-11-benchmark-in-settings-catalog-json/)
