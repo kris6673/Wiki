@@ -5,10 +5,12 @@
 1. [M365](#m365)
    1. [Intune](#intune)
 2. [Markdown](#markdown)
-3. [Drawing and diagramming](#drawing-and-diagramming)
-4. [Powershell](#powershell)
+3. [Timezones](#timezones)
+4. [Drawing and diagramming](#drawing-and-diagramming)
+5. [Git](#git)
+6. [Powershell](#powershell)
    1. [Powershell modules](#powershell-modules)
-5. [Development tools](#development-tools)
+7. [Development tools](#development-tools)
 
 ## M365
 
@@ -22,14 +24,23 @@
 
 [Intunewin file / Content prep tool](https://svrooij.io/2023/10/19/open-source-intune-content-prep/)  
 <https://api.vdwegen.app/api/reverseAADapp?appid={ApplicationID-here}> - Get info on apps in M365 via API
+[Intune install commands for Win32 apps](https://silentinstallhq.com/)
 
 ## Markdown
 
 [Emoji cheat sheet](https://github.com/ikatyang/emoji-cheat-sheet#table-of-contents)
 
+## Timezones
+
+[List of timezones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
+
 ## Drawing and diagramming
 
 [Excalidraw](https://excalidraw.com/) - Great for quick drawings
+
+## Git
+
+[Oh shit git / Un-fucking your git repo when mistakes were made](https://ohshitgit.com/)
 
 ## Powershell
 
