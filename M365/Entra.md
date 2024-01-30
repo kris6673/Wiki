@@ -4,10 +4,12 @@
    1. [All Users group](#all-users-group)
    2. [Based off membership in another group](#based-off-membership-in-another-group)
    3. [Based off a device manufacturer](#based-off-a-device-manufacturer)
+   4. [Based off a device operating system](#based-off-a-device-operating-system)
 
 ## Dynamic groups
 
-Add these to the Dynamic membership rules in Azure AD for the groups.
+Add these to the Dynamic membership rules in Azure AD for the groups.  
+[Microsoft documentation](https://learn.microsoft.com/en-us/entra/identity/users/groups-dynamic-membership) about dynamic groups, usable properties and operators.
 
 ### All Users group
 
@@ -52,4 +54,18 @@ Dell
 
 ```bash
 (device.deviceOSVersion -startsWith "10.0") -and (device.DeviceOSType -startsWith "Windows") -and (device.managementType -eq "MDM") -and (device.deviceManufacturer -contains "Dell")
+```
+
+### Based off a device operating system
+
+iOS Personal
+
+```bash
+((device.deviceOSType -eq "iPad") or (device.deviceOSType -eq "iPhone")) -and (device.deviceOwnership -eq "Personal")
+```
+
+iOS Corporate
+
+```bash
+((device.deviceOSType -eq "iPad") or (device.deviceOSType -eq "iPhone")) -and (device.deviceOwnership -eq "Company")
 ```
