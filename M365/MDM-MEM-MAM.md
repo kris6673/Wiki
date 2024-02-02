@@ -9,6 +9,7 @@
    1. [Powershell install script for MSI Win32 apps](#powershell-install-script-for-msi-win32-apps)
    2. [Find ProductCode for detection method for MSI Win32 apps](#find-productcode-for-detection-method-for-msi-win32-apps)
    3. [Find uninstall string for installed programs](#find-uninstall-string-for-installed-programs)
+   4. [Troubleshooting](#troubleshooting)
 3. [Apple things](#apple-things)
    1. [Apple Business Manager](#apple-business-manager)
       1. [VPP token](#vpp-token)
@@ -120,6 +121,11 @@ MsiExec.exe /X "{c803ba69-51e1-4dcd-b432-6f652f7ba684}"
 ```
 
 Add /qn to the end of the string to make it silent.
+
+### Troubleshooting
+
+[Win32 logs and how to decipher the logs](/Good-links.md#intune)
+[CMtrace download link](/Good-links.md#intune)
 
 ## Apple things
 
