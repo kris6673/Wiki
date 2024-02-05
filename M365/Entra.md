@@ -38,19 +38,22 @@ device.memberof -any (group.objectId -in ['objectID of group here'])
 
 ### Based off a device manufacturer
 
-HP
+HP  
+Group name: Intune-AllHPComputers
 
 ```bash
 (device.deviceOSVersion -startsWith "10.0") -and (device.DeviceOSType -startsWith "Windows") -and (device.managementType -eq "MDM") -and (device.deviceManufacturer -contains "HP")
 ```
 
-Lenovo
+Lenovo  
+Group name: Intune-AllLenovoComputers
 
 ```bash
 (device.deviceOSVersion -startsWith "10.0") -and (device.DeviceOSType -startsWith "Windows") -and (device.managementType -eq "MDM") -and (device.deviceManufacturer -contains "Lenovo")
 ```
 
-Dell
+Dell  
+Group name: Intune-AllDellComputers
 
 ```bash
 (device.deviceOSVersion -startsWith "10.0") -and (device.DeviceOSType -startsWith "Windows") -and (device.managementType -eq "MDM") -and (device.deviceManufacturer -contains "Dell")
