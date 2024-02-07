@@ -9,7 +9,8 @@
    1. [Powershell install script for MSI Win32 apps](#powershell-install-script-for-msi-win32-apps)
    2. [Find ProductCode for detection method for MSI Win32 apps](#find-productcode-for-detection-method-for-msi-win32-apps)
    3. [Find uninstall string for installed programs](#find-uninstall-string-for-installed-programs)
-   4. [Troubleshooting](#troubleshooting)
+   4. [Run script in 64bit PowerShell if running from 32bit](#run-script-in-64bit-powershell-if-running-from-32bit)
+   5. [Troubleshooting](#troubleshooting)
 3. [Apple things](#apple-things)
    1. [Apple Business Manager](#apple-business-manager)
       1. [VPP token](#vpp-token)
@@ -121,6 +122,25 @@ MsiExec.exe /X "{c803ba69-51e1-4dcd-b432-6f652f7ba684}"
 ```
 
 Add /qn to the end of the string to make it silent.
+
+### Run script in 64bit PowerShell if running from 32bit
+
+This fixes issues with the following commands not being found:
+
+- pnputil.exe
+
+```powershell
+# Run script in 64bit PowerShell if running from 32bit to avoid issues with 64bit only commands/functions
+# $ENV:PROCESSOR_ARCHITEW6432 is only available in 32bit PowerShell
+If ($ENV:PROCESSOR_ARCHITEW6432 -eq 'AMD64') {
+    Try {
+        &"$ENV:WINDIR\SysNative\WindowsPowershell\v1.0\PowerShell.exe" -File $PSCOMMANDPATH
+    } Catch {
+        Write-Error "Failed to start $PSCOMMANDPATH"
+        Write-Warning "$($_.Exception.Message)"
+    }
+}
+```
 
 ### Troubleshooting
 
