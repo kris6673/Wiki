@@ -125,20 +125,23 @@ Add /qn to the end of the string to make it silent.
 
 ### Run script in 64bit PowerShell if running from 32bit
 
+Intune Management Extension runs in 32bit mode, so some commands are not available. Use this to run the script in 64bit mode.  
 This fixes issues with the following commands not being found:
 
 - pnputil.exe
+- query.exe
 
 ```powershell
 # Run script in 64bit PowerShell if running from 32bit to avoid issues with 64bit only commands/functions
 # $ENV:PROCESSOR_ARCHITEW6432 is only available in 32bit PowerShell
 If ($ENV:PROCESSOR_ARCHITEW6432 -eq 'AMD64') {
     Try {
-        &"$ENV:WINDIR\SysNative\WindowsPowershell\v1.0\PowerShell.exe" -File $PSCOMMANDPATH
+        &"$ENV:WINDIR\SysNative\WindowsPowershell\v1.0\PowerShell.exe" -File $PSCOMMANDPATH @PSBoundParameters
     } Catch {
         Write-Error "Failed to start $PSCOMMANDPATH"
         Write-Warning "$($_.Exception.Message)"
     }
+   Exit
 }
 ```
 
