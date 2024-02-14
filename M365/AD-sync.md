@@ -9,7 +9,7 @@
 2. [Connect sync aka. the old one](#connect-sync-aka-the-old-one)
    1. [In-place upgrade server the sync is on](#in-place-upgrade-server-the-sync-is-on)
    2. [Troubleshooting](#troubleshooting)
-      1. [Azure AD Connect must modify the DCOM security registry values to grant access to the required operator roles.](#azure-ad-connect-must-modify-the-dcom-security-registry-values-to-grant-access-to-the-required-operator-roles)
+      1. [Azure AD Connect must modify the DCOM security registry values to grant access to the required operator roles](#azure-ad-connect-must-modify-the-dcom-security-registry-values-to-grant-access-to-the-required-operator-roles)
    3. [Migrate to a new server](#migrate-to-a-new-server)
    4. [Reset password on next login - Connect Sync](#reset-password-on-next-login---connect-sync)
 3. [Cloud Kerberos trust](#cloud-kerberos-trust)
@@ -77,7 +77,7 @@ When upgrading the server from 2012 R2 to a newer version, the installation does
 
 ### Troubleshooting
 
-#### Azure AD Connect must modify the DCOM security registry values to grant access to the required operator roles.
+#### Azure AD Connect must modify the DCOM security registry values to grant access to the required operator roles
 
 **Error message is:** :x:Repair the following registry values:x:
 
@@ -117,7 +117,7 @@ Make a backup/export of the keys. Try renaming them to without the "Old" at the 
 
 [MS Documentation/Guide](https://learn.microsoft.com/en-us/azure/active-directory/hybrid/connect/how-to-connect-password-hash-synchronization#synchronizing-temporary-passwords-and-force-password-change-on-next-logon)
 
-:warning: **CAUTION:** You should only use this feature when SSPR and Password Writeback are enabled on the tenant. This is so that if a user changes their password via SSPR, it will be synchronized to Active Directory. :warning:
+:warning: **CAUTION:** You should only use this feature when SSPR and Password Writeback are enabled on the tenant. :warning:
 
 ```powershell
 # Run this on the AD Connect sync server
