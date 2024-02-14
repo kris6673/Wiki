@@ -37,7 +37,7 @@ foreach ($Key in $Keys) {
     This function returns a Boolean value indicating whether the registry value matches the specified value.
 
 .NOTES
-    Author: KBK
+    Author: Kris6673
     Date:   2024-01-26
 #>
 function Test-RegistryValue {
