@@ -9,6 +9,7 @@
    2. [Exclaimer Signature Manager Outlook Edition](#exclaimer-signature-manager-outlook-edition)
    3. [Custom fonts in signatures](#custom-fonts-in-signatures)
 4. [Troubleshooting](#troubleshooting)
+   1. [Sending to distribution groups does not work](#sending-to-distribution-groups-does-not-work)
 
 ## Recommended setup
 
@@ -69,4 +70,15 @@ This font stack is added to the Font Family field in the signature editor, and c
 
 ## Troubleshooting
 
-Nothing here yet.
+### Sending to distribution groups does not work
+
+This error only happens for AD synced distribution groups and not cloud only groups.
+
+```text
+Reported error: 501 5.1.8 Your message couldn't be delivered because the email
+has no mail from address. See <https://go.exclaimer.com/334> for more
+information
+```
+
+Usually this error comes when the attribute "reportToOriginator" is set to "False" on the distribution group. This attribute only exists in the Local AD if the schema is extended with Exchange attributes.  
+Follow the guide [here](https://go.exclaimer.com/334), under "Scenario 1: The email is sent to a group" Step 10, for [how to add the attribute to the local AD](https://support.exclaimer.com/hc/en-gb/articles/6776545275677-Can-I-extend-Active-Directory-schema-to-include-Exchange-Attributes).
