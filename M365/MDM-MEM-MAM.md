@@ -1,24 +1,28 @@
 # Intune
 
-## Table of Contents<!-- omit in toc -->
+## Table of Contents`<!-- omit in toc -->`
 
-1. [Maps drives via Intune script](#maps-drives-via-intune-script)
+1. [Table of Contents`<!-- omit in toc -->`](#table-of-contents---omit-in-toc---)
+2. [Maps drives via Intune script](#maps-drives-via-intune-script)
    1. [Notes](#notes)
    2. [Remove any wrong drive mappings](#remove-any-wrong-drive-mappings)
-2. [Win32 apps](#win32-apps)
+3. [Win32 apps](#win32-apps)
    1. [Powershell install script for MSI Win32 apps](#powershell-install-script-for-msi-win32-apps)
    2. [Find ProductCode for detection method for MSI Win32 apps](#find-productcode-for-detection-method-for-msi-win32-apps)
    3. [Find uninstall string for installed programs](#find-uninstall-string-for-installed-programs)
-3. [Apple things](#apple-things)
+   4. [Run script in 64bit PowerShell if running from 32bit](#run-script-in-64bit-powershell-if-running-from-32bit)
+   5. [Troubleshooting](#troubleshooting)
+4. [Apple things](#apple-things)
    1. [Apple Business Manager](#apple-business-manager)
       1. [VPP token](#vpp-token)
       2. [Apple Push Certifikat](#apple-push-certifikat)
       3. [MDM server certifikat](#mdm-server-certifikat)
-4. [Autopilot](#autopilot)
+      4. [User VS Device enrollment](#user-vs-device-enrollment)
+5. [Autopilot](#autopilot)
    1. [Links](#links)
    2. [Skip App install during Autopilot ESP](#skip-app-install-during-autopilot-esp)
    3. [Danish writeup about Autopilot](#danish-writeup-about-autopilot)
-5. [Links to stuff](#links-to-stuff)
+6. [Links to stuff](#links-to-stuff)
 
 ## Maps drives via Intune script
 
@@ -121,6 +125,32 @@ MsiExec.exe /X "{c803ba69-51e1-4dcd-b432-6f652f7ba684}"
 
 Add /qn to the end of the string to make it silent.
 
+### Run script in 64bit PowerShell if running from 32bit
+
+Intune Management Extension runs in 32bit mode, so some commands are not available. Use this to run the script in 64bit mode.This fixes issues with the following commands not being found:
+
+- pnputil.exe
+- query.exe
+
+```powershell
+# Run script in 64bit PowerShell if running from 32bit to avoid issues with 64bit only commands/functions
+# $ENV:PROCESSOR_ARCHITEW6432 is only available in 32bit PowerShell
+If ($ENV:PROCESSOR_ARCHITEW6432 -eq 'AMD64') {
+    Try {
+        &"$ENV:WINDIR\SysNative\WindowsPowershell\v1.0\PowerShell.exe" -File $PSCOMMANDPATH @PSBoundParameters
+    } Catch {
+        Write-Error "Failed to start $PSCOMMANDPATH"
+        Write-Warning "$($_.Exception.Message)"
+    }
+   Exit
+}
+```
+
+### Troubleshooting
+
+[Win32 logs and how to decipher the logs](/Good-links.md#intune)
+[CMtrace download link](/Good-links.md#intune)
+
 ## Apple things
 
 ### Apple Business Manager
@@ -144,13 +174,19 @@ Udstedes til ét specifik apple id og kan ikke skiftes medmindre **alle** enhede
 
 Laves under Apple enrollment fanen.
 
+#### User VS Device enrollment
+
+**User enrollment:** requires iOS 13.0 or later, and crucially needs to have a managed Apple ID to work. Otherwise the device management profile cannot be installed to the device. Federated authentication and automatic sync of Entra ID identities is recommended for this, otherwise all users will have to be created manually in Apple Business Manager. User enrollment is considered the more user friendly option, as it allows the user to keep their personal data separate from the company data.
+
+**Device enrollment:** requires iOS 5.0 or later. This was the default and only way of enrolling BYOD devices before 2023. [Webbased device enrollment](https://www.petervanderwoude.nl/post/getting-started-with-web-based-device-enrollment-for-ios-devices/) or Company portal app enrollment are the 2 options for this. This is pretty much the "I don't wanna deal with managed Apple ID's" option.
+
 ## Autopilot
 
 It's not the same as Intune!
 
 ### Links
 
-[Autopilot, ESP and extra login/reboots](https://blog.onevinn.com/autopilot-esp-and-extra-login-reboots)  
+[Autopilot, ESP and extra login/reboots](https://blog.onevinn.com/autopilot-esp-and-extra-login-reboots)
 [Autopilot extra sign-ins](https://www.reddit.com/r/Intune/comments/10y3715/autopilot_oobe_is_requiring_3_sign_ins_and_the/)
 
 ### [Skip App install during Autopilot ESP](https://call4cloud.nl/2022/08/autopilot-is-mine-all-others-pay-time/)
@@ -163,7 +199,7 @@ $CheckNull = $ProcessActive -eq $null
 $CheckNull
 ```
 
-Requirement settings should be setup like this:  
+Requirement settings should be setup like this:
 ![Requirements script settings](/Pics/Intune_MDM_Requirement.png)
 
 ### Danish writeup about Autopilot
