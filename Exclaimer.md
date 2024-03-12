@@ -8,6 +8,7 @@
    1. [Add-in for Outlook](#add-in-for-outlook)
    2. [Exclaimer Signature Manager Outlook Edition](#exclaimer-signature-manager-outlook-edition)
    3. [Custom fonts in signatures](#custom-fonts-in-signatures)
+   4. [Extension attributes in signatures](#extension-attributes-in-signatures)
 4. [Troubleshooting](#troubleshooting)
    1. [Sending to distribution groups does not work](#sending-to-distribution-groups-does-not-work)
 
@@ -67,6 +68,11 @@ Aptos, Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif
 ```
 
 This font stack is added to the Font Family field in the signature editor, and causes it to try the first font in the list, and if it is not available, it tries the next one, and so on.
+
+### Extension attributes in signatures
+
+You can use the 15 custom extension attributes by adding data to the attributes "extensionAttribute1" to "extensionAttribute15" in the users AD. AD sync will then sync this data to M365, and after up to 24 hours, the data will be available in Exclaimer.  
+**Note:** The option to sync these attributes is not enabled by default, and needs to be enabled in the sync settings in the Exclaimer portal.
 
 ## Troubleshooting
 
