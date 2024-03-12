@@ -46,6 +46,7 @@ function Install-RequiredModules {
                         Write-Host "Success. Old version $($InstalledModule.Version) of $Module uninstalled." -ForegroundColor Green
                         
                     } catch {
+                        # TODO: Add a function to delete the module folder if uninstall fails
                         Write-Host "ERROR. Old version $($InstalledModule.Version) of $Module was not uninstalled." -ForegroundColor Red
                         Write-Host "Please uninstall the module manually with: Uninstall-Module $Module -MaximumVersion $($InstalledModule.Version)"
                     }
