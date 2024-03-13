@@ -4,6 +4,7 @@ function Invoke-GraphRequestNoPagination {
     <#
     .SYNOPSIS
     Invokes a Microsoft Graph request and retrieves all pages of data.
+    Converts the result to a PSCustomObject with type casting.
 
     .DESCRIPTION
     The Invoke-GraphRequestNoPagination function is used to invoke a Microsoft Graph request and retrieve all pages of data. 
