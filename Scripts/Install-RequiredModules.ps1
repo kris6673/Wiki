@@ -44,11 +44,11 @@ function Install-RequiredModules {
                     Write-Host "Uninstalling old versions of $Module." -ForegroundColor Yellow
                     foreach ($OldVersion in $OldVersions) {
                         try {
-                            Uninstall-Module $Module -MaximumVersion $OldVersion.Version -Force -ErrorAction Stop
+                            Uninstall-Module $Module -RequiredVersion $OldVersion.Version -Force -ErrorAction Stop
                             Write-Host "Success. Old version $($OldVersion.Version) of $Module uninstalled." -ForegroundColor Green
                         } catch {
                             Write-Host "ERROR. Old version $($InstalledModule.Version) of $Module was not uninstalled." -ForegroundColor Red
-                            Write-Host "Please uninstall the module manually with: Uninstall-Module $Module -MaximumVersion $($InstalledModule.Version)"
+                            Write-Host "Please uninstall the module manually with: Uninstall-Module $Module -RequiredVersion $($InstalledModule.Version)"
                         }
                     }
                 } # Catch if update fails
