@@ -9,9 +9,10 @@
 3. [Win32 apps](#win32-apps)
    1. [Powershell install script for MSI Win32 apps](#powershell-install-script-for-msi-win32-apps)
    2. [Find ProductCode for detection method for MSI Win32 apps](#find-productcode-for-detection-method-for-msi-win32-apps)
-   3. [Find uninstall string for installed programs](#find-uninstall-string-for-installed-programs)
-   4. [Run script in 64bit PowerShell if running from 32bit](#run-script-in-64bit-powershell-if-running-from-32bit)
-   5. [Troubleshooting](#troubleshooting)
+   3. [Find MSI ProductCode for digitally signed MSI files without installing the program](#find-msi-productcode-for-digitally-signed-msi-files-without-installing-the-program)
+   4. [Find uninstall string for installed programs](#find-uninstall-string-for-installed-programs)
+   5. [Run script in 64bit PowerShell if running from 32bit](#run-script-in-64bit-powershell-if-running-from-32bit)
+   6. [Troubleshooting](#troubleshooting)
 4. [Apple things](#apple-things)
    1. [Apple Business Manager](#apple-business-manager)
       1. [VPP token](#vpp-token)
@@ -99,6 +100,13 @@ Return $LASTEXITCODE
 
 ```powershell
 $Installer = New-Object -ComObject WindowsInstaller.Installer; $InstallerProducts = $Installer.ProductsEx("", "", 7); $InstalledProducts = ForEach($Product in $InstallerProducts){[PSCustomObject]@{ProductCode = $Product.ProductCode(); LocalPackage = $Product.InstallProperty("LocalPackage"); VersionString = $Product.InstallProperty("VersionString"); ProductPath = $Product.InstallProperty("ProductName")}} $InstalledProducts
+```
+
+### Find MSI ProductCode for digitally signed MSI files without installing the program
+
+```powershell
+$MSIPath = "C:\Path\To\MSI.msi"
+Get-AppLockerFileInformation -Path $MSIPath | select -ExpandProperty Publisher | Select BinaryName
 ```
 
 ### Find uninstall string for installed programs
