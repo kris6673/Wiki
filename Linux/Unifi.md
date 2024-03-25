@@ -30,4 +30,5 @@ sudo service restart unifi
 
 [Crosstalk solutions Definitive Guide to Hosted UniFi 2021](https://www.crosstalksolutions.com/definitive-guide-to-hosted-unifi-2021/)  
 [Unifi help article](https://help.ui.com/hc/en-us/articles/220066768-UniFi-How-to-Install-Update-via-APT-on-Debian-or-Ubuntu)  
-[Unifi unofficial API documentation](https://ubntwiki.com/products/software/unifi-controller/api)
+[Unifi unofficial API documentation](https://ubntwiki.com/products/software/unifi-controller/api)  
+[Unifi install script](https://community.ui.com/questions/UniFi-Installation-Scripts-or-UniFi-Easy-Update-Script-or-UniFi-Lets-Encrypt-or-UniFi-Easy-Encrypt-/ccbc7530-dd61-40a7-82ec-22b17f027776)
