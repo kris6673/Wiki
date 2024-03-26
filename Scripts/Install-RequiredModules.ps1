@@ -25,7 +25,7 @@ function Install-RequiredModules {
 
     # Install all modules in input list and handle errors
     foreach ($Module in $Modules) {
-        if (Get-InstalledModule -Name $Module) {
+        if (Get-InstalledModule -Name $Module -ErrorAction SilentlyContinue) {
             Write-Host "$Module module already installed. Testing if it needs updates." -ForegroundColor Yellow
             # Test if module needs updates
             $OnlineModule = Find-Module -Name $Module -Repository PSGallery
