@@ -1,29 +1,28 @@
 # Intune
 
-## Table of Contents`<!-- omit in toc -->`
+## Table of Contents<!-- omit in toc -->
 
-1. [Table of Contents`<!-- omit in toc -->`](#table-of-contents---omit-in-toc---)
-2. [Maps drives via Intune script](#maps-drives-via-intune-script)
+1. [Maps drives via Intune script](#maps-drives-via-intune-script)
    1. [Notes](#notes)
    2. [Remove any wrong drive mappings](#remove-any-wrong-drive-mappings)
-3. [Win32 apps](#win32-apps)
+2. [Win32 apps](#win32-apps)
    1. [Powershell install script for MSI Win32 apps](#powershell-install-script-for-msi-win32-apps)
    2. [Find ProductCode for detection method for MSI Win32 apps](#find-productcode-for-detection-method-for-msi-win32-apps)
    3. [Find MSI ProductCode for digitally signed MSI files without installing the program](#find-msi-productcode-for-digitally-signed-msi-files-without-installing-the-program)
    4. [Find uninstall string for installed programs](#find-uninstall-string-for-installed-programs)
    5. [Run script in 64bit PowerShell if running from 32bit](#run-script-in-64bit-powershell-if-running-from-32bit)
    6. [Troubleshooting](#troubleshooting)
-4. [Apple things](#apple-things)
+3. [Apple things](#apple-things)
    1. [Apple Business Manager](#apple-business-manager)
       1. [VPP token](#vpp-token)
       2. [Apple Push Certifikat](#apple-push-certifikat)
       3. [MDM server certifikat](#mdm-server-certifikat)
       4. [User VS Device enrollment](#user-vs-device-enrollment)
-5. [Autopilot](#autopilot)
+4. [Autopilot](#autopilot)
    1. [Links](#links)
    2. [Skip App install during Autopilot ESP](#skip-app-install-during-autopilot-esp)
    3. [Danish writeup about Autopilot](#danish-writeup-about-autopilot)
-6. [Links to stuff](#links-to-stuff)
+5. [Links to stuff](#links-to-stuff)
 
 ## Maps drives via Intune script
 
@@ -233,5 +232,5 @@ Enheder kan registreres i AutoPilot på 4 måder:
 
 ## Links to stuff
 
-[WindowsHardening - CIS standard for Windows computers](https://github.com/R33Dfield/WindowsHardening)
+[WindowsHardening - CIS standard for Windows computers](https://github.com/R33Dfield/WindowsHardening)  
 [More CIS standard stuff](https://www.everything365.online/2023/09/18/cis-microsoft-intune-for-windows-11-benchmark-in-settings-catalog-json/)
