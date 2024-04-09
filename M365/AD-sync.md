@@ -13,6 +13,7 @@
    3. [Migrate to a new server](#migrate-to-a-new-server)
    4. [Reset password on next login - Connect Sync](#reset-password-on-next-login---connect-sync)
 3. [Cloud Kerberos trust](#cloud-kerberos-trust)
+   1. [Troubleshooting](#troubleshooting-1)
 4. [Breaking AD sync](#breaking-ad-sync)
 
 ## Cloud sync aka. the new one
@@ -133,9 +134,41 @@ Set-ADSyncAADCompanyFeature -ForcePasswordChangeOnLogOn $true
 
 **Note:** Windows Hello for Business, and some kind of AD sync is required for this to work.
 
-[Microsoft guide](https://learn.microsoft.com/en-us/windows/security/identity-protection/hello-for-business/hello-hybrid-cloud-kerberos-trust-provision?tabs=intune)
+[Microsoft guide](https://learn.microsoft.com/en-us/windows/security/identity-protection/hello-for-business/deploy/hybrid-cloud-kerberos-trust?tabs=intune)
 
-[Lazyadmin.nl guide](https://lazyadmin.nl/it/windows-hello-for-business-cloud-trust/#implementing-hybrid-cloud-trust)
+[Lazyadmin.nl guide](https://lazyadmin.nl/it/windows-hello-for-business-cloud-trust/#implementing-hybrid-cloud-trust) that has the powershell commands in a more readable format.  
+[Peter van der Woude guide](https://www.petervanderwoude.nl/post/configuring-windows-hello-for-business-cloud-kerberos-trust/) that has the last config needed for the cloud trust to work, specifically this:
+
+1. Open the Microsoft Intune admin center portal and navigate to Devices > Windows > Configuration profiles
+2. On the Windows | Configuration profiles blade, click Create profile
+3. On the Create a profile blade, provide the following information and click Create
+   1. Platform: Select Windows 10 and later to create a profile for Windows 10 and Windows 11 devices
+   2. Profile: Select Settings Catalog to select the required setting from the catalog
+4. On the Basics page, provide the following information and click Next
+   1. Name: Provide a name for the profile to distinguish it from other similar profiles
+   2. Description: (Optional) Provide a description for the profile to further differentiate profiles
+   3. Platform: (Greyed out) Windows 10 and later
+5. On the Configuration settings page, as shown below in Figure 2, perform the following actions
+   1. Click Add settings and perform the following in Settings picker
+   2. Select Windows Hello for Business as category
+   3. Select Use Cloud Trust For On Prem Auth as settings
+   4. Switch the slider to Enabled with Use Cloud Trust For On Prem Auth and click Next
+
+### Troubleshooting
+
+Test with the following command, to see if it can get a ticket:
+
+```powershell
+klist
+```
+
+if that does not work, try the following command and look in the event logs for errors:
+
+```powershell
+klist get krbtgt
+```
+
+You have probably forgotten to deploy this setting in some way: **Use Cloud Trust For On Prem Auth**
 
 ## Breaking AD sync
 

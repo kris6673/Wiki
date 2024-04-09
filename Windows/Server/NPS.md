@@ -4,6 +4,9 @@
 
 :warning: **CAUTION:** Installing the plugin takes over the entire NPS server and requires ALL NPS requests to it must go through Azure MFA. This behavior cannot be changed.
 
+:x::x: **ATTENTION:** :x::x: If using a firewall that requires RADIUS attributes to be set, to grant access to the VPN, any text based MFA methods (SMS, mobile app verification code, or OATH hardware token), will not work. If using a text based MFA method, any RADIUS attributes set in the Network Access Policy are not forwarded. Any RADIUS attributes set in the Connection Request Policy will be passed correctly. [See the purple note box for the full explanation](https://learn.microsoft.com/en-us/entra/identity/authentication/howto-mfa-nps-extension#determine-which-authentication-methods-your-users-can-use)  
+As a workaround you can use the [Approve/Deny push notifications](#fallback-to-approvedeny-without-number-matching) via the MS Authenticator app.
+
 [Microsoft install guide](https://learn.microsoft.com/en-us/entra/identity/authentication/howto-mfa-nps-extension#install-the-nps-extension)
 
 1. Download the NPS extension from the [Microsoft download center](https://www.microsoft.com/en-us/download/details.aspx?id=54688)

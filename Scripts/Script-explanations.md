@@ -5,6 +5,7 @@
 1. [Install-RequiredModules.ps1](#install-requiredmodulesps1)
 2. [Download-GithubRelease.ps1](#download-githubreleaseps1)
 3. [Test-RegistryValue.ps1](#test-registryvalueps1)
+4. [Invoke-GraphRequestNoPagination.ps1](#invoke-graphrequestnopaginationps1)
 
 ## Install-RequiredModules.ps1
 
@@ -23,3 +24,9 @@ Rustdesk is used as an example in the script.
 
 Tests if a registry value exists and has a specific value.
 Examples are provided in the synopsis of the script.
+
+## [Invoke-GraphRequestNoPagination.ps1](/Scripts/Invoke-GraphRequestNoPagination.ps1)
+
+This script is designed to make a request to the Microsoft Graph API without pagination.  
+Returns the results of the request as a PSObject and not a Hashtable, like it would if you used the `Invoke-GraphRequest` function from the `Microsoft.Graph` module.
+Otherwise it's only gonna return the first 100 items.
