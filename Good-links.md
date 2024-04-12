@@ -27,6 +27,7 @@
 <https://api.vdwegen.app/api/reverseAADapp?appid={ApplicationID-here}> - Get info on apps in M365 via API
 [Intune install commands for Win32 apps](https://silentinstallhq.com/)  
 [Win32 logs and how to decipher the logs](https://call4cloud.nl/2022/07/retry-lola-retry/)  
+[Intune management extension logs diagnostics](https://github.com/petripaavola/Get-IntuneManagementExtensionDiagnostics)  
 [CMtrace download link](https://call4cloud.nl/wp-content/uploads/2022/07/cmtrace.zip)
 
 ## Markdown

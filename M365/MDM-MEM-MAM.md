@@ -156,6 +156,7 @@ If ($ENV:PROCESSOR_ARCHITEW6432 -eq 'AMD64') {
 ### Troubleshooting
 
 [Win32 logs and how to decipher the logs](/Good-links.md#intune)
+[Intune management extension logs diagnostics](/Good-links.md#intune)  
 [CMtrace download link](/Good-links.md#intune)
 
 ## Apple things
