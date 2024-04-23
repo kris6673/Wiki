@@ -53,6 +53,17 @@ However, this requires that the primary configured method is one you 'wait' for.
 
 :no_entry: **Note:** Do not put the RDP NPS server on the RD gateway server. This will cause the authentication to fail, since the localhost and network protocols are different in the RD gateway.
 
+### Renew the certificate
+
+The certificate used for the NPS extension will expire after 2 years. To renew the certificate, follow the steps below:
+
+```powershell
+# Open powershell as admin, and follow the steps.
+# Since its a renewal the tenant ID is already known, so no need to find it again.
+cd "C:\Program Files\Microsoft\AzureMfa\Config"
+.\AzureMfaNpsExtnConfigSetup.ps1
+```
+
 ## Troubleshooting
 
 Go to the Event log and find the error codes.  
