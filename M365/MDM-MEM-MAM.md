@@ -187,10 +187,12 @@ Start-Process $env:TEMP\PsExec64.exe '\\RemoteMachineName' '-s C:\WINDOWS\system
 Download the script and run it in the SYSTEM shell.
 
 ```powershell
+# Download the script from GitHub
 $URI = "https://raw.githubusercontent.com/AdamGrossTX/Toolbox/master/Intune/Intune-UnHybridJoin.ps1"
 Invoke-WebRequest -Uri $URI -OutFile "$env:TEMP\Intune-UnHybridJoin.ps1"
 Set-ExecutionPolicy -ExecutionPolicy 'ByPass' -Scope 'Process' -Force -ErrorAction 'Stop'
 & $env:TEMP\Intune-UnHybridJoin.ps1 -Remediate 1 -Rejoin 1
+# Remove the script after running it
 Remove-Item -Path "$env:TEMP\Intune-UnHybridJoin.ps1" -Force
 ```
 
