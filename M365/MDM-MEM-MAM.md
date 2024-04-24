@@ -12,17 +12,19 @@
    4. [Find uninstall string for installed programs](#find-uninstall-string-for-installed-programs)
    5. [Run script in 64bit PowerShell if running from 32bit](#run-script-in-64bit-powershell-if-running-from-32bit)
    6. [Troubleshooting](#troubleshooting)
-3. [Apple things](#apple-things)
+3. [Hybrid Join](#hybrid-join)
+   1. [Troubleshooting](#troubleshooting-1)
+4. [Apple things](#apple-things)
    1. [Apple Business Manager](#apple-business-manager)
       1. [VPP token](#vpp-token)
       2. [Apple Push Certifikat](#apple-push-certifikat)
       3. [MDM server certifikat](#mdm-server-certifikat)
       4. [User VS Device enrollment](#user-vs-device-enrollment)
-4. [Autopilot](#autopilot)
+5. [Autopilot](#autopilot)
    1. [Links](#links)
    2. [Skip App install during Autopilot ESP](#skip-app-install-during-autopilot-esp)
    3. [Danish writeup about Autopilot](#danish-writeup-about-autopilot)
-5. [Links to stuff](#links-to-stuff)
+6. [Links to stuff](#links-to-stuff)
 
 ## Maps drives via Intune script
 
@@ -158,6 +160,43 @@ If ($ENV:PROCESSOR_ARCHITEW6432 -eq 'AMD64') {
 [Win32 logs and how to decipher the logs](/Good-links.md#intune)
 [Intune management extension logs diagnostics](/Good-links.md#intune)  
 [CMtrace download link](/Good-links.md#intune)
+
+## Hybrid Join
+
+### Troubleshooting
+
+If the following error is seen in the event log under Applications and Services Logs > Microsoft > Windows > DeviceManagement-Enterprise-Diagnostic-Provider > Admin:
+
+```plaintext
+MDM Session: OMA-DM message failed to be sent. Result: (Unknown Win32 Error code: 0x80072ee7).
+```
+
+You can rejoin the device to Azure AD with the following script: [Rejoin script](https://github.com/AdamGrossTX/Toolbox/blob/master/Intune/Intune-UnHybridJoin.ps1)  
+This needs to be run as SYSTEM, so you can use the following command to run it as SYSTEM:
+
+```powershell
+Invoke-WebRequest -Uri 'https://live.sysinternals.com/PsExec64.exe'-OutFile $env:TEMP\PsExec64.exe
+
+# Run the script as SYSTEM on local machine
+Start-Process $env:TEMP\PsExec64.exe '-s C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe'
+# Run the script as SYSTEM on remote machine
+Start-Process $env:TEMP\PsExec64.exe '\\RemoteMachineName' '-s C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe'
+
+```
+
+Download the script and run it in the SYSTEM shell.
+
+```powershell
+# Download the script from GitHub
+$URI = "https://raw.githubusercontent.com/AdamGrossTX/Toolbox/master/Intune/Intune-UnHybridJoin.ps1"
+Invoke-WebRequest -Uri $URI -OutFile "$env:TEMP\Intune-UnHybridJoin.ps1"
+Set-ExecutionPolicy -ExecutionPolicy 'ByPass' -Scope 'Process' -Force -ErrorAction 'Stop'
+& $env:TEMP\Intune-UnHybridJoin.ps1 -Remediate 1 -Rejoin 1
+# Remove the script after running it
+Remove-Item -Path "$env:TEMP\Intune-UnHybridJoin.ps1" -Force
+```
+
+This should rejoin the PC and fix the issue.
 
 ## Apple things
 
