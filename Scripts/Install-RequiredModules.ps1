@@ -20,9 +20,11 @@ function Install-RequiredModules {
     } else {
         Write-Host 'PSGallery not trusted, setting it to trusted. Please wait...' -ForegroundColor Yellow
         Write-Host 'Trusting PS Gallery' -ForegroundColor Yellow
+        $null = Install-PackageProvider -Name 'NuGet' -Force
         Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
     }
 
+    $null = Install-PackageProvider -Name 'NuGet' -Force
     # Install all modules in input list and handle errors
     foreach ($Module in $Modules) {
         $InstalledModule = Get-InstalledModule -Name $Module -ErrorAction SilentlyContinue
