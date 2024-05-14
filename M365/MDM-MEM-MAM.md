@@ -29,12 +29,15 @@
 ## Maps drives via Intune script
 
 [Map network drives via Intune](https://tech.nicolonsky.ch/next-level-network-drive-mapping-with-intune/)
+[GitHub wiki page the creator made](https://github.com/nicolonsky/IntuneDriveMapping/wiki)
+[Trigger on VPN connection](https://github.com/nicolonsky/IntuneDriveMapping/wiki/Trigger-Script-on-VPN-Connection)
 
 ### Notes
 
 - Does not require hybrid join/device writeback to the local AD to work.
 - Making updates to the script and having it apply to the machine again, will overwrite the current scheduled task.
 - If the users password is expired, the script will fail to map the drives.
+- If you want to use environment variables use PowerShell environment variables: \\\lan.customer.local\homes\$env:username
 - You can add multiple groups as a filter like this: "GroupFilter":"Adgang_Faelles_F_ReadWrite,Adgang_Faelles_F_Read" aka separated with a comma.
 - **Important:** Requires Windows Pro, an equivalent or above edition. (Since Intune scripts cant run on Windows Home edition)
 
