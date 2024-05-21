@@ -12,7 +12,7 @@ Random stuff I dont know where to put
 ## Add M365/Azure user to computer local admin group
 
 ```powershell
-Add-LocalGroupMember -SID S-1-5-32-544 -Member 'AzureAD\UserUpn@domain.com'
+Add-LocalGroupMember -SID S-1-5-32-544 -Member 'AzureAD\UserUPN@domain.com'
 ```
 
 or
