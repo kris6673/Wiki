@@ -14,3 +14,9 @@ Random stuff I dont know where to put
 ```powershell
 Add-LocalGroupMember -SID S-1-5-32-544 -Member 'AzureAD\UserUpn@domain.com'
 ```
+
+or
+
+```bash
+net localgroup Administrators /add "AzureAD\UserUPN@domain.com"
+```
