@@ -29,8 +29,8 @@
 
 ## Map drives via Intune script
 
-[Map network drives via Intune](https://tech.nicolonsky.ch/next-level-network-drive-mapping-with-intune/)
-[GitHub wiki page the creator made](https://github.com/nicolonsky/IntuneDriveMapping/wiki)
+[Map network drives via Intune](https://tech.nicolonsky.ch/next-level-network-drive-mapping-with-intune/)  
+[GitHub wiki page the creator made](https://github.com/nicolonsky/IntuneDriveMapping/wiki)  
 [Trigger on VPN connection](https://github.com/nicolonsky/IntuneDriveMapping/wiki/Trigger-Script-on-VPN-Connection)
 
 ### Notes
