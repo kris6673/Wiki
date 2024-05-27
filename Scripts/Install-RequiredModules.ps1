@@ -20,16 +20,18 @@ function Install-RequiredModules {
     } else {
         Write-Host 'PSGallery not trusted, setting it to trusted. Please wait...' -ForegroundColor Yellow
         Write-Host 'Trusting PS Gallery' -ForegroundColor Yellow
+        $null = Install-PackageProvider -Name 'NuGet' -Force
         Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
     }
 
+    $null = Install-PackageProvider -Name 'NuGet' -Force
     # Install all modules in input list and handle errors
     foreach ($Module in $Modules) {
-        if (Get-InstalledModule -Name $Module -ErrorAction SilentlyContinue) {
+        $InstalledModule = Get-InstalledModule -Name $Module -ErrorAction SilentlyContinue
+        if ($InstalledModule) {
             Write-Host "$Module module already installed. Testing if it needs updates." -ForegroundColor Yellow
             # Test if module needs updates
             $OnlineModule = Find-Module -Name $Module -Repository PSGallery
-            $InstalledModule = Get-InstalledModule -Name $Module
             if ($OnlineModule.version -gt $InstalledModule.Version) {
                 Write-Host "$Module module needs to be updated from version $($InstalledModule.Version) to version $($OnlineModule.Version)." -ForegroundColor Yellow
                 

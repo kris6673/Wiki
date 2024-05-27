@@ -3,6 +3,7 @@
 ## Table of Contents <!-- omit in toc -->
 
 1. [Group Managed Service Accounts (gMSA)](#group-managed-service-accounts-gmsa)
+2. [Enable inheritance on all users in a specific OU](#enable-inheritance-on-all-users-in-a-specific-ou)
 
 ## Group Managed Service Accounts (gMSA)
 
@@ -51,4 +52,30 @@ Will make the KdsRootKey effective immediately without the 10h wait, but the DC 
 
 ```powershell
 Add-KdsRootKey -EffectiveTime ((Get-Date).AddHours(-10))
+```
+
+## Enable inheritance on all users in a specific OU
+
+The following script will enable inheritance on all users in a specific OU.
+This is usually needed when you get permission errors when trying to sync users to M365 via AD sync.
+
+```powershell
+# Source: https://techontip.wordpress.com/2021/12/21/enable-bulk-ad-security-permissions-inheritance-powershell/
+# Enable inheritance on all users in a specific OU
+$ADusers = Get-ADUser -LDAPFilter '(objectclass=user)' -SearchBase 'OU=Users,OU=CustomerOU,DC=domain,DC=local'
+ForEach ($user in $ADusers) {
+    # Binding the users to DS
+    $ou = [ADSI]('LDAP://' + $user)
+    $sec = $ou.psbase.objectSecurity
+
+    if ($sec.get_AreAccessRulesProtected()) {
+        $isProtected = $false ## allows inheritance
+        $preserveInheritance = $true ## preserver inhreited rules
+        $sec.SetAccessRuleProtection($isProtected, $preserveInheritance)
+        $ou.psbase.commitchanges()
+        Write-Host "$user is now inherting permissions"
+    } else {
+        Write-Host "$User Inheritable Permission already set"
+    }
+}
 ```

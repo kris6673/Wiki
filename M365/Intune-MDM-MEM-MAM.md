@@ -2,39 +2,43 @@
 
 ## Table of Contents<!-- omit in toc -->
 
-1. [Maps drives via Intune script](#maps-drives-via-intune-script)
+1. [Map drives via Intune script](#map-drives-via-intune-script)
    1. [Notes](#notes)
    2. [Remove any wrong drive mappings](#remove-any-wrong-drive-mappings)
-2. [Win32 apps](#win32-apps)
+2. [Install printer drivers via Intune](#install-printer-drivers-via-intune)
+3. [Win32 apps](#win32-apps)
    1. [Powershell install script for MSI Win32 apps](#powershell-install-script-for-msi-win32-apps)
    2. [Find ProductCode for detection method for MSI Win32 apps](#find-productcode-for-detection-method-for-msi-win32-apps)
    3. [Find MSI ProductCode for digitally signed MSI files without installing the program](#find-msi-productcode-for-digitally-signed-msi-files-without-installing-the-program)
    4. [Find uninstall string for installed programs](#find-uninstall-string-for-installed-programs)
    5. [Run script in 64bit PowerShell if running from 32bit](#run-script-in-64bit-powershell-if-running-from-32bit)
    6. [Troubleshooting](#troubleshooting)
-3. [Hybrid Join](#hybrid-join)
+4. [Hybrid Join](#hybrid-join)
    1. [Troubleshooting](#troubleshooting-1)
-4. [Apple things](#apple-things)
+5. [Apple things](#apple-things)
    1. [Apple Business Manager](#apple-business-manager)
       1. [VPP token](#vpp-token)
       2. [Apple Push Certifikat](#apple-push-certifikat)
       3. [MDM server certifikat](#mdm-server-certifikat)
       4. [User VS Device enrollment](#user-vs-device-enrollment)
-5. [Autopilot](#autopilot)
+6. [Autopilot](#autopilot)
    1. [Links](#links)
    2. [Skip App install during Autopilot ESP](#skip-app-install-during-autopilot-esp)
    3. [Danish writeup about Autopilot](#danish-writeup-about-autopilot)
-6. [Links to stuff](#links-to-stuff)
+7. [Links to stuff](#links-to-stuff)
 
-## Maps drives via Intune script
+## Map drives via Intune script
 
 [Map network drives via Intune](https://tech.nicolonsky.ch/next-level-network-drive-mapping-with-intune/)
+[GitHub wiki page the creator made](https://github.com/nicolonsky/IntuneDriveMapping/wiki)
+[Trigger on VPN connection](https://github.com/nicolonsky/IntuneDriveMapping/wiki/Trigger-Script-on-VPN-Connection)
 
 ### Notes
 
 - Does not require hybrid join/device writeback to the local AD to work.
 - Making updates to the script and having it apply to the machine again, will overwrite the current scheduled task.
 - If the users password is expired, the script will fail to map the drives.
+- If you want to use environment variables use PowerShell environment variables: \\\lan.customer.local\homes\$env:username
 - You can add multiple groups as a filter like this: "GroupFilter":"Adgang_Faelles_F_ReadWrite,Adgang_Faelles_F_Read" aka separated with a comma.
 - **Important:** Requires Windows Pro, an equivalent or above edition. (Since Intune scripts cant run on Windows Home edition)
 
@@ -61,6 +65,10 @@ if ($process) {
    # Add it here
    Write-Output "Mapping network drive $($drive.Path)"
 ```
+
+## Install printer drivers via Intune
+
+[This blog has the answers](https://powershellisfun.com/2022/12/05/adding-printer-drivers-and-printers-using-microsoft-intune-and-powershell/)
 
 ## Win32 apps
 
