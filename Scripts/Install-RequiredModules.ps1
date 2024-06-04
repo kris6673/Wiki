@@ -8,7 +8,9 @@ $Modules = @(
     'AIPService',
     'ImportExcel',
     'MicrosoftTeams',
-    'PnP.PowerShell'
+    'PnP.PowerShell',
+    'Microsoft.Online.SharePoint.PowerShell',
+    'Microsoft.WinGet.Client'
 )
 function Install-RequiredModules {
     param (
