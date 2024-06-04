@@ -17,17 +17,16 @@ function Install-RequiredModules {
     param (
         [parameter(Mandatory = $true)][System.Array]$Modules
     )
+    $null = Install-PackageProvider -Name 'NuGet' -Force
     # Set PSGallery to trusted
     if ((Get-PSRepository -Name 'PSGallery').InstallationPolicy -eq 'Trusted') {
         Write-Host 'PSGallery already trusted'
     } else {
         Write-Host 'PSGallery not trusted, setting it to trusted. Please wait...' -ForegroundColor Yellow
         Write-Host 'Trusting PS Gallery' -ForegroundColor Yellow
-        $null = Install-PackageProvider -Name 'NuGet' -Force
         Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
     }
     
-    $null = Install-PackageProvider -Name 'NuGet' -Force
     # Install all modules in input list and handle errors
     foreach ($Module in $Modules) {
         $InstalledModule = Get-InstalledModule -Name $Module -ErrorAction SilentlyContinue
@@ -66,7 +65,7 @@ function Install-RequiredModules {
         } else {
             Write-Host "$Module module is not installed. Installing module..." -ForegroundColor Yellow
             try {
-                Install-Module $Module -ErrorAction Stop
+                Install-Module $Module -Force -AllowClobber -ErrorAction Stop
                 Write-Host "$Module sucessfully installed." -ForegroundColor Green
             } catch {
                 Write-Host "Could not install $Module. Please install it manually with: Install-Module $Module and rerun the script." -ForegroundColor Red
