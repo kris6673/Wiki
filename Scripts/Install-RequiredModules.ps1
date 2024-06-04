@@ -10,7 +10,8 @@ $Modules = @(
     'MicrosoftTeams',
     'PnP.PowerShell',
     'Microsoft.Online.SharePoint.PowerShell',
-    'Microsoft.WinGet.Client'
+    'Microsoft.WinGet.Client',
+    'Az'
 )
 function Install-RequiredModules {
     param (
@@ -25,7 +26,7 @@ function Install-RequiredModules {
         $null = Install-PackageProvider -Name 'NuGet' -Force
         Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
     }
-
+    
     $null = Install-PackageProvider -Name 'NuGet' -Force
     # Install all modules in input list and handle errors
     foreach ($Module in $Modules) {
