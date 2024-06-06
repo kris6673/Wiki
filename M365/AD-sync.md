@@ -136,7 +136,25 @@ Set-ADSyncAADCompanyFeature -ForcePasswordChangeOnLogOn $true
 
 [Microsoft guide](https://learn.microsoft.com/en-us/windows/security/identity-protection/hello-for-business/deploy/hybrid-cloud-kerberos-trust?tabs=intune)
 
-[Lazyadmin.nl guide](https://lazyadmin.nl/it/windows-hello-for-business-cloud-trust/#implementing-hybrid-cloud-trust) that has the powershell commands in a more readable format.  
+[Lazyadmin.nl guide](https://lazyadmin.nl/it/windows-hello-for-business-cloud-trust/#implementing-hybrid-cloud-trust) that has the powershell commands in a more readable format.
+
+**Run this from a at least 2016 DC:**
+The important ones are:
+
+```powershell
+# Install the required module
+Install-Module -Name AzureADHybridAuthenticationManagement -AllowClobber
+
+$Domain = $env:USERDNSDOMAIN
+# UserPrincipalName of an Azure AD Global Administrator
+$userPrincipalName = "Admin@devtenant.onmicrosoft.com"
+# Create the new Azure AD Kerberos Server object in Active Directory
+Set-AzureADKerberosServer -Domain $Domain -UserPrincipalName $userPrincipalName
+
+# Verify the Azure AD Kerberos Server object
+Get-AzureADKerberosServer -Domain $Domain -UserPrincipalName $userPrincipalName
+```
+
 [Peter van der Woude guide](https://www.petervanderwoude.nl/post/configuring-windows-hello-for-business-cloud-kerberos-trust/) that has the last config needed for the cloud trust to work, specifically this:
 
 1. Open the Microsoft Intune admin center portal and navigate to Devices > Windows > Configuration profiles
