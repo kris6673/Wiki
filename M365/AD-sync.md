@@ -5,7 +5,8 @@
 ## Table of Contents <!-- omit in toc -->
 
 1. [Cloud sync aka. the new one](#cloud-sync-aka-the-new-one)
-   1. [Reset password on next login - Cloud Sync](#reset-password-on-next-login---cloud-sync)
+   1. [Single Sign-On with Cloud Sync](#single-sign-on-with-cloud-sync)
+   2. [Reset password on next login - Cloud Sync](#reset-password-on-next-login---cloud-sync)
 2. [Connect sync aka. the old one](#connect-sync-aka-the-old-one)
    1. [In-place upgrade server the sync is on](#in-place-upgrade-server-the-sync-is-on)
    2. [Troubleshooting](#troubleshooting)
@@ -23,6 +24,11 @@ This should run every 2 minutes, the [FAQ says it does](https://learn.microsoft.
 Installed as an agent on member servers of the domain, does not have to be on DC's.
 
 I havn't figured out how to force it to run a sync yet. Something about finding the service principal called the FQDN of the local AD domain, and running a start sync command at it. :
+
+### Single Sign-On with Cloud Sync
+
+Annoying process compared to the old one, but it works.
+[SSO enablement](https://www.cloudpilot.no/blog/Using-Single-Sign-On-with-Azure-AD-Connect-Cloud-Sync/)
 
 ### Reset password on next login - Cloud Sync
 
