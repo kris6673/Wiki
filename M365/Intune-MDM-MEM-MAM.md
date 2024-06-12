@@ -222,8 +222,9 @@ Er bundet på moms nummer for virksomheden og kræver et tilknyttet kort.
 
 #### Apple Push Certifikat
 
-LAV FOR GUDS SKYLD DETTE MED EN IKKE-PERSONLIG APPLE ID.
+LAV FOR GUDS SKYLD DETTE MED EN IKKE-PERSONLIG APPLE ID.  
 Udstedes til ét specifik apple id og kan ikke skiftes medmindre **alle** enheder genenrolles i MDM'en/Intune.
+30 day grace period if the certificate expires, to renew and upload it again. If this window is missed, all devices will have to be re-enrolled.
 
 #### MDM server certifikat
 
