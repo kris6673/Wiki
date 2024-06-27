@@ -18,13 +18,14 @@
 [Microsoft 365 IP ranges via API](https://endpoints.office.com/endpoints/worldwide?clientrequestid=b10c5ed1-bad1-445f-b386-b919946339a7)  
 [Hybrid join vs AAD join](https://wiki.winadmins.io/en/autopilot/hybrid-join-vs-aad-join)  
 [Component service ID's](https://learn.microsoft.com/en-us/entra/identity/users/licensing-service-plan-reference)  
-[Deploying Office templates via SharePoint](https://call4cloud.nl/2022/03/office-templates-the-rise-of-gru/)
-[Exchange Online Filter properties](https://learn.microsoft.com/en-us/powershell/exchange/filter-properties?view=exchange-ps)
+[Deploying Office templates via SharePoint](https://call4cloud.nl/2022/03/office-templates-the-rise-of-gru/)  
+[Exchange Online Filter properties](https://learn.microsoft.com/en-us/powershell/exchange/filter-properties?view=exchange-ps)  
+[Entra ID permissions list](https://www.azadvertizer.net/azEntraIdAPIpermissionsAdvertizer.html)
 
 ### Intune
 
 [Intunewin file / Content prep tool](https://svrooij.io/2023/10/19/open-source-intune-content-prep/)  
-<https://api.vdwegen.app/api/reverseAADapp?appid={ApplicationID-here}> - Get info on apps in M365 via API
+<https://api.vdwegen.app/api/reverseAADapp?appid={ApplicationID-here}> - Get info on apps in M365 via API  
 [Intune install commands for Win32 apps](https://silentinstallhq.com/)  
 [Win32 logs and how to decipher the logs](https://call4cloud.nl/2022/07/retry-lola-retry/)  
 [Intune management extension logs diagnostics](https://github.com/petripaavola/Get-IntuneManagementExtensionDiagnostics)  

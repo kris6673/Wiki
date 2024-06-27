@@ -5,7 +5,8 @@
 ## Table of Contents <!-- omit in toc -->
 
 1. [Cloud sync aka. the new one](#cloud-sync-aka-the-new-one)
-   1. [Reset password on next login - Cloud Sync](#reset-password-on-next-login---cloud-sync)
+   1. [Single Sign-On with Cloud Sync](#single-sign-on-with-cloud-sync)
+   2. [Reset password on next login - Cloud Sync](#reset-password-on-next-login---cloud-sync)
 2. [Connect sync aka. the old one](#connect-sync-aka-the-old-one)
    1. [In-place upgrade server the sync is on](#in-place-upgrade-server-the-sync-is-on)
    2. [Troubleshooting](#troubleshooting)
@@ -23,6 +24,11 @@ This should run every 2 minutes, the [FAQ says it does](https://learn.microsoft.
 Installed as an agent on member servers of the domain, does not have to be on DC's.
 
 I havn't figured out how to force it to run a sync yet. Something about finding the service principal called the FQDN of the local AD domain, and running a start sync command at it. :
+
+### Single Sign-On with Cloud Sync
+
+Annoying process compared to the old one, but it works.
+[SSO enablement](https://www.cloudpilot.no/blog/Using-Single-Sign-On-with-Azure-AD-Connect-Cloud-Sync/)
 
 ### Reset password on next login - Cloud Sync
 
@@ -136,7 +142,25 @@ Set-ADSyncAADCompanyFeature -ForcePasswordChangeOnLogOn $true
 
 [Microsoft guide](https://learn.microsoft.com/en-us/windows/security/identity-protection/hello-for-business/deploy/hybrid-cloud-kerberos-trust?tabs=intune)
 
-[Lazyadmin.nl guide](https://lazyadmin.nl/it/windows-hello-for-business-cloud-trust/#implementing-hybrid-cloud-trust) that has the powershell commands in a more readable format.  
+[Lazyadmin.nl guide](https://lazyadmin.nl/it/windows-hello-for-business-cloud-trust/#implementing-hybrid-cloud-trust) that has the powershell commands in a more readable format.
+
+**Run this from a at least 2016 DC:**
+The important ones are:
+
+```powershell
+# Install the required module
+Install-Module -Name AzureADHybridAuthenticationManagement -AllowClobber
+
+$Domain = $env:USERDNSDOMAIN
+# UserPrincipalName of an Azure AD Global Administrator
+$userPrincipalName = "Admin@devtenant.onmicrosoft.com"
+# Create the new Azure AD Kerberos Server object in Active Directory
+Set-AzureADKerberosServer -Domain $Domain -UserPrincipalName $userPrincipalName
+
+# Verify the Azure AD Kerberos Server object
+Get-AzureADKerberosServer -Domain $Domain -UserPrincipalName $userPrincipalName
+```
+
 [Peter van der Woude guide](https://www.petervanderwoude.nl/post/configuring-windows-hello-for-business-cloud-kerberos-trust/) that has the last config needed for the cloud trust to work, specifically this:
 
 1. Open the Microsoft Intune admin center portal and navigate to Devices > Windows > Configuration profiles
