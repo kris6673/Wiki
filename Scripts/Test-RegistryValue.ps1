@@ -1,9 +1,12 @@
-<#
+
+function Test-RegistryValue {
+    <#
 .SYNOPSIS
     Tests if a registry value matches a specified value.
 
 .DESCRIPTION
-    The Test-RegistryValue function is used to check if a registry value matches a specified value. It retrieves the value of a specified registry key and compares it with the provided value. If the values match, the function returns $true; otherwise, it returns $false.
+    The Test-RegistryValue function is used to check if a registry value matches a specified value. It retrieves the value of a specified registry key and compares it with the provided value. 
+    If the values match, the function returns $true; otherwise, it returns $false.
 
 .PARAMETER Path
     Specifies the path to the registry key.
@@ -40,7 +43,6 @@ foreach ($Key in $Keys) {
     Author: Kris6673
     Date:   2024-01-26
 #>
-function Test-RegistryValue {
     param (
         [parameter(Mandatory = $true)] [ValidateNotNullOrEmpty()]$Path,
         [parameter(Mandatory = $true)] [ValidateNotNullOrEmpty()]$KeyName,
