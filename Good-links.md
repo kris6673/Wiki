@@ -10,6 +10,8 @@
 5. [Git](#git)
 6. [Powershell](#powershell)
 7. [Development tools](#development-tools)
+8. [Computer stuffs](#computer-stuffs)
+   1. [Lenovo](#lenovo)
 
 ## M365
 
@@ -55,3 +57,9 @@
 ## Development tools
 
 [Webhook.site](https://webhook.site/) - Great for testing webhooks
+
+## Computer stuffs
+
+### Lenovo
+
+[Lenovo BIOS simulator](https://download.lenovo.com/bsco/index.html#/)
