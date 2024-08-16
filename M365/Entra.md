@@ -28,13 +28,13 @@ TL;DR: Only looks at direct members of group and not nested groups. Just like th
 **User:**
 
 ```bash
-user.memberof -any (group.objectId -in ['objectID of group here'])
+user.memberof -any (group.objectId -in ['objectID of group 1 here', 'objectID of group 2 here'])
 ```
 
 **Device:**
 
 ```bash
-device.memberof -any (group.objectId -in ['objectID of group here'])
+device.memberof -any (group.objectId -in ['objectID of group 1 here', 'objectID of group 2 here'])
 ```
 
 ### Based off a device manufacturer
