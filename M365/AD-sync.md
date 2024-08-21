@@ -203,6 +203,18 @@ Connect-MsolService
 Set-MsolDirSyncEnabled -EnableDirSync $false
 ```
 
-:x: No known Graph replacement yet
+**Untested:** Graph way to do it. Found in this [guide](https://www.alitajran.com/disable-active-directory-synchronization/)
+
+```powershell
+Connect-MgGraph -Scopes "Organization.ReadWrite.All"
+Get-MgOrganization | Select-Object DisplayName, OnPremisesSyncEnabled
+$OrgID = (Get-MgOrganization).Id
+
+$params = @{
+    onPremisesSyncEnabled = $false
+}
+
+Update-MgBetaOrganization -OrganizationId $OrgID -BodyParameter $params
+```
 
 [Source/Documentation](https://learn.microsoft.com/en-us/microsoft-365/enterprise/turn-off-directory-synchronization?view=o365-worldwide "Microsoft Docs")
