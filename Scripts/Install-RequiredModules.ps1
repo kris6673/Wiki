@@ -13,7 +13,32 @@ $Modules = @(
     'Microsoft.WinGet.Client',
     'Az'
 )
+
 function Install-RequiredModules {
+    <#
+.SYNOPSIS
+    Installs or updates required modules.
+
+.DESCRIPTION
+    This function installs or updates a list of modules specified by the user. It checks if the module is already installed and if it needs updates. 
+    If the module is not installed, it installs it. If the module needs updates, it updates the module to the latest version and uninstalls any old versions.
+
+.PARAMETER Modules
+    Specifies an array of module names that need to be installed or updated.
+
+.EXAMPLE
+    Install-RequiredModules -Modules 'Module1', 'Module2', 'Module3'
+    This example installs or updates the modules 'Module1', 'Module2', and 'Module3'.
+
+.EXAMPLE 
+    $Modules = @('Module1', 'Module2', 'Module3')
+    Install-RequiredModules -Modules $Modules
+    This example installs or updates the module 'Module1', 'Module2', and 'Module3' using an array.
+    
+.NOTES
+    Author: Kris6673
+    Date: 2024-06-28
+#>
     param (
         [parameter(Mandatory = $true)][System.Array]$Modules
     )

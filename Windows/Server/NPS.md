@@ -9,10 +9,20 @@ As a workaround you can use the [Approve/Deny push notifications](#fallback-to-a
 
 [Microsoft install guide](https://learn.microsoft.com/en-us/entra/identity/authentication/howto-mfa-nps-extension#install-the-nps-extension)
 
-1. Download the NPS extension from the [Microsoft download center](https://www.microsoft.com/en-us/download/details.aspx?id=54688)
-2. Install the NPS extension on the NPS server
-3. Find the tenant ID in the Entra admin portal and note it down
-4. Open powershell as admin and configure the NPS extension by running the following commands:
+1. Ensure the server has Powershell 5.1 or later installed
+
+   1. Open powershell as admin and run the following command:
+
+      ```powershell
+      $PSVersionTable.PSVersion
+      ```
+
+   2. If the version is lower than 5.1, download and install the appropriate version from the [Microsoft download center](https://www.microsoft.com/en-us/download/details.aspx?id=54616)
+
+2. Download the NPS extension from the [Microsoft download center](https://www.microsoft.com/en-us/download/details.aspx?id=54688)
+3. Install the NPS extension on the NPS server
+4. Find the tenant ID in the Entra admin portal and note it down
+5. Open powershell as admin and configure the NPS extension by running the following commands:
 
    ```powershell
    # Open powershell as admin and configure the NPS extension
@@ -20,7 +30,7 @@ As a workaround you can use the [Approve/Deny push notifications](#fallback-to-a
    .\AzureMfaNpsExtnConfigSetup.ps1
    ```
 
-5. **Optional:** Setup approved/deny without number matching by setting the following [reg key](#fallback-to-approvedeny-without-number-matching) on the NPS server
+6. **Optional:** Setup approved/deny without number matching by setting the following [reg key](#fallback-to-approvedeny-without-number-matching) on the NPS server
 
 ```powershell
 New-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\AzureMfa" -Name "OVERRIDE_NUMBER_MATCHING_WITH_OTP" -Value "FALSE" -PropertyType String -Force

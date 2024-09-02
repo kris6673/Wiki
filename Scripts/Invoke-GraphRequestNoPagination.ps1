@@ -1,5 +1,3 @@
-# Handles Graph pagination and converts the result to a PSCustomObject with type casting
-
 function Invoke-GraphRequestNoPagination {
     <#
     .SYNOPSIS

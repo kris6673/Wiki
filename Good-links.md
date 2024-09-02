@@ -10,6 +10,8 @@
 5. [Git](#git)
 6. [Powershell](#powershell)
 7. [Development tools](#development-tools)
+8. [Computer stuffs](#computer-stuffs)
+   1. [Lenovo](#lenovo)
 
 ## M365
 
@@ -27,6 +29,7 @@
 [Intunewin file / Content prep tool](https://svrooij.io/2023/10/19/open-source-intune-content-prep/)  
 <https://api.vdwegen.app/api/reverseAADapp?appid={ApplicationID-here}> - Get info on apps in M365 via API  
 [Intune install commands for Win32 apps](https://silentinstallhq.com/)  
+[Another silent intall and uninstall command finder](https://silent-install.net/)  
 [Win32 logs and how to decipher the logs](https://call4cloud.nl/2022/07/retry-lola-retry/)  
 [Intune management extension logs diagnostics](https://github.com/petripaavola/Get-IntuneManagementExtensionDiagnostics)  
 [CMtrace download link](https://call4cloud.nl/wp-content/uploads/2022/07/cmtrace.zip)
@@ -55,3 +58,9 @@
 ## Development tools
 
 [Webhook.site](https://webhook.site/) - Great for testing webhooks
+
+## Computer stuffs
+
+### Lenovo
+
+[Lenovo BIOS simulator](https://download.lenovo.com/bsco/index.html#/)

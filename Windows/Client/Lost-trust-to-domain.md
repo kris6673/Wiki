@@ -13,8 +13,8 @@ Test trust to domain:
 Test-ComputerSecureChannel -Verbose
 ```
 
-If trust is lost/bad, run the following command to fix it:
-__The specified user needs to have permissions to reset computer passwords in the domain__
+If trust is lost/bad, run the following command to fix it:  
+**The specified user needs to have permissions to reset computer passwords in the domain**
 
 ```powershell
 # Dosnt require reboot

@@ -34,6 +34,18 @@ Annoying process compared to the old one, but it works.
 
 ---
 
+[Guide](https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/how-to-connect-password-hash-synchronization#synchronizing-temporary-passwords-and-force-password-change-on-next-logon) for not having to do the below stuff
+
+```powershell
+Connect-Graph -Scopes 'User.ReadWrite.All, Directory.ReadWrite.All, Directory.AccessAsUser.All'
+$OnPremSync = Get-MgDirectoryOnPremiseSynchronization
+$OnPremSync.Features.UserForcePasswordChangeOnLogonEnabled = $true
+
+Update-MgDirectoryOnPremiseSynchronization -OnPremisesDirectorySynchronizationId $OnPremSync.Id -Features $OnPremSync.Features
+```
+
+---
+
 **Symptom:** You would like to know if the ForcePasswordChangeOnLogOn is supported in Cloud Sync.
 
 **Answer:** Yes, but as of today,  the ForcePasswordChangeOnLogOn feature can only be set with ADSync cmdlet Set-ADSyncAADCompanyFeature -ForcePasswordChangeOnLogOn $true
@@ -138,7 +150,7 @@ Set-ADSyncAADCompanyFeature -ForcePasswordChangeOnLogOn $true
 
 ## Cloud Kerberos trust
 
-**Note:** Windows Hello for Business, and some kind of AD sync is required for this to work.
+**Note:** Windows Hello for Business, and some kind of AD sync is required for this to work. If the users dont use Windows Hello for Business, the Cloud Kerberos trust is not needed since Kerberos auth works without it, but nice to have anyway for future use.
 
 [Microsoft guide](https://learn.microsoft.com/en-us/windows/security/identity-protection/hello-for-business/deploy/hybrid-cloud-kerberos-trust?tabs=intune)
 
@@ -203,6 +215,18 @@ Connect-MsolService
 Set-MsolDirSyncEnabled -EnableDirSync $false
 ```
 
-:x: No known Graph replacement yet
+**Untested:** Graph way to do it. Found in this [guide](https://www.alitajran.com/disable-active-directory-synchronization/)
+
+```powershell
+Connect-MgGraph -Scopes "Organization.ReadWrite.All"
+Get-MgOrganization | Select-Object DisplayName, OnPremisesSyncEnabled
+$OrgID = (Get-MgOrganization).Id
+
+$params = @{
+    onPremisesSyncEnabled = $false
+}
+
+Update-MgBetaOrganization -OrganizationId $OrgID -BodyParameter $params
+```
 
 [Source/Documentation](https://learn.microsoft.com/en-us/microsoft-365/enterprise/turn-off-directory-synchronization?view=o365-worldwide "Microsoft Docs")

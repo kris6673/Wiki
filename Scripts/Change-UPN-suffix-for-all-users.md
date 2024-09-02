@@ -11,4 +11,5 @@ $LocalUsers | ForEach-Object {$newUpn = $_.UserPrincipalName.Replace("@$OldUPNDo
 ```
 
 ---
+
 [This MS Learn article](https://docs.microsoft.com/en-us/microsoft-365/enterprise/prepare-a-non-routable-domain-for-directory-synchronization?view=o365-worldwide) describes the use of the command and has been "borrowed" from there.
