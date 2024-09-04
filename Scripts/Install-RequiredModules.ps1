@@ -11,7 +11,8 @@ $Modules = @(
     'PnP.PowerShell',
     'Microsoft.Online.SharePoint.PowerShell',
     'Microsoft.WinGet.Client',
-    'Az'
+    'Az',
+    'PassPushPosh'
 )
 
 function Install-RequiredModules {
