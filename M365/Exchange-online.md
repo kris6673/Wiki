@@ -71,5 +71,5 @@ $AuditLogs = Search-UnifiedAuditLog -StartDate ((Get-Date).AddDays(-30)) -EndDat
 
 #### Links to documentation
 
-[Audited event types and defaults](https://learn.microsoft.com/en-us/purview/audit-mailboxes#mailbox-actions-for-user-mailboxes-and-shared-mailboxes)
+[Audited event types and defaults](https://learn.microsoft.com/en-us/purview/audit-mailboxes#mailbox-actions-for-user-mailboxes-and-shared-mailboxes)  
 [Audited events with friendly names too](https://learn.microsoft.com/en-us/purview/audit-log-activities#exchange-mailbox-activities)
