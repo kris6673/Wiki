@@ -16,7 +16,7 @@
 ## M365
 
 [Microsoft 365 Roadmap](https://www.microsoft.com/en-us/microsoft-365/roadmap?filters=&searchterms=)  
-[Admin roles and what they do](https://learn.microsoft.com/en-us/azure/active-directory/roles/permissions-reference#domain-name-administrator)  
+[Admin roles and what they do](https://learn.microsoft.com/en-us/azure/active-directory/roles/permissions-reference)  
 [Microsoft 365 IP ranges via API](https://endpoints.office.com/endpoints/worldwide?clientrequestid=b10c5ed1-bad1-445f-b386-b919946339a7)  
 [Hybrid join vs AAD join](https://wiki.winadmins.io/en/autopilot/hybrid-join-vs-aad-join)  
 [Component service ID's](https://learn.microsoft.com/en-us/entra/identity/users/licensing-service-plan-reference)  
