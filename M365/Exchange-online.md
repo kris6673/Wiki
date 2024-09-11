@@ -54,6 +54,7 @@ Searching the audit log for Exchange Admin operations. This will return the last
 ```powershell
 $StartDate = (Get-Date).AddDays(-180)
 $AuditLogs = Search-UnifiedAuditLog -StartDate $StartDate -EndDate (Get-Date) -RecordType "ExchangeAdmin" -Operations "Add-MailboxPermission", "Get-MailboxPermission", "Remove-MailboxPermission", "Set-Mailbox", "Add-RecipientPermission", "Remove-RecipientPermission", "Get-RecipientPermission", AddFolderPermissions, ModifyFolderPermissions, RemoveFolderPermissions, Add-MailboxFolderPermission, Set-MailboxFolderPermission, Remove-MailboxFolderPermission -ResultSize 5000
+$AuditLogs | ogv
 ```
 
 The following is a more specific search for operations related to folder permissions on mailboxes and calendars. This will return the last 180 days of operations for all admin operations that are related to permissions on calendars.
@@ -66,10 +67,17 @@ $AuditLogs | ogv
 General search for all operations in the Exchange Admin audit log. This will usually not return data far back in time, as the max ResultSize is 5000 and the audit log is pretty bloated.
 
 ```powershell
-$AuditLogs = Search-UnifiedAuditLog -StartDate ((Get-Date).AddDays(-30)) -EndDate (Get-Date) -RecordType "ExchangeAdmin" -ResultSize 2000 | Where-Object {$_.Operations -ne "Set-ConditionalAccessPolicy" -and $_.Operations -ne "Set-TransportRule"} | ogv
+$AuditLogs = Search-UnifiedAuditLog -StartDate ((Get-Date).AddDays(-30)) -EndDate (Get-Date) -RecordType "ExchangeAdmin" -ResultSize 5000 | Where-Object {$_.Operations -ne "Set-ConditionalAccessPolicy" -and $_.Operations -ne "Set-TransportRule"}
+$AuditLogs | ogv
+```
+
+If you want to export to a CSV file, you can use the following command:
+
+```powershell
+$AuditLogs | Export-Csv -Path C:\path\to\file.csv -NoTypeInformation -Delimiter ";" -Encoding UTF8
 ```
 
 #### Links to documentation
 
-[Audited event types and defaults](https://learn.microsoft.com/en-us/purview/audit-mailboxes#mailbox-actions-for-user-mailboxes-and-shared-mailboxes)
+[Audited event types and defaults](https://learn.microsoft.com/en-us/purview/audit-mailboxes#mailbox-actions-for-user-mailboxes-and-shared-mailboxes)  
 [Audited events with friendly names too](https://learn.microsoft.com/en-us/purview/audit-log-activities#exchange-mailbox-activities)
