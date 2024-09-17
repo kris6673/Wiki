@@ -4,6 +4,8 @@
 
 1. [Error handling in Powershell](#error-handling-in-powershell)
 2. [Run as system](#run-as-system)
+   1. [PsExec - Does not always work in Sandbox](#psexec---does-not-always-work-in-sandbox)
+   2. [Sudo for windows](#sudo-for-windows)
 3. [Powershell modules](#powershell-modules)
 
 ### Error handling in Powershell
@@ -27,12 +29,29 @@ The most useful properties are:
 
 Sometimes you need to run a script as system to test. This is usually to test a script that will be run as a scheduled task, or a script for Intune. To do this, you can use the following command:
 
+#### PsExec - Does not always work in Sandbox
+
 ```powershell
 Invoke-WebRequest -Uri 'https://live.sysinternals.com/PsExec64.exe'-OutFile $env:TEMP\PsExec64.exe
 Start-Process $env:TEMP\PsExec64.exe '-i -s C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe'
 Start-Sleep -Seconds 5
 # After you are done with the script, remove the PsExec64.exe file
 Remove-Item $env:TEMP\PsExec64.exe
+```
+
+#### Sudo for windows
+
+This is a bit hacky, but you can use gsudo to run a script as system.  
+If using for testing an application to deploy as system via intune, remember to install Visual C++ Redistributable and use SandboxTest.ps1 to launch the sandbox with.
+
+```powershell
+# Download gsudo for windows
+Winget install gsudo --accept-source-agreements --accept-package-agreements
+Update-EnvironmentVariables
+
+# Run the script as system
+sudo -s 'C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe'
+
 ```
 
 Bit hacky, but meh.
