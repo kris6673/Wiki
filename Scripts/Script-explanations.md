@@ -6,6 +6,7 @@
 2. [Download-GithubRelease.ps1](#download-githubreleaseps1)
 3. [Test-RegistryValue.ps1](#test-registryvalueps1)
 4. [Invoke-GraphRequestNoPagination.ps1](#invoke-graphrequestnopaginationps1)
+5. [Add-Shortcut.ps1](#add-shortcutps1)
 
 ## [Install-RequiredModules.ps1](/Scripts/Install-RequiredModules.ps1)
 
@@ -29,3 +30,11 @@ Examples are provided in the synopsis of the script.
 This script is designed to make a request to the Microsoft Graph API without pagination.  
 Returns the results of the request as a PSObject and not a Hashtable, like it would if you used the `Invoke-GraphRequest` function from the `Microsoft.Graph` module.
 Otherwise it's only gonna return the first 100 items.
+
+## [Add-Shortcut.ps1](/Scripts/Add-Shortcut.ps1)
+
+Creates a shortcut on the desktop to the specified file.  
+This is mostly useful for scripts that are run as a scheduled task or in Intune.  
+If the process is running in system context, the shortcut will be created in the public desktop folder.  
+If the process is running in user context, the shortcut will be created in the user's desktop folder.
+Requires the 2 helper functions Test-RunningAsSystem and Get-DesktopDir to work.
