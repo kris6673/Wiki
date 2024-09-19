@@ -1,18 +1,4 @@
-﻿
-# Function: Add-Shortcut
-# Description: Creates a shortcut on the desktop.
-# Parameters:
-#   - $ShortcutTargetPath [string] - The target path the shortcut points to.
-#   - $ShortcutDisplayName [string] - The display name of the shortcut.
-#   - $ShortcutArguments [string] - (Optional) Arguments for the shortcut target.
-#   - $IconFile [string] - (Optional) Path to the icon file for the shortcut.
-# Returns: None
-# NOTES: This function requires the Test-RunningAsSystem and Get-DesktopDir functions to be defined.
-#       Originally found from Andrew Taylor: https://andrewstaylor.com/
-#       Lightly modified by Kris6673 aka me.
-
-
-function Test-RunningAsSystem {
+﻿function Test-RunningAsSystem {
     <#
 .SYNOPSIS
     Checks if the current user is running as the SYSTEM account.

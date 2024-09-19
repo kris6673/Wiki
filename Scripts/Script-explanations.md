@@ -7,6 +7,7 @@
 3. [Test-RegistryValue.ps1](#test-registryvalueps1)
 4. [Invoke-GraphRequestNoPagination.ps1](#invoke-graphrequestnopaginationps1)
 5. [Add-Shortcut.ps1](#add-shortcutps1)
+6. [Get-IconFromExe.ps1](#get-iconfromexeps1)
 
 ## [Install-RequiredModules.ps1](/Scripts/Install-RequiredModules.ps1)
 
@@ -38,3 +39,7 @@ This is mostly useful for scripts that are run as a scheduled task or in Intune.
 If the process is running in system context, the shortcut will be created in the public desktop folder.  
 If the process is running in user context, the shortcut will be created in the user's desktop folder.
 Requires the 2 helper functions Test-RunningAsSystem and Get-DesktopDir to work.
+
+## [Get-IconFromExe.ps1](/Scripts/Get-IconFromExe.ps1)
+
+This script is designed to extract the icon from an executable file and save it as a .png file.
