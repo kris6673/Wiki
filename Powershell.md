@@ -46,7 +46,7 @@ If using for testing an application to deploy as system via intune, remember to 
 
 ```powershell
 # Download gsudo for windows
-Winget install gsudo --accept-source-agreements --accept-package-agreements
+winget install gsudo --accept-source-agreements --accept-package-agreements
 Update-EnvironmentVariables
 
 # Run the script as system
