@@ -32,7 +32,9 @@
 [Another silent intall and uninstall command finder](https://silent-install.net/)  
 [Win32 logs and how to decipher the logs](https://call4cloud.nl/2022/07/retry-lola-retry/)  
 [Intune management extension logs diagnostics](https://github.com/petripaavola/Get-IntuneManagementExtensionDiagnostics)  
-[CMtrace download link](https://call4cloud.nl/wp-content/uploads/2022/07/cmtrace.zip)
+[CMtrace download link](https://call4cloud.nl/wp-content/uploads/2022/07/cmtrace.zip)  
+[Windows default icons locations](https://www.digitalcitizen.life/where-find-most-windows-10s-native-icons/)  
+[Icon extractor from .dll files](https://www.nirsoft.net/utils/resources_extract.html)
 
 ## Markdown
 

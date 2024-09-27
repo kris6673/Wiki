@@ -88,6 +88,10 @@ function Add-Shortcut {
     .EXAMPLE
     .\Add-Shortcut.ps1 -ShortcutTargetPath "https://www.example.com" -ShortcutDisplayName "Example Website" -IconFile "C:\Icons\example.ico"
 
+    .EXAMPLE
+    .\Add-Shortcut.ps1 -ShortcutTargetPath '\\server\share\Shared Folder' -ShortcutDisplayName 'Shared Folder' -IconFile "$env:SystemRoot\System32\shell32.dll,13"
+    Adds a shortcut to a shared folder with a custom icon from shell32.dll.
+
     .NOTES
     The script uses the WScript.Shell COM object to create the shortcut and sets the appropriate properties based on the provided parameters.
     This function requires the Test-RunningAsSystem and Get-DesktopDir functions to be defined.
@@ -122,3 +126,5 @@ function Add-Shortcut {
     # Cleanup
     [Runtime.InteropServices.Marshal]::ReleaseComObject($WshShell) | Out-Null
 }
+
+Add-Shortcut -ShortcutTargetPath '\\SrvFIL01.agitomedical.local\Printers' -ShortcutDisplayName 'Printers' -IconFile "$env:SystemRoot\System32\shell32.dll,58"
