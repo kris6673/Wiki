@@ -22,7 +22,8 @@
 [Component service ID's](https://learn.microsoft.com/en-us/entra/identity/users/licensing-service-plan-reference)  
 [Deploying Office templates via SharePoint](https://call4cloud.nl/2022/03/office-templates-the-rise-of-gru/)  
 [Exchange Online Filter properties](https://learn.microsoft.com/en-us/powershell/exchange/filter-properties?view=exchange-ps)  
-[Entra ID permissions list](https://www.azadvertizer.net/azEntraIdAPIpermissionsAdvertizer.html)
+[Entra ID permissions list](https://www.azadvertizer.net/azEntraIdAPIpermissionsAdvertizer.html)  
+[Microsoft accepted language codes](<https://learn.microsoft.com/en-us/previous-versions/commerce-server/ee825488(v=cs.20)?redirectedfrom=MSDN>)
 
 ### Intune
 
