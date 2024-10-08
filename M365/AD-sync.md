@@ -215,7 +215,7 @@ Connect-MsolService
 Set-MsolDirSyncEnabled -EnableDirSync $false
 ```
 
-**Untested:** Graph way to do it. Found in this [guide](https://www.alitajran.com/disable-active-directory-synchronization/)
+**Confirmed working:** Graph way to do it. Found in this [guide](https://www.alitajran.com/disable-active-directory-synchronization/)
 
 ```powershell
 Connect-MgGraph -Scopes "Organization.ReadWrite.All"
