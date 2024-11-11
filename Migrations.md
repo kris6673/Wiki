@@ -7,7 +7,7 @@ This is a help page for the different types of migrations that can be done.
 1. [Bittitan](#bittitan)
    1. [General info](#general-info)
    2. [Disable throttling in EXO](#disable-throttling-in-exo)
-   3. [Timeout issues causing migration to fail](#timeout-issues-causing-migration-to-fail)
+   3. [Timeout issues causing migration to fail - This migration has failed because the source or destination endpoint](#timeout-issues-causing-migration-to-fail---this-migration-has-failed-because-the-source-or-destination-endpoint)
    4. [Turn off Calendar assistant](#turn-off-calendar-assistant)
 2. [Links to guides](#links-to-guides)
 
@@ -27,13 +27,13 @@ Mailbox data is migrated from newest to oldest items. So the user gets their new
 2. Write "Increase EWS Throttling Policy" in the support search field.
 3. Run tests and set the days to 90 and press "Update settings".
 
-### Timeout issues causing migration to fail
+### Timeout issues causing migration to fail - This migration has failed because the source or destination endpoint
 
 Add the following to the advanced options of the project.
 
 ```text
 ExtendedEwsTimeout=1
-InitializationTimeout=8
+InitializationTimeout=48
 ```
 
 Read more about the support options [here](#links-to-guides)
