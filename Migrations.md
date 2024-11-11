@@ -29,11 +29,12 @@ Mailbox data is migrated from newest to oldest items. So the user gets their new
 
 ### Timeout issues causing migration to fail - This migration has failed because the source or destination endpoint
 
-Add the following to the advanced options of the project.
+Add the following to the advanced options of the project.  
+Both mailbox and document migrations.
 
 ```text
 ExtendedEwsTimeout=1
-InitializationTimeout=48
+InitializationTimeout=8
 ```
 
 Read more about the support options [here](#links-to-guides)
