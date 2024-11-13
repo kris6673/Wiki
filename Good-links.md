@@ -4,6 +4,7 @@
 
 1. [M365](#m365)
    1. [Intune](#intune)
+   2. [Hybrid join vs AAD join](#hybrid-join-vs-aad-join)
 2. [Markdown](#markdown)
 3. [Timezones](#timezones)
 4. [Drawing and diagramming](#drawing-and-diagramming)
@@ -20,7 +21,6 @@
 [Least privileged roles by task in Microsoft Entra ID](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/delegate-by-task)  
 [Entra ID permissions list](https://www.azadvertizer.net/azEntraIdAPIpermissionsAdvertizer.html)  
 [Microsoft 365 IP ranges via API](https://endpoints.office.com/endpoints/worldwide?clientrequestid=b10c5ed1-bad1-445f-b386-b919946339a7)  
-[Hybrid join vs AAD join](https://wiki.winadmins.io/en/autopilot/hybrid-join-vs-aad-join)  
 [Component service ID's](https://learn.microsoft.com/en-us/entra/identity/users/licensing-service-plan-reference)  
 [Deploying Office templates via SharePoint](https://call4cloud.nl/2022/03/office-templates-the-rise-of-gru/)  
 [Exchange Online Filter properties](https://learn.microsoft.com/en-us/powershell/exchange/filter-properties?view=exchange-ps)  
@@ -38,6 +38,11 @@
 [CMtrace download link](https://call4cloud.nl/wp-content/uploads/2022/07/cmtrace.zip)  
 [Windows default icons locations](https://www.digitalcitizen.life/where-find-most-windows-10s-native-icons/)  
 [Icon extractor from .dll files](https://www.nirsoft.net/utils/resources_extract.html)
+
+### [Hybrid join vs AAD join](https://wiki.winadmins.io/en/autopilot/hybrid-join-vs-aad-join)
+
+TL;DR:  
+![HAADJ](/Pics/haadj.gif)
 
 ## Markdown
 
