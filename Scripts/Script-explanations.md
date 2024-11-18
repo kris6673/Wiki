@@ -8,6 +8,7 @@
 4. [Invoke-GraphRequestNoPagination.ps1](#invoke-graphrequestnopaginationps1)
 5. [Add-Shortcut.ps1](#add-shortcutps1)
 6. [Get-IconFromExe.ps1](#get-iconfromexeps1)
+7. [Logging.ps1](#loggingps1)
 
 ## [Install-RequiredModules.ps1](/Scripts/Install-RequiredModules.ps1)
 
@@ -43,3 +44,9 @@ Requires the 2 helper functions Test-RunningAsSystem and Get-DesktopDir to work.
 ## [Get-IconFromExe.ps1](/Scripts/Get-IconFromExe.ps1)
 
 This script is designed to extract the icon from an executable file and save it as a .png file.
+
+## [Logging.ps1](/Scripts/Logging.ps1)
+
+This script is designed to provide a simple logging function that can be used in other scripts.
+The script will create a log file in a sub directory called "Logs" as the script that is calling the logging function.
+Has build in support for cleaning up old log files, and handles log rotation/size.
