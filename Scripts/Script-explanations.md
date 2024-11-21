@@ -50,7 +50,7 @@ This script is designed to extract the icon from an executable file and save it 
 
 This script is designed to provide a simple logging function that can be used in other scripts.
 The script will create a log file in a sub directory called "Logs" as the script that is calling the logging function.
-Has build in support for cleaning up old log files, and handles log rotation/size.
+Has built in support for cleaning up old log files, and handles log rotation/size.
 
 ## [Write-ToEventLog.ps1](/Scripts/Write-ToEventLog.ps1)
 
