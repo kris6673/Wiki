@@ -9,6 +9,7 @@
 5. [Add-Shortcut.ps1](#add-shortcutps1)
 6. [Get-IconFromExe.ps1](#get-iconfromexeps1)
 7. [Logging.ps1](#loggingps1)
+8. [Write-ToEventLog.ps1](#write-toeventlogps1)
 
 ## [Install-RequiredModules.ps1](/Scripts/Install-RequiredModules.ps1)
 
@@ -50,3 +51,16 @@ This script is designed to extract the icon from an executable file and save it 
 This script is designed to provide a simple logging function that can be used in other scripts.
 The script will create a log file in a sub directory called "Logs" as the script that is calling the logging function.
 Has build in support for cleaning up old log files, and handles log rotation/size.
+
+## [Write-ToEventLog.ps1](/Scripts/Write-ToEventLog.ps1)
+
+Writes a message to the specified Windows Event Log.
+Creates a new event log source if it doesn't exist.
+
+- **Message**: The message to be written.
+- **LogSource**: The source of the event log entry.
+- **LogName**: The name of the event log (default: 'Application').
+- **Level**: The level of the event log entry (default: 'Information').
+- **EventID**: The event ID for the log entry (default: 9376).
+- **Category**: The category for the log entry (default: 1).
+- **WriteToHost**: Optional flag to write the message to the host.
