@@ -41,62 +41,74 @@ function Install-RequiredModules {
     Date: 2024-06-28
 #>
     param (
-        [parameter(Mandatory = $true)][System.Array]$Modules
+        [Parameter(Mandatory = $true)]
+        [ValidateNotNullOrEmpty()]
+        [string[]]$Modules
     )
-    $null = Install-PackageProvider -Name 'NuGet' -Force
-    # Set PSGallery to trusted
-    if ((Get-PSRepository -Name 'PSGallery').InstallationPolicy -eq 'Trusted') {
-        Write-Host 'PSGallery already trusted'
-    } else {
-        Write-Host 'PSGallery not trusted, setting it to trusted. Please wait...' -ForegroundColor Yellow
-        Write-Host 'Trusting PS Gallery' -ForegroundColor Yellow
-        Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
+
+    begin {
+        # Ensure NuGet is available
+        try {
+            $null = Get-PackageProvider -Name 'NuGet' -ErrorAction Stop
+        } catch {
+            Write-Verbose 'Installing NuGet package provider'
+            $null = Install-PackageProvider -Name 'NuGet' -Force
+        }
+
+        # Trust PSGallery if needed
+        if ((Get-PSRepository -Name 'PSGallery').InstallationPolicy -ne 'Trusted') {
+            Write-Verbose 'Setting PSGallery as trusted repository'
+            Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
+        }
     }
+
     
     # Install all modules in input list and handle errors
-    foreach ($Module in $Modules) {
-        $InstalledModule = Get-InstalledModule -Name $Module -ErrorAction SilentlyContinue
-        if ($InstalledModule) {
-            Write-Host "$Module module already installed. Testing if it needs updates." -ForegroundColor Yellow
-            # Test if module needs updates
-            $OnlineModule = Find-Module -Name $Module -Repository PSGallery
-            if ($OnlineModule.version -gt $InstalledModule.Version) {
-                Write-Host "$Module module needs to be updated from version $($InstalledModule.Version) to version $($OnlineModule.Version)." -ForegroundColor Yellow
+    process {
+        foreach ($Module in $Modules) {
+            $InstalledModule = Get-InstalledModule -Name $Module -ErrorAction SilentlyContinue
+            if ($InstalledModule) {
+                Write-Host "$Module module already installed. Testing if it needs updates." -ForegroundColor Yellow
+                # Test if module needs updates
+                $OnlineModule = Find-Module -Name $Module -Repository PSGallery
+                if ($OnlineModule.version -gt $InstalledModule.Version) {
+                    Write-Host "$Module module needs to be updated from version $($InstalledModule.Version) to version $($OnlineModule.Version)." -ForegroundColor Yellow
                 
-                # Update module and alert the user if it fails.
-                try {
-                    Write-Host "Updating $Module module. Please wait, this could take a while." -ForegroundColor Yellow
-                    Update-Module -Name $Module -Force -ErrorAction Stop
-                    Write-Host "Success. $Module module was updated." -ForegroundColor Green
+                    # Update module and alert the user if it fails.
+                    try {
+                        Write-Host "Updating $Module module. Please wait, this could take a while." -ForegroundColor Yellow
+                        Update-Module -Name $Module -Force -ErrorAction Stop
+                        Write-Host "Success. $Module module was updated." -ForegroundColor Green
                     
-                    # Try uninstalling old module
-                    $OldVersions = Get-InstalledModule -Name $Module -AllVersions -ErrorAction Stop | Where-Object { $_.Version -ne $OnlineModule.Version }
-                    Write-Host "Uninstalling old versions of $Module." -ForegroundColor Yellow
-                    foreach ($OldVersion in $OldVersions) {
-                        try {
-                            Uninstall-Module $Module -RequiredVersion $OldVersion.Version -Force -ErrorAction Stop
-                            Write-Host "Success. Old version $($OldVersion.Version) of $Module uninstalled." -ForegroundColor Green
-                        } catch {
-                            Write-Host "ERROR. Old version $($InstalledModule.Version) of $Module was not uninstalled." -ForegroundColor Red
-                            Write-Host "Please uninstall the module manually with: Uninstall-Module $Module -RequiredVersion $($InstalledModule.Version)"
+                        # Try uninstalling old module
+                        $OldVersions = Get-InstalledModule -Name $Module -AllVersions -ErrorAction Stop | Where-Object { $_.Version -ne $OnlineModule.Version }
+                        Write-Host "Uninstalling old versions of $Module." -ForegroundColor Yellow
+                        foreach ($OldVersion in $OldVersions) {
+                            try {
+                                Uninstall-Module $Module -RequiredVersion $OldVersion.Version -Force -ErrorAction Stop
+                                Write-Host "Success. Old version $($OldVersion.Version) of $Module uninstalled." -ForegroundColor Green
+                            } catch {
+                                Write-Host "ERROR. Old version $($InstalledModule.Version) of $Module was not uninstalled." -ForegroundColor Red
+                                Write-Host "Please uninstall the module manually with: Uninstall-Module $Module -RequiredVersion $($InstalledModule.Version)"
+                            }
                         }
+                    } # Catch if update fails
+                    catch {
+                        Write-Host "Could not update $Module. Please update it manually with: Update-Module $Module" -ForegroundColor Red
                     }
-                } # Catch if update fails
-                catch {
-                    Write-Host "Could not update $Module. Please update it manually with: Update-Module $Module" -ForegroundColor Red
+                } else {
+                    Write-Host "$Module module is up to date. Moving on." -ForegroundColor Green
                 }
             } else {
-                Write-Host "$Module module is up to date. Moving on." -ForegroundColor Green
-            }
-        } else {
-            Write-Host "$Module module is not installed. Installing module..." -ForegroundColor Yellow
-            try {
-                Install-Module $Module -Force -AllowClobber -ErrorAction Stop
-                Write-Host "$Module sucessfully installed." -ForegroundColor Green
-            } catch {
-                Write-Host "Could not install $Module. Please install it manually with: Install-Module $Module and rerun the script." -ForegroundColor Red
-                $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
-                Exit
+                Write-Host "$Module module is not installed. Installing module..." -ForegroundColor Yellow
+                try {
+                    Install-Module $Module -Force -AllowClobber -ErrorAction Stop
+                    Write-Host "$Module sucessfully installed." -ForegroundColor Green
+                } catch {
+                    Write-Host "Could not install $Module. Please install it manually with: Install-Module $Module and rerun the script." -ForegroundColor Red
+                    $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
+                    Exit
+                }
             }
         }
     }
