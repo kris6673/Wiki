@@ -103,7 +103,7 @@ function Install-RequiredModules {
                 Write-Host "$Module module is not installed. Installing module..." -ForegroundColor Yellow
                 try {
                     Install-Module $Module -Force -AllowClobber -ErrorAction Stop
-                    Write-Host "$Module sucessfully installed." -ForegroundColor Green
+                    Write-Host "$Module successfully installed." -ForegroundColor Green
                 } catch {
                     Write-Host "Could not install $Module. Please install it manually with: Install-Module $Module and rerun the script." -ForegroundColor Red
                     $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
