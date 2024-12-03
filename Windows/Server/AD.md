@@ -62,7 +62,8 @@ This is usually needed when you get permission errors when trying to sync users 
 ```powershell
 # Source: https://techontip.wordpress.com/2021/12/21/enable-bulk-ad-security-permissions-inheritance-powershell/
 # Enable inheritance on all users in a specific OU
-$ADusers = Get-ADUser -LDAPFilter '(objectclass=user)' -SearchBase 'OU=Users,OU=CustomerOU,DC=domain,DC=local'
+$DistinguishedName = (Get-ADOrganizationalUnit -Filter * | Select-Object Name, distinguishedName | Out-GridView -Title "Pick OU" -Outputmode Single).distinguishedName
+$ADusers = Get-ADUser -LDAPFilter '(objectclass=user)' -SearchBase $DistinguishedName
 ForEach ($user in $ADusers) {
     # Binding the users to DS
     $ou = [ADSI]('LDAP://' + $user)
