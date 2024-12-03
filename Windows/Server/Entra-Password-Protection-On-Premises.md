@@ -34,7 +34,7 @@ The installation steps are as follows:
 1. Check if prerequisites are met
 2. Download the agent from the [Microsoft download center](https://www.microsoft.com/en-us/download/details.aspx?id=57071)
 3. Install the proxy agent on a member server
-   1. Can be installed quietly with the following command: AzureADPasswordProtectionProxySetup.exe /quiet
+   1. Can be installed quietly with the following command: .\AzureADPasswordProtectionProxySetup.exe /quiet
 4. Test if installation is successful
 
    - ```powershell
@@ -57,6 +57,10 @@ The installation steps are as follows:
 6. Install the DC agent on all DC's. **Note:** This requires a reboot
    - Can be installed quietly with the following command: msiexec.exe /i AzureADPasswordProtectionDCAgentSetup.msi /quiet /qn /norestart
 7. Test if installation is successful
+
+   - ```powershell
+      Test-AzureADPasswordProtectionDCAgentHealth -TestAll
+     ```
 
 ## Testing
 

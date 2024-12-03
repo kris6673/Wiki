@@ -38,8 +38,10 @@
 - Does not require hybrid join/device writeback to the local AD to work.
 - Making updates to the script and having it apply to the machine again, will overwrite the current scheduled task.
 - If the users password is expired, the script will fail to map the drives.
+- Nested groups as GroupFilter is supported. This is cause System.DirectoryServices.DirectorySearcher object type recursively gets the group membership of the user. Like Get-ADGroupMember -Recursive does too. If User1 is a member of Group1, Group2 is the GroupFilter group, and Group2 is a member of Group1, then the user will get the drive mapping.
 - If you want to use environment variables use PowerShell environment variables: \\\lan.customer.local\homes\$env:username
 - You can add multiple groups as a filter like this: "GroupFilter":"Adgang_Faelles_F_ReadWrite,Adgang_Faelles_F_Read" aka separated with a comma.
+- **Important:** Make sure that you enable the “Run script in 64 bit PowerShell Host” option. This is required for the script to work correctly.
 - **Important:** Requires Windows Pro, an equivalent or above edition. (Since Intune scripts cant run on Windows Home edition)
 
 ### Remove any wrong drive mappings
@@ -64,6 +66,12 @@ This needs to be added between:
 if ($process) {
    # Add it here
    Write-Output "Mapping network drive $($drive.Path)"
+```
+
+To get better logging, replace the default transcript, with this. This makes sure the log file is stored in a location that Intune can pull the logfile from:
+
+```powershell
+Start-Transcript -Path "$env:ProgramData\Microsoft\IntuneManagementExtension\Logs\DriveMapping.log" | Out-Null
 ```
 
 ## Install printer drivers via Intune

@@ -7,7 +7,7 @@ This is a help page for the different types of migrations that can be done.
 1. [Bittitan](#bittitan)
    1. [General info](#general-info)
    2. [Disable throttling in EXO](#disable-throttling-in-exo)
-   3. [Timeout issues causing migration to fail](#timeout-issues-causing-migration-to-fail)
+   3. [Timeout issues causing migration to fail - This migration has failed because the source or destination endpoint](#timeout-issues-causing-migration-to-fail---this-migration-has-failed-because-the-source-or-destination-endpoint)
    4. [Turn off Calendar assistant](#turn-off-calendar-assistant)
 2. [Links to guides](#links-to-guides)
 
@@ -27,9 +27,10 @@ Mailbox data is migrated from newest to oldest items. So the user gets their new
 2. Write "Increase EWS Throttling Policy" in the support search field.
 3. Run tests and set the days to 90 and press "Update settings".
 
-### Timeout issues causing migration to fail
+### Timeout issues causing migration to fail - This migration has failed because the source or destination endpoint
 
-Add the following to the advanced options of the project.
+Add the following to the advanced options of the project.  
+Both mailbox and document migrations.
 
 ```text
 ExtendedEwsTimeout=1
@@ -62,3 +63,5 @@ Get-EXOMailbox -ResultSize unlimited | Set-Mailbox -CalendarRepairDisabled $fals
 [OneDrive to OneDrive](https://help.bittitan.com/hc/en-us/articles/360011172673-OneDrive-to-OneDrive-for-Business-without-Versions-and-Metadata-migration-guide)  
 [All Bititan support options](https://help.bittitan.com/hc/en-us/articles/360043369293-MigrationWiz-Support-Options)  
 [MigrationWiz - Advanced Options & General Options](https://help.bittitan.com/hc/en-us/articles/360043891714-MigrationWiz-Advanced-Options-General-Options#h_01HC38V3KNNRY4TEJG0AW70QVC)
+
+<!-- [Set MailboxGUID to null/User is stuck as MailUser and cant get mailbox](https://www.alitajran.com/hard-delete-mailbox-microsoft-365) -->

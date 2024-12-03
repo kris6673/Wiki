@@ -106,7 +106,9 @@ When upgrading the server from 2012 R2 to a newer version, the installation does
 There can be a number of things wrong here.
 Open Component Services and navigate to the following path:
 
+```text
     Component Services > Computers > My Computer > Permissions > DCOM Config
+```
 
 1. See if there is multiple unknown SIDs in the permissions, and if there is, try removing them and try again.
 2. ADsync groups are most likely missing from the DCOM permissions in Component Services.  
@@ -215,7 +217,7 @@ Connect-MsolService
 Set-MsolDirSyncEnabled -EnableDirSync $false
 ```
 
-**Untested:** Graph way to do it. Found in this [guide](https://www.alitajran.com/disable-active-directory-synchronization/)
+**Confirmed working:** Graph way to do it. Found in this [guide](https://www.alitajran.com/disable-active-directory-synchronization/)
 
 ```powershell
 Connect-MgGraph -Scopes "Organization.ReadWrite.All"
