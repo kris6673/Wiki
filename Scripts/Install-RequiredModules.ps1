@@ -71,7 +71,7 @@ function Install-RequiredModules {
                 Write-Host "$Module module already installed. Testing if it needs updates." -ForegroundColor Yellow
                 # Test if module needs updates
                 $OnlineModule = Find-Module -Name $Module -Repository PSGallery
-                if ($OnlineModule.version -gt $InstalledModule.Version) {
+                if ([version]$OnlineModule.version -gt [version]$InstalledModule.Version) {
                     Write-Host "$Module module needs to be updated from version $($InstalledModule.Version) to version $($OnlineModule.Version)." -ForegroundColor Yellow
                 
                     # Update module and alert the user if it fails.
