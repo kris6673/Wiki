@@ -8,12 +8,16 @@ This is a help page for the different types of migrations that can be done.
    1. [General info](#general-info)
    2. [Disable throttling in EXO](#disable-throttling-in-exo)
    3. [Timeout issues causing migration to fail - This migration has failed because the source or destination endpoint](#timeout-issues-causing-migration-to-fail---this-migration-has-failed-because-the-source-or-destination-endpoint)
-   4. [Turn off Calendar assistant](#turn-off-calendar-assistant)
-2. [Links to guides](#links-to-guides)
+   4. [Add logging to failed items](#add-logging-to-failed-items)
+   5. [Turn off Calendar assistant](#turn-off-calendar-assistant)
+   6. [Links to guides](#links-to-guides)
+2. [Movebot](#movebot)
 
 ## Bittitan
 
 Everything useful I've found for Bittitan migrations.
+
+---
 
 ### General info
 
@@ -39,6 +43,10 @@ InitializationTimeout=8
 
 Read more about the support options [here](#links-to-guides)
 
+### Add logging to failed items
+
+Check the following checkmark in the advanced options of the project, under **Maintenance -> Log subjects of failed items.**
+
 ### Turn off Calendar assistant
 
 **Note:** This will disable the calendar assistant for all users in the tenant. This will need to be turned back on after the migration is complete. This is done to ensure that the calendar assistant doesn't interfere with the migration and break meetings and recurring meetings.
@@ -53,7 +61,7 @@ Get-EXOMailbox -ResultSize unlimited | Set-Mailbox -CalendarRepairDisabled $true
 Get-EXOMailbox -ResultSize unlimited | Set-Mailbox -CalendarRepairDisabled $false
 ```
 
-## Links to guides
+### Links to guides
 
 [IP lockdown of migrations](https://help.bittitan.com/hc/en-us/articles/115008252928-IP-Addresses-Connected-to-During-IP-LockDown#set-advanced-options-for-the-project-in-migrationwiz-0-0)  
 [Mailboxes over 100 GB/Large mailboxes](https://help.bittitan.com/hc/en-us/articles/360044916654-Microsoft-365-Mailbox-Migration-FAQ#-migrating-mailboxes-larger-than-100gb-0-22)  
@@ -65,3 +73,7 @@ Get-EXOMailbox -ResultSize unlimited | Set-Mailbox -CalendarRepairDisabled $fals
 [MigrationWiz - Advanced Options & General Options](https://help.bittitan.com/hc/en-us/articles/360043891714-MigrationWiz-Advanced-Options-General-Options#h_01HC38V3KNNRY4TEJG0AW70QVC)
 
 <!-- [Set MailboxGUID to null/User is stuck as MailUser and cant get mailbox](https://www.alitajran.com/hard-delete-mailbox-microsoft-365) -->
+
+## Movebot
+
+Everything useful I've found for Movebot migrations.
