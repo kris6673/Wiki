@@ -159,15 +159,19 @@ Intune Management Extension runs in 32bit mode, so some commands are not availab
 
 ```powershell
 # Run script in 64bit PowerShell if running from 32bit to avoid issues with 64bit only commands/functions
-# $ENV:PROCESSOR_ARCHITEW6432 is only available in 32bit PowerShell
-If ($ENV:PROCESSOR_ARCHITEW6432 -ne 'ARM64') {
-    Try {+
-        &"$ENV:WINDIR\SysNative\WindowsPowershell\v1.0\PowerShell.exe" -File $PSCOMMANDPATH @PSBoundParameters
-    } Catch {
-        Write-Error "Failed to start $PSCOMMANDPATH"
-        Write-Warning "$($_.Exception.Message)"
+If ([Environment]::Is64BitProcess -eq $false) {
+    if ([Environment]::Is64BitOperatingSystem -eq $true) {
+        try {
+            Write-Output 'Elevating to 64 bit Powershell'
+            & "$ENV:WINDIR\SysNative\WindowsPowershell\v1.0\PowerShell.exe" -File $PSCOMMANDPATH @PSBoundParameters
+        } catch {
+            Write-Error "Failed to start $PSCOMMANDPATH"
+            Write-Warning "$($_.Exception)"
+        }
+        Exit
+    } else {
+        Write-Output 'Running 32 bit Powershell on 32 bit OS'
     }
-   Exit
 }
 ```
 
