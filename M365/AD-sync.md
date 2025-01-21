@@ -10,9 +10,10 @@
 2. [Connect sync aka. the old one](#connect-sync-aka-the-old-one)
    1. [In-place upgrade server the sync is on](#in-place-upgrade-server-the-sync-is-on)
    2. [Troubleshooting](#troubleshooting)
+   3. [Permission errors when trying to sync users to M365 via AD sync](#permission-errors-when-trying-to-sync-users-to-m365-via-ad-sync)
       1. [Azure AD Connect must modify the DCOM security registry values to grant access to the required operator roles](#azure-ad-connect-must-modify-the-dcom-security-registry-values-to-grant-access-to-the-required-operator-roles)
-   3. [Migrate to a new server](#migrate-to-a-new-server)
-   4. [Reset password on next login - Connect Sync](#reset-password-on-next-login---connect-sync)
+   4. [Migrate to a new server](#migrate-to-a-new-server)
+   5. [Reset password on next login - Connect Sync](#reset-password-on-next-login---connect-sync)
 3. [Cloud Kerberos trust](#cloud-kerberos-trust)
    1. [Troubleshooting](#troubleshooting-1)
 4. [Breaking AD sync](#breaking-ad-sync)
@@ -95,6 +96,12 @@ When upgrading the server from 2012 R2 to a newer version, the installation does
 7. Setting the user sign-in options to what they were before the upgrade
 
 ### Troubleshooting
+
+### Permission errors when trying to sync users to M365 via AD sync
+
+Inheritance is probably not enabled on the OU where the users are located.  
+Enable inheritance on the OU where the users are located, via this:
+[Enable inheritance on all users in a specific OU](../Windows/Server/AD.md#enable-inheritance-on-all-users-in-a-specific-ou) and run a sync again.
 
 #### Azure AD Connect must modify the DCOM security registry values to grant access to the required operator roles
 
