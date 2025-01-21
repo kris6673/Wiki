@@ -69,14 +69,20 @@ ForEach ($user in $ADusers) {
     $ou = [ADSI]('LDAP://' + $user)
     $sec = $ou.psbase.objectSecurity
 
-    if ($sec.get_AreAccessRulesProtected()) {
-        $isProtected = $false ## allows inheritance
-        $preserveInheritance = $true ## preserver inhreited rules
-        $sec.SetAccessRuleProtection($isProtected, $preserveInheritance)
-        $ou.psbase.commitchanges()
-        Write-Host "$user is now inherting permissions"
-    } else {
-        Write-Host "$User Inheritable Permission already set"
+    try {
+      if ($sec.get_AreAccessRulesProtected()) {
+          $isProtected = $false ## allows inheritance
+          $preserveInheritance = $true ## preserver inhreited rules
+          $sec.SetAccessRuleProtection($isProtected, $preserveInheritance)
+          $ou.psbase.commitchanges()
+          Write-Host "$user is now inherting permissions" -ForegroundColor Green
+      } else {
+          Write-Host "$User Inheritable Permission already set" -ForegroundColor Blue
+      }
+    }
+    catch {
+         Write-Host "Error occurred while enabling inheritance for $user" -ForegroundColor Red
+         Write-Host $_.Exception.Message -ForegroundColor Red
     }
 }
 ```
