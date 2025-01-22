@@ -7,6 +7,7 @@
 1. [Cloud sync aka. the new one](#cloud-sync-aka-the-new-one)
    1. [Single Sign-On with Cloud Sync](#single-sign-on-with-cloud-sync)
    2. [Reset password on next login - Cloud Sync](#reset-password-on-next-login---cloud-sync)
+   3. [Set MsExchangeMailboxGuid to NULL - Cloud Sync](#set-msexchangemailboxguid-to-null---cloud-sync)
 2. [Connect sync aka. the old one](#connect-sync-aka-the-old-one)
    1. [In-place upgrade server the sync is on](#in-place-upgrade-server-the-sync-is-on)
    2. [Troubleshooting](#troubleshooting)
@@ -14,6 +15,7 @@
       1. [Azure AD Connect must modify the DCOM security registry values to grant access to the required operator roles](#azure-ad-connect-must-modify-the-dcom-security-registry-values-to-grant-access-to-the-required-operator-roles)
    4. [Migrate to a new server](#migrate-to-a-new-server)
    5. [Reset password on next login - Connect Sync](#reset-password-on-next-login---connect-sync)
+   6. [Set MsExchangeMailboxGuid to NULL - Connect Sync](#set-msexchangemailboxguid-to-null---connect-sync)
 3. [Cloud Kerberos trust](#cloud-kerberos-trust)
    1. [Troubleshooting](#troubleshooting-1)
 4. [Breaking AD sync](#breaking-ad-sync)
@@ -35,7 +37,7 @@ Annoying process compared to the old one, but it works.
 
 ---
 
-[Guide](https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/how-to-connect-password-hash-synchronization#synchronizing-temporary-passwords-and-force-password-change-on-next-logon) for not having to do the below stuff
+[Guide](https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/how-to-connect-password-hash-synchronization#synchronizing-temporary-passwords-and-force-password-change-on-next-logon)
 
 ```powershell
 Connect-Graph -Scopes 'User.ReadWrite.All, Directory.ReadWrite.All, Directory.AccessAsUser.All'
@@ -45,41 +47,9 @@ $OnPremSync.Features.UserForcePasswordChangeOnLogonEnabled = $true
 Update-MgDirectoryOnPremiseSynchronization -OnPremisesDirectorySynchronizationId $OnPremSync.Id -Features $OnPremSync.Features
 ```
 
----
+### Set MsExchangeMailboxGuid to NULL - Cloud Sync
 
-**Symptom:** You would like to know if the ForcePasswordChangeOnLogOn is supported in Cloud Sync.
-
-**Answer:** Yes, but as of today,  the ForcePasswordChangeOnLogOn feature can only be set with ADSync cmdlet Set-ADSyncAADCompanyFeature -ForcePasswordChangeOnLogOn $true
-
-**Resolution:** This can be done on another server other than the one that currently has the Cloud Sync agent.
-
-1. Install AADConnect.
-
-2. When the wizard starts, select "Customize". This will take the wizard through the custom installation experience: [Customize an installation of Azure Active Directory Connect - Microsoft Entra | Microsoft Learn](https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/how-to-connect-install-custom)
-
-3. Make no selections in "**Install required components**". Click "Install"
-
-4. In the page "**User sign-in**" select "**Do not configure**" Click "Next"
-
-5. Connect to Azure AD with a GA user account
-
-6. On the connect your directories page the user will need to connect to an active directory with which the server has line of sight to. Click "Next".
-
-7. You can select to create a new account or pre-create an account in ad to delete later and use the option "**Use existing account**".
-
-8. Go through the next section without making any changes. When reaching the page "Domain and OU filtering", select the radio button "Sync selected domains and OUs". Then remove the selection from the root of the domain. :warning: **_Make sure no OU's are selected_**.
-
-9. Go through the rest of the wizard without making any changes. At the end of the wizard, in the "**Ready to configure**" page, select the option "Enable staging mode:.." to guarantee there will not be any exports from this server.
-
-10. Once complete, you can open Windows PowerShell and import the ADSync module:
-
-    1. `Import-Module ADSync`
-
-11. And run the command to enable the required feature.
-
-    1. `Set-ADSyncAADCompanyFeature -ForcePasswordChangeOnLogOn $true`
-
-12. Once the command completes successfully (It will return the features current state), You can un-install AADConnect
+[Guide](../Good-links.md#ad-sync)
 
 ## Connect sync aka. the old one
 
@@ -157,6 +127,10 @@ Get-ADSyncAADCompanyFeature
 Set-ADSyncAADCompanyFeature -ForcePasswordChangeOnLogOn $true
 ```
 
+### Set MsExchangeMailboxGuid to NULL - Connect Sync
+
+[Guide](../Good-links.md#ad-sync)
+
 ## Cloud Kerberos trust
 
 **Note:** Windows Hello for Business, and some kind of AD sync is required for this to work. If the users dont use Windows Hello for Business, the Cloud Kerberos trust is not needed since Kerberos auth works without it, but nice to have anyway for future use.
@@ -219,12 +193,7 @@ You have probably forgotten to deploy this setting in some way: **Use Cloud Trus
 
 Breaking the sync converts all synced users into cloud only users. It's done with the following powershell commands:
 
-```powershell
-Connect-MsolService
-Set-MsolDirSyncEnabled -EnableDirSync $false
-```
-
-**Confirmed working:** Graph way to do it. Found in this [guide](https://www.alitajran.com/disable-active-directory-synchronization/)
+Found in this [guide](https://www.alitajran.com/disable-active-directory-synchronization/)
 
 ```powershell
 Connect-MgGraph -Scopes "Organization.ReadWrite.All"

@@ -11,7 +11,9 @@
 5. [Git](#git)
 6. [Powershell](#powershell)
 7. [Development tools](#development-tools)
-8. [Computer stuffs](#computer-stuffs)
+8. [Server stuffs](#server-stuffs)
+   1. [AD sync](#ad-sync)
+9. [Computer stuffs](#computer-stuffs)
    1. [Lenovo](#lenovo)
 
 ## M365
@@ -68,6 +70,12 @@ TL;DR:
 ## Development tools
 
 [Webhook.site](https://webhook.site/) - Great for testing webhooks
+
+## Server stuffs
+
+### AD sync
+
+[Guide to set MsExchangeMailboxGuid to NULL](https://www.codetwo.com/kb/msexchmailboxguid-problems/)
 
 ## Computer stuffs
 
