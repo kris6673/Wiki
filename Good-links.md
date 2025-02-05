@@ -45,6 +45,7 @@
 
 TL;DR:  
 ![HAADJ](/Pics/haadj.gif)
+[Oh god no dont do HAADJ](https://hybriddomainjo.in/)
 
 ## Markdown
 
