@@ -4,11 +4,13 @@
 
 ## Table of Contents <!-- omit in toc -->
 
-1. [Cloud sync aka. the new one](#cloud-sync-aka-the-new-one)
+1. [Both old and new](#both-old-and-new)
+   1. [Comply your AD password expiration policy with Entra/M365](#comply-your-ad-password-expiration-policy-with-entram365)
+2. [Cloud sync aka. the new one](#cloud-sync-aka-the-new-one)
    1. [Single Sign-On with Cloud Sync](#single-sign-on-with-cloud-sync)
    2. [Reset password on next login - Cloud Sync](#reset-password-on-next-login---cloud-sync)
    3. [Set MsExchangeMailboxGuid to NULL - Cloud Sync](#set-msexchangemailboxguid-to-null---cloud-sync)
-2. [Connect sync aka. the old one](#connect-sync-aka-the-old-one)
+3. [Connect sync aka. the old one](#connect-sync-aka-the-old-one)
    1. [In-place upgrade server the sync is on](#in-place-upgrade-server-the-sync-is-on)
    2. [Troubleshooting](#troubleshooting)
    3. [Permission errors when trying to sync users to M365 via AD sync](#permission-errors-when-trying-to-sync-users-to-m365-via-ad-sync)
@@ -16,9 +18,42 @@
    4. [Migrate to a new server](#migrate-to-a-new-server)
    5. [Reset password on next login - Connect Sync](#reset-password-on-next-login---connect-sync)
    6. [Set MsExchangeMailboxGuid to NULL - Connect Sync](#set-msexchangemailboxguid-to-null---connect-sync)
-3. [Cloud Kerberos trust](#cloud-kerberos-trust)
+4. [Cloud Kerberos trust](#cloud-kerberos-trust)
    1. [Troubleshooting](#troubleshooting-1)
-4. [Breaking AD sync](#breaking-ad-sync)
+5. [Breaking AD sync](#breaking-ad-sync)
+
+## Both old and new
+
+### Comply your AD password expiration policy with Entra/M365
+
+[Guide](https://www.bilalelhaddouchi.nl/index.php/2020/09/24/enforcecloudpasswordpolicyforpasswordsyncedusers/)  
+[MS guide](https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/how-to-connect-password-hash-synchronization#cloudpasswordpolicyforpasswordsyncedusersenabled)
+
+:warning: **CAUTION:** You should only use this feature when SSPR and Password Writeback are enabled on the tenant. :warning:  
+This feature ensures that on-premises Active Directory password expiration policies are properly enforced in Azure AD for password hash synchronized users. Without this enabled, users with expired passwords in AD can still access cloud resources via Azure AD.
+
+To enable the feature:
+
+```powershell
+# Check if feature is enabled and sign in to Graph with a global admin account
+Connect-Graph -Scopes 'User.ReadWrite.All, MailboxSettings.ReadWrite, Directory.ReadWrite.All'
+(Get-MgDirectoryOnPremiseSynchronization).Features.CloudPasswordPolicyForPasswordSyncedUsersEnabled
+
+# Using Microsoft Graph PowerShell
+$OnPremSync = Get-MgDirectoryOnPremiseSynchronization
+$OnPremSync.Features.CloudPasswordPolicyForPasswordSyncedUsersEnabled = $true
+Update-MgDirectoryOnPremiseSynchronization -OnPremisesDirectorySynchronizationId $OnPremSync.Id -Features $OnPremSync.Features
+
+# Check users' password expiration settings
+(Get-MgUser -Property UserPrincipalName, PasswordPolicies) | select UserPrincipalName, PasswordPolicy
+
+# Set password policy to "None" for a specific user
+Update-MgUser -UserID <User Object ID> -PasswordPolicies "None"
+```
+
+**Note:** For service accounts that require non-expiring passwords in Azure AD, explicitly set the PasswordPolicies attribute to "DisablePasswordExpiration".
+
+The next time the user changes password on the On-Premise AD, the password expiration policy will be enforced in Azure AD. This is not great, since the user has to change the password to get the new policy enforced. To force the policy to be enforced, you can either set the password policy to "None" for the user, or run an initial sync on the AD sync server or a full sync in the cloud sync configuration.
 
 ## Cloud sync aka. the new one
 
