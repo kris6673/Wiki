@@ -49,11 +49,17 @@ Update-MgDirectoryOnPremiseSynchronization -OnPremisesDirectorySynchronizationId
 
 # Set password policy to "None" for a specific user
 Update-MgUser -UserID <User Object ID> -PasswordPolicies "None"
+
+# Set password policy to "DisablePasswordExpiration" for a specific user
+Update-MgUser -UserID <User Object ID> -PasswordPolicies "DisablePasswordExpiration"
 ```
 
-**Note:** For service accounts that require non-expiring passwords in Azure AD, explicitly set the PasswordPolicies attribute to "DisablePasswordExpiration".
+**Note:** For service and break-glass accounts that require non-expiring passwords in Azure AD, explicitly set the PasswordPolicies attribute to "DisablePasswordExpiration".
 
 The next time the user changes password on the On-Premise AD, the password expiration policy will be enforced in Azure AD. This is not great, since the user has to change the password to get the new policy enforced. To force the policy to be enforced, you can either set the password policy to "None" for the user, or run an initial sync on the AD sync server or a full sync in the cloud sync configuration.
+
+The password expiration policy in the tenant, now needs to be aligned to the On-Premise AD password policy. This setting is found in the M365 admin portal under **Settings** -> **Org settings** -> **Security & privacy** -> **Password expiration policy**.  
+**If the password policy is set to "Never expire" in the tenant, the above changes will have done nothing.**
 
 ## Cloud sync aka. the new one
 
