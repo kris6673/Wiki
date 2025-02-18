@@ -246,7 +246,7 @@ Laves under Apple enrollment fanen.
 
 **User enrollment:** requires iOS 13.0 or later, and crucially needs to have a managed Apple ID to work. Otherwise the device management profile cannot be installed to the device. Federated authentication and automatic sync of Entra ID identities is recommended for this, otherwise all users will have to be created manually in Apple Business Manager. User enrollment is considered the more user friendly option, as it allows the user to keep their personal data separate from the company data.
 
-**Device enrollment:** requires iOS 5.0 or later. This was the default and only way of enrolling BYOD devices before 2023. [Webbased device enrollment](https://www.petervanderwoude.nl/post/getting-started-with-web-based-device-enrollment-for-ios-devices/) or Company portal app enrollment are the 2 options for this. This is pretty much the "I don't wanna deal with managed Apple ID's" option.
+**Device enrollment:** requires iOS 15.0 or later. This was the default and only way of enrolling BYOD devices before 2023. [Webbased device enrollment](https://www.petervanderwoude.nl/post/getting-started-with-web-based-device-enrollment-for-ios-devices/) or Company portal app enrollment are the 2 options for this. This is pretty much the "I don't wanna deal with managed Apple ID's" option.
 
 ## Autopilot
 

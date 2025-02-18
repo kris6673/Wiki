@@ -11,7 +11,9 @@
 5. [Git](#git)
 6. [Powershell](#powershell)
 7. [Development tools](#development-tools)
-8. [Computer stuffs](#computer-stuffs)
+8. [Server stuffs](#server-stuffs)
+   1. [AD sync](#ad-sync)
+9. [Computer stuffs](#computer-stuffs)
    1. [Lenovo](#lenovo)
 
 ## M365
@@ -37,12 +39,14 @@
 [Intune management extension logs diagnostics](https://github.com/petripaavola/Get-IntuneManagementExtensionDiagnostics)  
 [CMtrace download link](https://call4cloud.nl/wp-content/uploads/2022/07/cmtrace.zip)  
 [Windows default icons locations](https://www.digitalcitizen.life/where-find-most-windows-10s-native-icons/)  
-[Icon extractor from .dll files](https://www.nirsoft.net/utils/resources_extract.html)
+[Icon extractor from .dll files](https://www.nirsoft.net/utils/resources_extract.html)  
+[Limit App registration to only send mail from members of group](https://learn.microsoft.com/en-us/graph/auth-limit-mailbox-access)
 
 ### [Hybrid join vs AAD join](https://wiki.winadmins.io/en/autopilot/hybrid-join-vs-aad-join)
 
 TL;DR:  
 ![HAADJ](/Pics/haadj.gif)
+[Oh god no dont do HAADJ](https://hybriddomainjo.in/)
 
 ## Markdown
 
@@ -68,6 +72,12 @@ TL;DR:
 ## Development tools
 
 [Webhook.site](https://webhook.site/) - Great for testing webhooks
+
+## Server stuffs
+
+### AD sync
+
+[Guide to set MsExchangeMailboxGuid to NULL](https://www.codetwo.com/kb/msexchmailboxguid-problems/)
 
 ## Computer stuffs
 
