@@ -36,7 +36,7 @@ To enable the feature:
 
 ```powershell
 # Check if feature is enabled and sign in to Graph with a global admin account
-Connect-Graph -Scopes 'User.ReadWrite.All, MailboxSettings.ReadWrite, Directory.ReadWrite.All'
+Connect-Graph -Scopes 'User.ReadWrite.All, Directory.ReadWrite.All'
 (Get-MgDirectoryOnPremiseSynchronization).Features.CloudPasswordPolicyForPasswordSyncedUsersEnabled
 
 # Using Microsoft Graph PowerShell
