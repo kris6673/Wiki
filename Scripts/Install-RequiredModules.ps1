@@ -1,10 +1,10 @@
 # Checks if modules in the list is installed and install if it's not.
 $Modules = @(
     'ExchangeOnlineManagement',
-    'MSOnline',
+    # 'MSOnline',
     'Microsoft.Graph',
     'Microsoft.Graph.Beta',
-    'AzureAD',
+    # 'AzureAD',
     'AIPService',
     'ImportExcel',
     'MicrosoftTeams',

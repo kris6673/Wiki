@@ -12,6 +12,8 @@ This is a help page for the different types of migrations that can be done.
    5. [Turn off Calendar assistant](#turn-off-calendar-assistant)
    6. [Links to guides](#links-to-guides)
 2. [Movebot](#movebot)
+3. [PST import to EXO](#pst-import-to-exo)
+   1. [**AND FOR THE LOVE OF GOD AND ALL THAT IS HOLY, PLEASE DONT FORGET THE '/' IN THE TargetRootFolder PROPERTY IN THE CSV FILE** ](#and-for-the-love-of-god-and-all-that-is-holy-please-dont-forget-the--in-the-targetrootfolder-property-in-the-csv-file-)
 
 ## Bittitan
 
@@ -77,3 +79,39 @@ Get-EXOMailbox -ResultSize unlimited | Set-Mailbox -CalendarRepairDisabled $fals
 ## Movebot
 
 Everything useful I've found for Movebot migrations.
+
+## PST import to EXO
+
+Everything useful I've found for PST import to EXO migrations.  
+[PST Import Guide from MS](https://learn.microsoft.com/da-dk/purview/importing-pst-files-to-office-365)
+
+1. Add the Mailbox Import Export role to Organization Management role group, at least 24 hours before the import process.
+2. Follow the above guide to create a PST import job.
+3. Create the PST import CSV file.
+
+### **AND FOR THE LOVE OF GOD AND ALL THAT IS HOLY, PLEASE DONT FORGET THE '/' IN THE TargetRootFolder PROPERTY IN THE CSV FILE** <!-- omit in TOC -->
+
+```csv
+Workload,FilePath,Name,Mailbox,IsArchive,TargetRootFolder,ContentCodePage,SPFileContainer,SPManifestContainer,SPSiteUrl
+Exchange,,NameOfPST.pst,projekter@domain.dk,FALSE,/,,,,
+```
+
+If needed to import into a subfolder in the mailbox, add the subfolder name to the TargetRootFolder property.
+
+```csv
+Workload,FilePath,Name,Mailbox,IsArchive,TargetRootFolder,ContentCodePage,SPFileContainer,SPManifestContainer,SPSiteUrl
+Exchange,,NameOfPST.pst,projekter@domain.dk,FALSE,FolderToImportTo,,,,
+```
+
+4. [Upload](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-blobs-upload) the PST files to Azure blob storage.
+
+```powershell
+# For only folder contents add \* on the end of the path
+# For uploading a full folder leave only the foldername on the end of the path, like E:\UploadFolder. Edit the FilePath in the CSV to your needs.
+#  --recursive can be added if the PST files are in subfolders
+azcopy copy 'E:\Batch1\*' 'https://b59aa7f2cf2e46b1bc82282.blob.core.windows.net/ingestiondata?skoid=IDSomeThingHere'
+```
+
+5. Finish the import job in the Purview portal, by validating the CSV file and creating the job.
+6. Wait for the job to finish.
+7. Press the "Import to M365" button and do the thing.
