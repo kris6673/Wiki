@@ -1,18 +1,20 @@
 # Checks if modules in the list is installed and install if it's not.
 $Modules = @(
-    'ExchangeOnlineManagement',
-    # 'MSOnline',
-    'Microsoft.Graph',
-    'Microsoft.Graph.Beta',
-    # 'AzureAD',
-    'AIPService',
-    'ImportExcel',
-    'MicrosoftTeams',
-    'PnP.PowerShell',
-    'Microsoft.Online.SharePoint.PowerShell',
-    'Microsoft.WinGet.Client',
-    'Az',
+    'ExchangeOnlineManagement'
+    # 'MSOnline'
+    'Microsoft.Graph'
+    'Microsoft.Graph.Beta'
+    # 'AzureAD'
+    'AIPService'
+    'ImportExcel'
+    'MicrosoftTeams'
+    'PnP.PowerShell'
+    'Microsoft.Online.SharePoint.PowerShell'
+    'Microsoft.WinGet.Client'
+    'Az'
     'PassPushPosh'
+    'Microsoft.PowerShell.GraphicalTools'
+    'F7History'
 )
 
 function Install-RequiredModules {
