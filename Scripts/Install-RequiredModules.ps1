@@ -15,6 +15,7 @@ $Modules = @(
     'PassPushPosh'
     'Microsoft.PowerShell.GraphicalTools'
     'F7History'
+    'PSWriteHTML'
 )
 
 function Install-RequiredModules {
