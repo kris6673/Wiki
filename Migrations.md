@@ -4,16 +4,24 @@ This is a help page for the different types of migrations that can be done.
 
 ## Table of Contents <!-- omit in toc -->
 
-1. [Bittitan](#bittitan)
+1. [Genreral info and help](#genreral-info-and-help)
+   1. [Setting MsExchangeMailboxGuid to NULL / AD synced users have no mailbox in the cloud, but have in on-prem exchange server](#setting-msexchangemailboxguid-to-null--ad-synced-users-have-no-mailbox-in-the-cloud-but-have-in-on-prem-exchange-server)
+2. [Bittitan](#bittitan)
    1. [General info](#general-info)
    2. [Disable throttling in EXO](#disable-throttling-in-exo)
    3. [Timeout issues causing migration to fail - This migration has failed because the source or destination endpoint](#timeout-issues-causing-migration-to-fail---this-migration-has-failed-because-the-source-or-destination-endpoint)
    4. [Add logging to failed items](#add-logging-to-failed-items)
    5. [Turn off Calendar assistant](#turn-off-calendar-assistant)
    6. [Links to guides](#links-to-guides)
-2. [Movebot](#movebot)
-3. [PST import to EXO](#pst-import-to-exo)
+3. [Movebot](#movebot)
+4. [PST import to EXO](#pst-import-to-exo)
    1. [**AND FOR THE LOVE OF GOD AND ALL THAT IS HOLY, PLEASE DONT FORGET THE '/' IN THE TargetRootFolder PROPERTY IN THE CSV FILE** ](#and-for-the-love-of-god-and-all-that-is-holy-please-dont-forget-the--in-the-targetrootfolder-property-in-the-csv-file-)
+
+## Genreral info and help
+
+### Setting MsExchangeMailboxGuid to NULL / AD synced users have no mailbox in the cloud, but have in on-prem exchange server
+
+Guide for this is found [here](.//Good-links.md#ad-sync)
 
 ## Bittitan
 
