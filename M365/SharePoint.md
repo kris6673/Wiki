@@ -26,7 +26,10 @@ Get-SPOSite | Select-Object Url, EnableAutoExpirationVersionTrim, ExpireVersions
 # Enable automatic versioning on all sites
 # The setting for existing document libraries may take 24 hours to take effect. Please run Get-SPOSiteVersionPolicyJobProgress to check
 # the progress. The setting for existing libraries does not trim existing versions to meet the newly set limits
-Get-SPOSite | Where-Object -Property EnableAutoExpirationVersionTrim -ne $true | Set-SPOSite -EnableAutoExpirationVersionTrim $true -Verbose
+Get-SPOSite | Where-Object {$_.EnableAutoExpirationVersionTrim -ne $true -and $_.LockState -eq 'Unlock'} | Set-SPOSite -EnableAutoExpirationVersionTrim $true
+
+# Check the progress of the version policy job
+Get-SPOSite | Where-Object {$_.EnableAutoExpirationVersionTrim -ne $true -and $_.LockState -eq 'Unlock'} | Get-SPOSiteVersionPolicyJobProgress | Out-Gridview
 ```
 
 ### Run a trim to remove old versions
@@ -38,7 +41,7 @@ Only run this after enabling automatic versioning, and wait for the setting to b
 Connect-SPOService -Url https://contoso-admin.sharepoint.com
 
 
-$AllSites = Get-SPOSite | Where-Object -Property EnableAutoExpirationVersionTrim -eq $true
+$AllSites = Get-SPOSite | Where-Object {$_.EnableAutoExpirationVersionTrim -eq $true -and $_.LockState -eq 'Unlock'}
 # Goes through every SharePoint Site to start trimjob
 foreach ($site in $AllSites) {
     $SiteUrl = $site.Url
@@ -54,6 +57,6 @@ foreach ($site in $AllSites) {
 
 # Check the progress of the trimjob
 
-$SiteProgress = Get-SPOSite | Get-SPOSiteFileVersionBatchDeleteJobProgress
+$SiteProgress = Get-SPOSite | Where-Object {$_.EnableAutoExpirationVersionTrim -eq $true -and $_.LockState -eq 'Unlock'} | Get-SPOSiteFileVersionBatchDeleteJobProgress
 $SiteProgress | Out-Gridview
 ```
