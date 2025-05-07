@@ -6,15 +6,16 @@
    1. [Intune](#intune)
    2. [Hybrid join vs AAD join](#hybrid-join-vs-aad-join)
 2. [Markdown](#markdown)
-3. [Timezones](#timezones)
-4. [Drawing and diagramming](#drawing-and-diagramming)
-5. [Git](#git)
-6. [Powershell](#powershell)
-7. [Development tools](#development-tools)
-8. [Server stuffs](#server-stuffs)
+3. [JSON](#json)
+4. [Timezones](#timezones)
+5. [Drawing and diagramming](#drawing-and-diagramming)
+6. [Git](#git)
+7. [Powershell](#powershell)
+8. [Development tools](#development-tools)
+9. [Server stuffs](#server-stuffs)
    1. [AD sync](#ad-sync)
-9. [Computer stuffs](#computer-stuffs)
-   1. [Lenovo](#lenovo)
+10. [Computer stuffs](#computer-stuffs)
+    1. [Lenovo](#lenovo)
 
 ## M365
 
@@ -53,6 +54,10 @@ TL;DR:
 
 [Emoji cheat sheet](https://github.com/ikatyang/emoji-cheat-sheet#table-of-contents)
 
+## JSON
+
+[Good formatter site](https://json.fans/)
+
 ## Timezones
 
 [List of timezones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
@@ -75,6 +80,8 @@ TL;DR:
 [Webhook.site](https://webhook.site/) - Great for testing webhooks
 
 ## Server stuffs
+
+[Group policy info/Reg key info](https://gpsearch.azurewebsites.net/)
 
 ### AD sync
 
