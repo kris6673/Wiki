@@ -41,7 +41,7 @@ This makes sure that you don't get any shared mailboxes, room mailboxes, mail co
 $EmailAddress = "Everyone@contoso.com"
 New-DynamicDistributionGroup -IncludedRecipients MailboxUsers -Name "Everyone - Company name" -PrimarySmtpAddress $EmailAddress
 
-Set-DynamicDistributionGroup -identity {$EmailAddress} -RecipientFilter {(-not(RecipientTypeDetailsValue -eq 'SharedMailbox')) -and (-not(RecipientTypeDetailsValue -eq 'RoomMailbox')) -and (-not(RecipientType -eq 'MailContact')) -and (-not(RecipientType -eq 'MailUniversalDistributionGroup'))  -and (-not(RecipientTypeDetailsValue -eq 'EquipmentMailbox'))}
+Set-DynamicDistributionGroup -Identity $EmailAddress -RecipientFilter {(-not(RecipientTypeDetailsValue -eq 'SharedMailbox')) -and (-not(RecipientTypeDetailsValue -eq 'RoomMailbox')) -and (-not(RecipientType -eq 'MailContact')) -and (-not(RecipientType -eq 'MailUniversalDistributionGroup'))  -and (-not(RecipientTypeDetailsValue -eq 'EquipmentMailbox'))}
 ```
 
 You can then go to the Exchange Admin Center to add who is allowed to send to it, and who can approve emails sent to it. It's under the tab Dynamic Distribution Group.
