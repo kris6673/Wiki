@@ -29,7 +29,7 @@ Get-SPOSite | Select-Object Url, EnableAutoExpirationVersionTrim, ExpireVersions
 Get-SPOSite | Where-Object {$_.EnableAutoExpirationVersionTrim -ne $true -and $_.LockState -eq 'Unlock'} | Set-SPOSite -EnableAutoExpirationVersionTrim $true
 
 # Check the progress of the version policy job
-Get-SPOSite | Where-Object {$_.EnableAutoExpirationVersionTrim -ne $true -and $_.LockState -eq 'Unlock'} | Get-SPOSiteVersionPolicyJobProgress | Out-Gridview
+Get-SPOSite | Where-Object {$_.EnableAutoExpirationVersionTrim -eq $true -and $_.LockState -eq 'Unlock'} | Get-SPOSiteVersionPolicyJobProgress | Out-Gridview
 ```
 
 ### Run a trim to remove old versions
