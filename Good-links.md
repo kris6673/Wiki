@@ -73,7 +73,8 @@ TL;DR:
 ## Powershell
 
 [PowerShell Gallery](https://www.powershellgallery.com/)  
-[Online HTML editor](https://html5-editor.net/)
+[Online HTML editor](https://html5-editor.net/)  
+[Reg2PS - Registry file to powershell command converter](https://reg2ps.azurewebsites.net/)
 
 ## Development tools
 
