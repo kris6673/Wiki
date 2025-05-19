@@ -18,7 +18,7 @@ Function Write-Log {
         Writes a log message to the console with the message "This is a sample log message" and the foreground color set to Yellow.
     #>
     param (
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true, Position = 0)]
         [string]$Message,
         [Parameter(Mandatory = $false)]
         [ValidateSet('Black', 'DarkBlue', 'DarkGreen', 'DarkCyan', 'DarkRed', 'DarkMagenta', 'DarkYellow', 'Gray', 'DarkGray', 'Blue', 'Green', 'Cyan', 'Red', 'Magenta', 'Yellow', 'White')]
