@@ -36,7 +36,7 @@ To enable the feature:
 
 ```powershell
 # Check if feature is enabled and sign in to Graph with a global admin account
-Connect-Graph -Scopes 'User.ReadWrite.All, MailboxSettings.ReadWrite, Directory.ReadWrite.All'
+Connect-Graph -Scopes 'User.ReadWrite.All, Directory.ReadWrite.All'
 (Get-MgDirectoryOnPremiseSynchronization).Features.CloudPasswordPolicyForPasswordSyncedUsersEnabled
 
 # Using Microsoft Graph PowerShell
@@ -150,7 +150,13 @@ Make a backup/export of the keys. Try renaming them to without the "Old" at the 
 
 ### Migrate to a new server
 
-[Migration guide](https://www.alitajran.com/migrate-azure-ad-connect/)
+[Migration guide](https://www.alitajran.com/migrate-azure-ad-connect/)  
+[Export current config if GUI is broken/Via powershell](https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/how-to-connect-import-export-config).
+Command to extract the MSI is:
+
+```powershell
+msiexec /a "C:\path\to\your\installer.msi" /qb TARGETDIR="C:\output\extracted_files"
+```
 
 ### Reset password on next login - Connect Sync
 

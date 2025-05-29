@@ -127,4 +127,4 @@ function Add-Shortcut {
     [Runtime.InteropServices.Marshal]::ReleaseComObject($WshShell) | Out-Null
 }
 
-Add-Shortcut -ShortcutTargetPath '\\SrvFIL01.agitomedical.local\Printers' -ShortcutDisplayName 'Printers' -IconFile "$env:SystemRoot\System32\shell32.dll,58"
+Add-Shortcut -ShortcutTargetPath '\\Server01.domain.local\Printers' -ShortcutDisplayName 'Printers' -IconFile "$env:SystemRoot\System32\shell32.dll,58"

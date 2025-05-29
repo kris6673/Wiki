@@ -31,6 +31,9 @@ The category for the log entry. Defaults to 1.
 .PARAMETER WriteToHost
 If specified, writes the message to the host powershell window, in addition to the event log.
 
+.PARAMETER WriteToOutput
+If specified, writes the message to the output stream, in addition to the event log.
+
 .EXAMPLE
 Write-ToEventlog -Message "This is a test message" -LogSource "MyScript" -Level Information
 
@@ -43,7 +46,7 @@ Writes a warning message to the Application event log with the source "MyScript"
 
 .NOTES
 Author: kris6673
-Date: 2024-11-21
+Date: 2025-03-05
 #>
     [CmdletBinding()]
     Param(
@@ -56,11 +59,13 @@ Date: 2024-11-21
         [Parameter(Mandatory = $False)][ValidateSet('Information', 'Warning', 'Error', 'SuccessAudit', 'FailureAudit')]
         [String]$Level = 'Information',
         [Parameter(Mandatory = $False)][ValidateRange(0, 65535)]
-        [int]$EventID = 9376,
+        [int]$EventID = 2,
         [Parameter(Mandatory = $False)]
         [String]$Category = 1,
         [Parameter(Mandatory = $False)]
-        [switch]$WriteToHost
+        [switch]$WriteToHost,
+        [Parameter(Mandatory = $False)]
+        [switch]$WriteToOutput
     )
     # Check the Event Viewer source exists
     if (!([System.Diagnostics.EventLog]::SourceExists($LogSource))) {
@@ -81,9 +86,12 @@ Date: 2024-11-21
         Write-EventLog @eventLogParams
 
         if ($WriteToHost.IsPresent -eq $true) {
-            Write-Host "Event Log written: $Message"
+            Write-Host "Event Log written:`n$Message"
+        }
+        if ($WriteToOutput.IsPresent -eq $true) {
+            Write-Output "Event Log written:`n$Message"
         }
     } catch {
-        throw "Error writing to Event Log: $_"
+        throw "Error writing to Event Log:`n$_"
     }
 }

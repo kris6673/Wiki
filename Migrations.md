@@ -4,16 +4,28 @@ This is a help page for the different types of migrations that can be done.
 
 ## Table of Contents <!-- omit in toc -->
 
-1. [Bittitan](#bittitan)
+1. [Genreral info and help](#genreral-info-and-help)
+   1. [Setting MsExchangeMailboxGuid to NULL / AD synced users have no mailbox in the cloud, but have in on-prem exchange server](#setting-msexchangemailboxguid-to-null--ad-synced-users-have-no-mailbox-in-the-cloud-but-have-in-on-prem-exchange-server)
+2. [Bittitan](#bittitan)
    1. [General info](#general-info)
    2. [Disable throttling in EXO](#disable-throttling-in-exo)
    3. [Timeout issues causing migration to fail - This migration has failed because the source or destination endpoint](#timeout-issues-causing-migration-to-fail---this-migration-has-failed-because-the-source-or-destination-endpoint)
    4. [Add logging to failed items](#add-logging-to-failed-items)
    5. [Turn off Calendar assistant](#turn-off-calendar-assistant)
    6. [Links to guides](#links-to-guides)
-2. [Movebot](#movebot)
-3. [PST import to EXO](#pst-import-to-exo)
+3. [Movebot](#movebot)
+4. [PST import to EXO](#pst-import-to-exo)
    1. [**AND FOR THE LOVE OF GOD AND ALL THAT IS HOLY, PLEASE DONT FORGET THE '/' IN THE TargetRootFolder PROPERTY IN THE CSV FILE** ](#and-for-the-love-of-god-and-all-that-is-holy-please-dont-forget-the--in-the-targetrootfolder-property-in-the-csv-file-)
+5. [ProfWiz](#profwiz)
+   1. [Steps for migration to Entra ID](#steps-for-migration-to-entra-id)
+      1. [Pre-migration steps](#pre-migration-steps)
+      2. [Migration steps](#migration-steps)
+
+## Genreral info and help
+
+### Setting MsExchangeMailboxGuid to NULL / AD synced users have no mailbox in the cloud, but have in on-prem exchange server
+
+Guide for this is found [here](.//Good-links.md#ad-sync)
 
 ## Bittitan
 
@@ -115,3 +127,38 @@ azcopy copy 'E:\Batch1\*' 'https://b59aa7f2cf2e46b1bc82282.blob.core.windows.net
 5. Finish the import job in the Purview portal, by validating the CSV file and creating the job.
 6. Wait for the job to finish.
 7. Press the "Import to M365" button and do the thing.
+
+## ProfWiz
+
+Everything useful I've found for ProfWiz migrations.
+
+### Steps for migration to Entra ID
+
+#### Pre-migration steps
+
+1. Create the config files for the migration.
+   1. Use the onmicrosoft.com domain for the config file.
+   2. Create a ForensiTAzureID.xml file via the script that is found here. Save-AzureADUser.ps1 can be downloaded from: <https://github.com/ForensiT/PowerShell.>
+   3. Create the provisioning file for the migration. Guide is found in the ProfWiz Corporate user guide too. This is the file that will be used to Entra join the machine.
+
+#### Migration steps
+
+1. Check if the computer is a Home edition. If it is, upgrade to Pro edition.
+2. Make a local administrator account on the computer.
+3. Suspend BitLocker on the computer.
+4. If the browser is not synced, either sync it or create an export of the bookmarks and import them after the migration.
+5. Copy the ProfWiz config files to the computer.
+6. Log into the local administrator account.
+7. **If using a provisioning package, skip to step 11.**
+8. Remove the computer from the domain.
+9. Reboot the computer.
+10. Join the computer to the Azure AD/Entra domain.
+11. Run the ProfWiz migration tool.
+12. Log into the migrated account.
+13. Import the bookmarks into the browser, if needed.
+14. Make sure the computer is enrolled correctly in Intune via the Company portal.
+15. Run the command "sfc /scannow" in an elevated command prompt.
+16. Reboot the computer.
+17. Enable BitLocker on the computer.
+18. Reboot the computer.
+19. Delete the local administrator account.
