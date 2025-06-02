@@ -165,12 +165,11 @@ If ([Environment]::Is64BitProcess -eq $false) {
             Write-Output 'Elevating to 64 bit Powershell'
             & "$ENV:WINDIR\SysNative\WindowsPowershell\v1.0\PowerShell.exe" -File $PSCOMMANDPATH @PSBoundParameters
         } catch {
-            Write-Error "Failed to start $PSCOMMANDPATH"
-            Write-Warning "$($_.Exception)"
+            Throw "Failed to start $PSCOMMANDPATH Error: $($_.Exception.Message)"
         }
         Exit
     } else {
-        Write-Output 'Running 32 bit Powershell on 32 bit OS'
+        Throw 'Running 32 bit Powershell on 32 bit OS. Cannot elevate to 64 bit Powershell.'
     }
 }
 ```
