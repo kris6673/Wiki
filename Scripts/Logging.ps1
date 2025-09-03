@@ -1,5 +1,5 @@
 ﻿# Logging functions for PowerShell scripts
-Function Write-Log {
+function Write-Log {
     <#
     .SYNOPSIS
         Writes a log message to the console with a specified foreground color.
