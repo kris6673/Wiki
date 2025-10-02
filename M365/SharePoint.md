@@ -57,7 +57,11 @@ Connect-SPOService -Url https://contoso-admin.sharepoint.com
 
 $AllSites = Get-SPOSite -Limit ALL | Where-Object {$_.EnableAutoExpirationVersionTrim -eq $true -and $_.LockState -eq 'Unlock'}
 # Goes through every SharePoint Site to start trimjob
+$Counter = 0
+$TotalSites = $AllSites.Count
 foreach ($site in $AllSites) {
+    $Counter++
+    Write-Progress -Activity 'Processing Sites' -Status "Processing Site $Counter of $TotalSites" -PercentComplete ($Counter / $TotalSites * 100)
     $SiteUrl = $site.Url
     $Sitename = $site.Title
     try {
