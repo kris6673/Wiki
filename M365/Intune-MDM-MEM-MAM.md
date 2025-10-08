@@ -13,19 +13,20 @@
    4. [Find uninstall string for installed programs](#find-uninstall-string-for-installed-programs)
    5. [Run script in 64bit PowerShell if running from 32bit](#run-script-in-64bit-powershell-if-running-from-32bit)
    6. [Troubleshooting](#troubleshooting)
-4. [Hybrid Join](#hybrid-join)
+4. [Enroll Entra Joined devices into Intune/MDM](#enroll-entra-joined-devices-into-intunemdm)
+5. [Hybrid Join](#hybrid-join)
    1. [Troubleshooting](#troubleshooting-1)
-5. [Apple things](#apple-things)
+6. [Apple things](#apple-things)
    1. [Apple Business Manager](#apple-business-manager)
       1. [VPP token](#vpp-token)
       2. [Apple Push Certifikat](#apple-push-certifikat)
       3. [MDM server certifikat](#mdm-server-certifikat)
       4. [User VS Device enrollment](#user-vs-device-enrollment)
-6. [Autopilot](#autopilot)
+7. [Autopilot](#autopilot)
    1. [Links](#links)
    2. [Skip App install during Autopilot ESP](#skip-app-install-during-autopilot-esp)
    3. [Danish writeup about Autopilot](#danish-writeup-about-autopilot)
-7. [Links to stuff](#links-to-stuff)
+8. [Links to stuff](#links-to-stuff)
 
 ## Map drives via Intune script
 
@@ -179,6 +180,27 @@ If ([Environment]::Is64BitProcess -eq $false) {
 [Win32 logs and how to decipher the logs](/Good-links.md#intune)
 [Intune management extension logs diagnostics](/Good-links.md#intune)  
 [CMtrace download link](/Good-links.md#intune)
+
+## Enroll Entra Joined devices into Intune/MDM
+
+The devices will also need to already be listed/registered in Entra, but that usually happens when they sign into M365 apps.
+
+```powershell
+# Option 1 - Might be blocked by Defender/AV ASR rules
+Invoke-WebRequest -Uri 'https://live.sysinternals.com/PsExec64.exe'-OutFile $env:TEMP\PsExec64.exe
+Start-Process "$env:TEMP\PsExec64.exe" '-s powershell.exe -ExecutionPolicy Bypass -Command "Start-Process deviceenroller.exe -ArgumentList \"/c /AutoEnrollMDM\" -Wait"'
+
+# Option 2
+$Triggers = @()
+$Triggers += New-ScheduledTaskTrigger -At (Get-Date) -Once -RepetitionInterval (New-TimeSpan -Minutes 1)
+$User = 'SYSTEM'
+$Action = New-ScheduledTaskAction -Execute '%windir%\system32\deviceenroller.exe' -Argument '/c /AutoEnrollMDM'
+$Null = Register-ScheduledTask -TaskName 'TriggerEnrollment' -Trigger $Triggers -User $User -Action $Action -Force
+Start-ScheduledTask -TaskName 'TriggerEnrollment'
+```
+
+To see if it worked, check the event log under Applications and Services Logs > Microsoft > Windows > DeviceManagement-Enterprise-Diagnostic-Provider > Enrollment.  
+You can also run `dsregcmd /status` in a command prompt to see the MDM enrollment status.
 
 ## Hybrid Join
 
