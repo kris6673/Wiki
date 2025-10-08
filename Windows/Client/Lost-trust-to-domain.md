@@ -24,6 +24,6 @@ Test-ComputerSecureChannel -Repair -Credential DomainName\Administrator
 If the above dosnt work
 
 ```powershell
-Reset-ComputerMachinePassword -Server "AD-Server-Hostname" -navn -Credential domain\server-administrator-user
+Reset-ComputerMachinePassword -Server "AD-Server-Hostname" -Credential domain\server-administrator-user
 # Reboot machine and test trust to domain again
 ```
