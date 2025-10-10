@@ -221,7 +221,7 @@ Invoke-WebRequest -Uri 'https://live.sysinternals.com/PsExec64.exe'-OutFile $env
 # Run the script as SYSTEM on local machine
 Start-Process $env:TEMP\PsExec64.exe '-s C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe'
 # Run the script as SYSTEM on remote machine
-Start-Process $env:TEMP\PsExec64.exe '\\RemoteMachineName' '-s C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe'
+Start-Process $env:TEMP\PsExec64.exe '\\RemoteMachineName -s C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe'
 
 ```
 
