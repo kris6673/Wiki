@@ -12,6 +12,12 @@ This will take up a lot of space over time. Therefore, automatic management of v
 [Microsoft guide](https://learn.microsoft.com/en-us/sharepoint/site-version-limits#manage-version-history-limits-for-a-site-using-powershell)
 
 ```powershell
+# Install the SharePoint Online Management Shell if you haven't already
+Install-Module -Name Microsoft.Online.SharePoint.PowerShell -Scope CurrentUser
+
+# If you're using PowerShell Core. (Please just use PowerShell 5.1 if you can, this module hates PowerShell Core)
+Import-Module Microsoft.Online.SharePoint.PowerShell -UseWindowsPowerShell
+
 # Tenant wide for new sites
 Connect-SPOService -Url https://contoso-admin.sharepoint.com
 Get-SPOTenant | select EnableAutoExpirationVersionTrim, ExpireVersionsAfterDays,MajorVersionLimit
@@ -21,15 +27,23 @@ Set-SPOTenant -EnableAutoExpirationVersionTrim $true
 Connect-SPOService -Url https://contoso-admin.sharepoint.com
 
 # Show all sites with versioning
-Get-SPOSite | Select-Object Url, EnableAutoExpirationVersionTrim, ExpireVersionsAfterDays, MajorVersionLimit | Out-Gridview
+Get-SPOSite -Limit ALL | Select-Object Url, EnableAutoExpirationVersionTrim, ExpireVersionsAfterDays, MajorVersionLimit | Out-Gridview
 
 # Enable automatic versioning on all sites
 # The setting for existing document libraries may take 24 hours to take effect. Please run Get-SPOSiteVersionPolicyJobProgress to check
 # the progress. The setting for existing libraries does not trim existing versions to meet the newly set limits
-Get-SPOSite | Where-Object {$_.EnableAutoExpirationVersionTrim -ne $true -and $_.LockState -eq 'Unlock'} | Set-SPOSite -EnableAutoExpirationVersionTrim $true
+$Sites = Get-SPOSite -Limit ALL
+$Counter = 0
+$TotalSites = $Sites.Count
+foreach ($Site in $Sites) {
+    $Counter++
+    Write-Progress -Activity 'Processing Sites' -Status "Processing Site $Counter of $TotalSites" -PercentComplete ($Counter / $TotalSites * 100)
+    if ($Site | Where-Object { $_.EnableAutoExpirationVersionTrim -ne $true -and $_.LockState -eq 'Unlock' }) { } else { continue }
+    Set-SPOSite -Identity $Site.Url -EnableAutoExpirationVersionTrim $true -Confirm:$false
+}
 
 # Check the progress of the version policy job
-Get-SPOSite | Where-Object {$_.EnableAutoExpirationVersionTrim -eq $true -and $_.LockState -eq 'Unlock'} | Get-SPOSiteVersionPolicyJobProgress | Out-Gridview
+Get-SPOSite -Limit ALL | Where-Object {$_.EnableAutoExpirationVersionTrim -eq $true -and $_.LockState -eq 'Unlock'} | Get-SPOSiteVersionPolicyJobProgress | Out-Gridview
 ```
 
 ### Run a trim to remove old versions
@@ -41,9 +55,13 @@ Only run this after enabling automatic versioning, and wait for the setting to b
 Connect-SPOService -Url https://contoso-admin.sharepoint.com
 
 
-$AllSites = Get-SPOSite | Where-Object {$_.EnableAutoExpirationVersionTrim -eq $true -and $_.LockState -eq 'Unlock'}
+$AllSites = Get-SPOSite -Limit ALL | Where-Object {$_.EnableAutoExpirationVersionTrim -eq $true -and $_.LockState -eq 'Unlock'}
 # Goes through every SharePoint Site to start trimjob
+$Counter = 0
+$TotalSites = $AllSites.Count
 foreach ($site in $AllSites) {
+    $Counter++
+    Write-Progress -Activity 'Processing Sites' -Status "Processing Site $Counter of $TotalSites" -PercentComplete ($Counter / $TotalSites * 100)
     $SiteUrl = $site.Url
     $Sitename = $site.Title
     try {
@@ -57,6 +75,6 @@ foreach ($site in $AllSites) {
 
 # Check the progress of the trimjob
 
-$SiteProgress = Get-SPOSite | Where-Object {$_.EnableAutoExpirationVersionTrim -eq $true -and $_.LockState -eq 'Unlock'} | Get-SPOSiteFileVersionBatchDeleteJobProgress
+$SiteProgress = Get-SPOSite -Limit ALL | Where-Object {$_.EnableAutoExpirationVersionTrim -eq $true -and $_.LockState -eq 'Unlock'} | Get-SPOSiteFileVersionBatchDeleteJobProgress
 $SiteProgress | Out-Gridview
 ```

@@ -50,7 +50,7 @@ winget install gsudo --accept-source-agreements --accept-package-agreements
 Update-EnvironmentVariables
 
 # Run the script as system
-sudo -s 'C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe'
+gsudo -s 'C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe'
 
 ```
 
