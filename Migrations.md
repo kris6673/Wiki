@@ -154,7 +154,7 @@ Everything useful I've found for ProfWiz migrations.
 9. If using a provisioning package, skip to step 11.
 10. Remove the computer from the domain.
 11. Reboot the computer.
-12. Join the computer to the Azure AD/Entra domain.
+12. Join the computer to the Azure AD/Entra domain via the settings app -> Accounts -> Access work or school -> Connect -> Join this device to Azure Active Directory.
 13. Run the ProfWiz migration tool. The Computer will reboot.
 14. Log into the migrated account. If the option is not shown, use the local administrator account to log in. Afterwards, press "Switch account" and log into the migrated account.
 15. Import the bookmarks into the browser, if needed.
