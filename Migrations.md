@@ -147,7 +147,7 @@ Everything useful I've found for ProfWiz migrations.
 2. Make a local administrator account on the computer.
 3. Suspend BitLocker on the computer.
 4. If the browser is not synced, either sync it or create an export of the bookmarks and import them after the migration.
-5. Copy the ProfWiz config files to the computer.
+5. Copy all the ProfWiz config and XML files to the computer. C:\Temp is a good place.
 6. Log into the local administrator account.
 7. If the device is already Azure AD/Entra registered, delete the device from Intune/Entra.
 8. If windows Hello is setup for the user, remove this. certutil.exe -DeleteHelloContainer. If that does not work: <https://www.it-admins.com/reset-or-remove-the-windows-hello-pin/>
