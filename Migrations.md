@@ -159,7 +159,7 @@ Everything useful I've found for ProfWiz migrations.
 14. Log into the migrated account. If the option is not shown, use the local administrator account to log in. Afterwards, press "Switch account" and log into the migrated account.
 15. Import the bookmarks into the browser, if needed.
 16. Make sure the computer is enrolled correctly in Intune via the Company portal.
-17. Run the command "sfc /scannow" in an elevated command prompt. VERY IMPORTANT
+17. Run the command "sfc /scannow" in an elevated command prompt. VERY IMPORTANT, as the ACL in the registry is messed up otherwise and is far too permissive.
 18. Reboot the computer.
 19. Enable BitLocker on the computer.
 20. Uninstall Trend Micro, if needed.
