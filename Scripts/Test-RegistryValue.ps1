@@ -1,4 +1,3 @@
-
 function Test-RegistryValue {
     <#
 .SYNOPSIS
@@ -49,7 +48,7 @@ foreach ($Key in $Keys) {
         [parameter(Mandatory = $true)] [ValidateNotNullOrEmpty()]$Value
     )
     try {
-        $KeyValue = Get-ItemProperty -Path $Path | Select-Object -ExpandProperty $KeyName -ErrorAction Stop
+        $KeyValue = Get-ItemProperty -Path $Path -ErrorAction SilentlyContinue | Select-Object -ExpandProperty $KeyName -ErrorAction Stop
         if ($KeyValue -eq $Value) {
             return $true
         } else {
