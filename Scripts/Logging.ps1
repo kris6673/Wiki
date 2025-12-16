@@ -47,6 +47,9 @@ function Initialize-Logging {
 
     .PARAMETER NoLogCleanup
         Indicates whether log cleanup should be skipped. If this switch is present, log files will not be deleted or checked for size.
+    
+    .PARAMETER LogFilePath
+        Specifies the root path where log files will be stored. Default is the script's root directory.
 
     .PARAMETER ScriptName
         Specifies the name of the script. The default value is the name of the script file.
@@ -69,17 +72,18 @@ function Initialize-Logging {
         [int]$DeleteLogsOlderThanDays = 90,
         [int]$MaxLogFileSizeInMB = 10,
         [switch]$NoLogCleanup,
+        $LogFilePath = $PSScriptRoot,
         [array]$ScriptName = (Split-Path ($MyInvocation.ScriptName) -Leaf) -split '\.'
     )
 
     # Try making a log file in the same folder as the script, if that fails, make it in the temp folder
     try {
-        $LogFileRoot = Join-Path $PSScriptRoot 'Logs'
+        $LogFileRoot = Join-Path $LogFilePath 'Logs'
         $LogFile = Join-Path $LogFileRoot "$($ScriptName[0]).log"
         Start-Transcript -Path $LogFile -Append -ErrorAction Stop
         Write-Log -Message "Logfile created at: $LogFile" -ForegroundColor Green
     } catch {
-        $LogFileRoot = Join-Path $env:temp 'Logs'
+        $LogFileRoot = Join-Path $env:TEMP 'Logs'
         $LogFile = Join-Path $LogFileRoot "$($ScriptName[0]).log"
         Start-Transcript -Path $LogFile -Append
         Write-Log -Message "Logfile created at: $LogFile" -ForegroundColor Green
