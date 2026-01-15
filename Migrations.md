@@ -147,19 +147,19 @@ Everything useful I've found for ProfWiz migrations.
 2. Make a local administrator account on the computer.
 3. Suspend BitLocker on the computer.
 4. If the browser is not synced, either sync it or create an export of the bookmarks and import them after the migration.
-5. Copy the ProfWiz config files to the computer.
+5. Copy all the ProfWiz config and XML files to the computer. C:\Temp is a good place.
 6. Log into the local administrator account.
 7. If the device is already Azure AD/Entra registered, delete the device from Intune/Entra.
 8. If windows Hello is setup for the user, remove this. certutil.exe -DeleteHelloContainer. If that does not work: <https://www.it-admins.com/reset-or-remove-the-windows-hello-pin/>
 9. If using a provisioning package, skip to step 11.
 10. Remove the computer from the domain.
 11. Reboot the computer.
-12. Join the computer to the Azure AD/Entra domain.
+12. Join the computer to the Azure AD/Entra domain via the settings app -> Accounts -> Access work or school -> Connect -> Join this device to Azure Active Directory.
 13. Run the ProfWiz migration tool. The Computer will reboot.
 14. Log into the migrated account. If the option is not shown, use the local administrator account to log in. Afterwards, press "Switch account" and log into the migrated account.
 15. Import the bookmarks into the browser, if needed.
 16. Make sure the computer is enrolled correctly in Intune via the Company portal.
-17. Run the command "sfc /scannow" in an elevated command prompt. VERY IMPORTANT
+17. Run the command "sfc /scannow" in an elevated command prompt. VERY IMPORTANT, as the ACL in the registry is messed up otherwise and is far too permissive.
 18. Reboot the computer.
 19. Enable BitLocker on the computer.
 20. Uninstall Trend Micro, if needed.

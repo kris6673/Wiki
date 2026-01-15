@@ -191,7 +191,7 @@ The important ones are:
 
 ```powershell
 # Install the required module
-Install-Module -Name AzureADHybridAuthenticationManagement -AllowClobber
+Install-Module -Name AzureADHybridAuthenticationManagement -AllowClobber -Confirm:$false
 
 $Domain = $env:USERDNSDOMAIN
 # UserPrincipalName of an Azure AD Global Administrator
