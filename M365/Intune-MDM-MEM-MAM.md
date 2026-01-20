@@ -5,6 +5,8 @@
 1. [Map drives via Intune script](#map-drives-via-intune-script)
    1. [Notes](#notes)
    2. [Remove any wrong drive mappings](#remove-any-wrong-drive-mappings)
+   3. [Better logging](#better-logging)
+   4. [Map drives when VPN is connected](#map-drives-when-vpn-is-connected)
 2. [Install printer drivers via Intune](#install-printer-drivers-via-intune)
 3. [Win32 apps](#win32-apps)
    1. [Powershell install script for MSI Win32 apps](#powershell-install-script-for-msi-win32-apps)
@@ -65,14 +67,53 @@ This needs to be added between:
 
 ```powershell
 if ($process) {
-   # Add it here
+   # Add it here, after the if but before the Write-Output line
    Write-Output "Mapping network drive $($drive.Path)"
 ```
+
+### Better logging
 
 To get better logging, replace the default transcript, with this. This makes sure the log file is stored in a location that Intune can pull the logfile from:
 
 ```powershell
 Start-Transcript -Path "$env:ProgramData\Microsoft\IntuneManagementExtension\Logs\DriveMapping.log" | Out-Null
+```
+
+### Map drives when VPN is connected
+
+This is just a nice thing to have, so the drives get mapped when the VPN connects and you never get the red X on the drives, even when they can be accessed.
+
+If you want to add additional triggers replace the logon only trigger replace this line:
+
+```powershell
+$trigger = New-ScheduledTaskTrigger -AtLogOn
+```
+
+With this:
+
+```powershell
+$trigger = New-ScheduledTaskTrigger -AtLogOn
+
+$class = cimclass MSFT_TaskEventTrigger root/Microsoft/Windows/TaskScheduler
+$trigger2 = $class | New-CimInstance -ClientOnly
+$trigger2.Enabled = $True
+$trigger2.Subscription = '<QueryList><Query Id="0" Path="Microsoft-Windows-NetworkProfile/Operational"><Select Path="Microsoft-Windows-NetworkProfile/Operational">*[System[Provider[@Name=''Microsoft-Windows-NetworkProfile''] and EventID=10002]]</Select></Query></QueryList>'
+
+$trigger3 = $class | New-CimInstance -ClientOnly
+$trigger3.Enabled = $True
+$trigger3.Subscription = '<QueryList><Query Id="0" Path="Microsoft-Windows-NetworkProfile/Operational"><Select Path="Microsoft-Windows-NetworkProfile/Operational">*[System[Provider[@Name=''Microsoft-Windows-NetworkProfile''] and EventID=4004]]</Select></Query></QueryList>'
+```
+
+And adjust the registration of the scheduled task with the newly definded triggers, so replace this line:
+
+```powershell
+$null = Register-ScheduledTask -TaskName $schtaskName -Trigger $trigger -Action $action  -Principal $principal -Settings $settings -Description $schtaskDescription -Force
+```
+
+with this:
+
+```powershell
+$null = Register-ScheduledTask -TaskName $schtaskName -Trigger $trigger,$trigger2,$trigger3 -Action $action  -Principal $principal -Settings $settings -Description $schtaskDescription -Force
 ```
 
 ## Install printer drivers via Intune
