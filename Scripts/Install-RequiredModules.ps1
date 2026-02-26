@@ -52,7 +52,7 @@ function Install-RequiredModules {
     begin {
         # Ensure NuGet is available
         try {
-            $null = Get-PackageProvider -Name 'NuGet' -ErrorAction Stop
+            $null = Get-PackageProvider -Name 'NuGet' -Force -ErrorAction Stop
         } catch {
             Write-Verbose 'Installing NuGet package provider'
             $null = Install-PackageProvider -Name 'NuGet' -Force
@@ -110,7 +110,7 @@ function Install-RequiredModules {
                 } catch {
                     Write-Host "Could not install $Module. Please install it manually with: Install-Module $Module and rerun the script." -ForegroundColor Red
                     $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
-                    Exit
+                    exit
                 }
             }
         }
