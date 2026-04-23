@@ -21,27 +21,28 @@ $Modules = @(
 function Install-RequiredModules {
     <#
 .SYNOPSIS
-    Installs or updates required modules.
+    Installs or updates required modules with scope-aware install and cross-scope cleanup.
 
 .DESCRIPTION
-    This function installs or updates a list of modules specified by the user. It checks if the module is already installed and if it needs updates. 
-    If the module is not installed, it installs it. If the module needs updates, it updates the module to the latest version and uninstalls any old versions.
+    Installs or updates a list of modules. When running elevated, installs to AllUsers and
+    removes stale CurrentUser copies (falling back to CurrentUser if the AllUsers install
+    fails). When running non-elevated, installs to CurrentUser and shadows outdated AllUsers
+    copies without touching them. Accepts either module name strings or hashtables of the
+    form @{ Name = 'X'; RequiredVersion = '1.2.3' }.
 
 .PARAMETER Modules
-    Specifies an array of module names that need to be installed or updated.
+    An array of module names (strings) or @{ Name; RequiredVersion } hashtables.
 
 .EXAMPLE
     Install-RequiredModules -Modules 'Module1', 'Module2', 'Module3'
-    This example installs or updates the modules 'Module1', 'Module2', and 'Module3'.
 
-.EXAMPLE 
-    $Modules = @('Module1', 'Module2', 'Module3')
+.EXAMPLE
+    $Modules = @('Module1', @{ Name = 'Module2'; RequiredVersion = '1.2.3' })
     Install-RequiredModules -Modules $Modules
-    This example installs or updates the module 'Module1', 'Module2', and 'Module3' using an array.
-    
+
 .NOTES
     Author: Kris6673
-    Date: 2024-06-28
+    Date: 2026-04-23
 #>
     param (
         [Parameter(Mandatory = $true)]
@@ -63,10 +64,65 @@ function Install-RequiredModules {
             Write-Verbose 'Setting PSGallery as trusted repository'
             Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
         }
+
+        $script:IsAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+        $script:AllUsersPrefixes = @(
+            (Join-Path $env:ProgramFiles 'PowerShell\Modules'),
+            (Join-Path $env:ProgramFiles 'WindowsPowerShell\Modules')
+        )
+
+        function Get-ModuleScope {
+            param([string]$ModuleBase)
+            foreach ($p in $script:AllUsersPrefixes) {
+                if ($ModuleBase -like "$p*") { return 'AllUsers' }
+            }
+            return 'CurrentUser'
+        }
+
+        function Get-ModuleInstallations {
+            param([string]$Name)
+            Get-Module -Name $Name -ListAvailable -ErrorAction SilentlyContinue | ForEach-Object {
+                [pscustomobject]@{
+                    Name       = $_.Name
+                    Version    = $_.Version
+                    ModuleBase = $_.ModuleBase
+                    Scope      = Get-ModuleScope $_.ModuleBase
+                }
+            } | Sort-Object Version -Descending
+        }
+
+        function Remove-ModuleInstallation {
+            param(
+                [string]$Name,
+                [version]$Version,
+                [string]$ModuleBase
+            )
+            # Uninstall-Module may target the wrong scope when copies exist in both, so verify
+            # the specific ModuleBase is gone afterwards and delete it directly if not.
+            try { Uninstall-Module -Name $Name -RequiredVersion $Version -Force -ErrorAction Stop } catch {}
+            if (Test-Path -LiteralPath $ModuleBase) {
+                Remove-Item -LiteralPath $ModuleBase -Recurse -Force -ErrorAction Stop
+            }
+        }
+
+        function Install-ToScope {
+            param(
+                [string]$Name,
+                [version]$RequiredVersion,
+                [ValidateSet('AllUsers', 'CurrentUser')][string]$Scope
+            )
+            $params = @{
+                Name         = $Name
+                Scope        = $Scope
+                Force        = $true
+                AllowClobber = $true
+                ErrorAction  = 'Stop'
+            }
+            if ($RequiredVersion) { $params.RequiredVersion = $RequiredVersion }
+            Install-Module @params
+        }
     }
 
-    
-    # Install all modules in input list and handle errors
     process {
         foreach ($Module in $Modules) {
             # Resolve name and optional required version from string or hashtable
@@ -75,81 +131,133 @@ function Install-RequiredModules {
                 $RequiredVersion = $null
             } else {
                 $ModuleName      = $Module.Name
-                $RequiredVersion = $Module.RequiredVersion  # $null if not supplied
+                $RequiredVersion = $Module.RequiredVersion
             }
 
-            if ($RequiredVersion) {
-                # --- Pinned-version path ---
-                $InstalledVersions = Get-InstalledModule -Name $ModuleName -AllVersions -ErrorAction SilentlyContinue
-                $ExactMatch = $InstalledVersions | Where-Object { $_.Version -eq $RequiredVersion }
-
-                if ($ExactMatch) {
-                    Write-Host "$ModuleName $RequiredVersion is already installed." -ForegroundColor Green
+            # Determine target version
+            try {
+                if ($RequiredVersion) {
+                    $Target = [version]$RequiredVersion
                 } else {
-                    Write-Host "Installing $ModuleName at required version $RequiredVersion..." -ForegroundColor Yellow
-                    try {
-                        Install-Module -Name $ModuleName -RequiredVersion $RequiredVersion -Force -AllowClobber -ErrorAction Stop
-                        Write-Host "Success. $ModuleName $RequiredVersion installed." -ForegroundColor Green
+                    $Online = Find-Module -Name $ModuleName -Repository PSGallery -ErrorAction Stop
+                    $Target = [version]$Online.Version
+                }
+            } catch {
+                Write-Host "Could not determine target version for ${ModuleName}: $_" -ForegroundColor Red
+                continue
+            }
 
-                        # Uninstall all other versions
-                        $OtherVersions = Get-InstalledModule -Name $ModuleName -AllVersions -ErrorAction SilentlyContinue |
-                            Where-Object { $_.Version -ne $RequiredVersion }
-                        foreach ($OldVersion in $OtherVersions) {
-                            try {
-                                Uninstall-Module -Name $ModuleName -RequiredVersion $OldVersion.Version -Force -ErrorAction Stop
-                                Write-Host "Uninstalled $ModuleName $($OldVersion.Version)." -ForegroundColor Green
-                            } catch {
-                                Write-Host "ERROR: Could not uninstall $ModuleName $($OldVersion.Version). Run manually: Uninstall-Module $ModuleName -RequiredVersion $($OldVersion.Version)" -ForegroundColor Red
-                            }
-                        }
+            $Installs = Get-ModuleInstallations -Name $ModuleName
+            $AU       = @($Installs | Where-Object Scope -EQ 'AllUsers')
+            $CU       = @($Installs | Where-Object Scope -EQ 'CurrentUser')
+            $AuTarget = $AU | Where-Object Version -EQ $Target | Select-Object -First 1
+            $CuTarget = $CU | Where-Object Version -EQ $Target | Select-Object -First 1
+
+            if ($script:IsAdmin) {
+                # Admin path: prefer AllUsers at $Target, fall back to CurrentUser on failure.
+                if ($AuTarget) {
+                    Write-Host "$ModuleName $Target is already installed (AllUsers)." -ForegroundColor Green
+                    $InstalledScope = 'AllUsers'
+                } else {
+                    Write-Host "Installing $ModuleName $Target to AllUsers..." -ForegroundColor Yellow
+                    try {
+                        Install-ToScope -Name $ModuleName -RequiredVersion $Target -Scope AllUsers
+                        Write-Host "Success. $ModuleName $Target installed (AllUsers)." -ForegroundColor Green
+                        $InstalledScope = 'AllUsers'
                     } catch {
-                        Write-Host "Could not install $ModuleName $RequiredVersion. Please install manually: Install-Module $ModuleName -RequiredVersion $RequiredVersion" -ForegroundColor Red
+                        Write-Host "AllUsers install of $ModuleName $Target failed: $_" -ForegroundColor Red
+                        Write-Host "Falling back to CurrentUser scope..." -ForegroundColor Yellow
+                        try {
+                            Install-ToScope -Name $ModuleName -RequiredVersion $Target -Scope CurrentUser
+                            Write-Host "Success. $ModuleName $Target installed (CurrentUser fallback)." -ForegroundColor Green
+                            $InstalledScope = 'CurrentUser'
+                        } catch {
+                            Write-Host "CurrentUser fallback also failed for ${ModuleName}: $_" -ForegroundColor Red
+                            Write-Host "Install $ModuleName manually and rerun the script." -ForegroundColor Red
+                            continue
+                        }
+                    }
+                }
+
+                # Refresh inventory after any install.
+                $Installs = Get-ModuleInstallations -Name $ModuleName
+                $AU = @($Installs | Where-Object Scope -EQ 'AllUsers')
+                $CU = @($Installs | Where-Object Scope -EQ 'CurrentUser')
+
+                if ($InstalledScope -eq 'AllUsers') {
+                    # Remove every AU copy != target, and every CU copy (redundant now).
+                    foreach ($copy in ($AU | Where-Object Version -NE $Target)) {
+                        try {
+                            Remove-ModuleInstallation -Name $ModuleName -Version $copy.Version -ModuleBase $copy.ModuleBase
+                            Write-Host "Removed AllUsers $ModuleName $($copy.Version)." -ForegroundColor Green
+                        } catch {
+                            Write-Host "Could not remove AllUsers $ModuleName $($copy.Version) at $($copy.ModuleBase): $_" -ForegroundColor Red
+                        }
+                    }
+                    foreach ($copy in $CU) {
+                        try {
+                            Remove-ModuleInstallation -Name $ModuleName -Version $copy.Version -ModuleBase $copy.ModuleBase
+                            Write-Host "Removed CurrentUser $ModuleName $($copy.Version) (superseded by AllUsers)." -ForegroundColor Green
+                        } catch {
+                            Write-Host "Could not remove CurrentUser $ModuleName $($copy.Version) at $($copy.ModuleBase): $_" -ForegroundColor Red
+                        }
+                    }
+                } else {
+                    # Fallback landed in CU; only clean our own scope.
+                    foreach ($copy in ($CU | Where-Object Version -NE $Target)) {
+                        try {
+                            Remove-ModuleInstallation -Name $ModuleName -Version $copy.Version -ModuleBase $copy.ModuleBase
+                            Write-Host "Removed CurrentUser $ModuleName $($copy.Version)." -ForegroundColor Green
+                        } catch {
+                            Write-Host "Could not remove CurrentUser $ModuleName $($copy.Version) at $($copy.ModuleBase): $_" -ForegroundColor Red
+                        }
                     }
                 }
             } else {
-                # --- Update-to-latest path (existing behavior) ---
-                $InstalledModule = Get-InstalledModule -Name $ModuleName -ErrorAction SilentlyContinue
-                if ($InstalledModule) {
-                    Write-Host "$ModuleName module already installed. Testing if it needs updates." -ForegroundColor Yellow
-                    # Test if module needs updates
-                    $OnlineModule = Find-Module -Name $ModuleName -Repository PSGallery
-                    if ([version]$OnlineModule.version -gt [version]$InstalledModule.Version) {
-                        Write-Host "$ModuleName module needs to be updated from version $($InstalledModule.Version) to version $($OnlineModule.Version)." -ForegroundColor Yellow
-
-                        # Update module and alert the user if it fails.
+                # Non-admin path: install to CurrentUser, never touch AllUsers.
+                if ($AuTarget) {
+                    Write-Host "$ModuleName $Target is already installed (AllUsers). Leaving AllUsers alone." -ForegroundColor Green
+                    foreach ($copy in $CU) {
                         try {
-                            Write-Host "Updating $ModuleName module. Please wait, this could take a while." -ForegroundColor Yellow
-                            Update-Module -Name $ModuleName -Force -ErrorAction Stop
-                            Write-Host "Success. $ModuleName module was updated." -ForegroundColor Green
-
-                            # Try uninstalling old module
-                            $OldVersions = Get-InstalledModule -Name $ModuleName -AllVersions -ErrorAction Stop | Where-Object { $_.Version -ne $OnlineModule.Version }
-                            Write-Host "Uninstalling old versions of $ModuleName." -ForegroundColor Yellow
-                            foreach ($OldVersion in $OldVersions) {
-                                try {
-                                    Uninstall-Module $ModuleName -RequiredVersion $OldVersion.Version -Force -ErrorAction Stop
-                                    Write-Host "Success. Old version $($OldVersion.Version) of $ModuleName uninstalled." -ForegroundColor Green
-                                } catch {
-                                    Write-Host "ERROR. Old version $($InstalledModule.Version) of $ModuleName was not uninstalled." -ForegroundColor Red
-                                    Write-Host "Please uninstall the module manually with: Uninstall-Module $ModuleName -RequiredVersion $($InstalledModule.Version)"
-                                }
-                            }
-                        } # Catch if update fails
-                        catch {
-                            Write-Host "Could not update $ModuleName. Please update it manually with: Update-Module $ModuleName" -ForegroundColor Red
+                            Remove-ModuleInstallation -Name $ModuleName -Version $copy.Version -ModuleBase $copy.ModuleBase
+                            Write-Host "Removed CurrentUser $ModuleName $($copy.Version) (shadowed by AllUsers)." -ForegroundColor Green
+                        } catch {
+                            Write-Host "Could not remove CurrentUser $ModuleName $($copy.Version) at $($copy.ModuleBase): $_" -ForegroundColor Red
                         }
-                    } else {
-                        Write-Host "$ModuleName module is up to date. Moving on." -ForegroundColor Green
+                    }
+                } elseif ($CuTarget) {
+                    Write-Host "$ModuleName $Target is already installed (CurrentUser)." -ForegroundColor Green
+                    foreach ($copy in ($CU | Where-Object Version -NE $Target)) {
+                        try {
+                            Remove-ModuleInstallation -Name $ModuleName -Version $copy.Version -ModuleBase $copy.ModuleBase
+                            Write-Host "Removed CurrentUser $ModuleName $($copy.Version)." -ForegroundColor Green
+                        } catch {
+                            Write-Host "Could not remove CurrentUser $ModuleName $($copy.Version) at $($copy.ModuleBase): $_" -ForegroundColor Red
+                        }
                     }
                 } else {
-                    Write-Host "$ModuleName module is not installed. Installing module..." -ForegroundColor Yellow
+                    Write-Host "Installing $ModuleName $Target to CurrentUser..." -ForegroundColor Yellow
                     try {
-                        Install-Module $ModuleName -Force -AllowClobber -ErrorAction Stop
-                        Write-Host "$ModuleName successfully installed." -ForegroundColor Green
+                        Install-ToScope -Name $ModuleName -RequiredVersion $Target -Scope CurrentUser
+                        Write-Host "Success. $ModuleName $Target installed (CurrentUser)." -ForegroundColor Green
                     } catch {
-                        Write-Host "Could not install $ModuleName. Please install it manually with: Install-Module $ModuleName and rerun the script." -ForegroundColor Red
-                        $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
-                        exit
+                        Write-Host "Could not install ${ModuleName}: $_" -ForegroundColor Red
+                        Write-Host "Install manually with: Install-Module $ModuleName -Scope CurrentUser" -ForegroundColor Red
+                        # Hard-stop only when no working copy exists anywhere.
+                        if (-not ($AU -or $CU)) {
+                            $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
+                            exit
+                        }
+                        continue
+                    }
+                    $CU = @((Get-ModuleInstallations -Name $ModuleName) | Where-Object Scope -EQ 'CurrentUser')
+                    foreach ($copy in ($CU | Where-Object Version -NE $Target)) {
+                        try {
+                            Remove-ModuleInstallation -Name $ModuleName -Version $copy.Version -ModuleBase $copy.ModuleBase
+                            Write-Host "Removed CurrentUser $ModuleName $($copy.Version)." -ForegroundColor Green
+                        } catch {
+                            Write-Host "Could not remove CurrentUser $ModuleName $($copy.Version) at $($copy.ModuleBase): $_" -ForegroundColor Red
+                        }
                     }
                 }
             }
