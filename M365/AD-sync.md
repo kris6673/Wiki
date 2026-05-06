@@ -132,7 +132,6 @@ Open Component Services and navigate to the following path:
 2. ADsync groups are most likely missing from the DCOM permissions in Component Services.  
    You can try adding them to the DCOM permissions manually.  
    You need to add the following groups to all 4 of the DCOM permissions:
-
    - ADSyncAdmins
    - ADSyncOperators
    - ADSyncBrowse
@@ -142,7 +141,6 @@ Open Component Services and navigate to the following path:
 
 3. If it still does not work, goto the registry and find the following keys on the server:  
    Path: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Ole
-
    - MachineLaunchRestrictionOld
    - MachineAccessRestrictionOld
 
@@ -251,7 +249,7 @@ $params = @{
     onPremisesSyncEnabled = $false
 }
 
-Update-MgBetaOrganization -OrganizationId $OrgID -BodyParameter $params
+Update-MgOrganization -OrganizationId $OrgID -BodyParameter $params
 ```
 
 [Source/Documentation](https://learn.microsoft.com/en-us/microsoft-365/enterprise/turn-off-directory-synchronization?view=o365-worldwide "Microsoft Docs")
