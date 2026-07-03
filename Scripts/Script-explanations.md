@@ -73,6 +73,7 @@ PSCustomObject - `Domain`, `Registered`, `Expires`, `Registrar` (absent if regis
 `Status`, a nested `Registrant` object (handle/name/address/...), a `Nameservers` string array,
 etc. Returns `$null` if the domain doesn't exist. Also includes `Get-DkRegistrar`, a thin wrapper
 that just returns the registrar name (e.g. "One.com A/S", or `$null`/empty if none).
+Internationalized domains (e.g. `æøå.dk`) are auto-converted to punycode before querying.
 
 Uses the classic public WHOIS protocol (port 43) against `whois.punktum.dk` - **not** the
 WHOIS REST API (`whois-api.dk-hostmaster.dk`), which requires registrars to be whitelisted and

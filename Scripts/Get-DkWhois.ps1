@@ -22,6 +22,8 @@ function Get-DkWhois {
     Status, ...) become properties, a labelled block like "Registrant" becomes a nested object,
     and a block with only one repeated field, like "Nameservers" (repeated "Hostname:" lines),
     becomes a plain string array.
+    Internationalized domains (e.g. "æøå.dk") are converted to punycode ("xn--5cab8c.dk")
+    before querying, since that's the ASCII form the WHOIS service expects.
     Returns $null if the domain doesn't exist or the query fails/times out.
 
     Punktum dk (formerly DK Hostmaster) also offers a WHOIS REST API
@@ -57,6 +59,10 @@ function Get-DkWhois {
     Returns just the registrar name, e.g. "MarkMonitor Inc." (empty/absent if registrant-managed).
 
 .EXAMPLE
+    Get-DkWhois "æøå.dk"
+    Converts to punycode internally and returns the record for xn--5cab8c.dk.
+
+.EXAMPLE
     Import-Excel report.xlsx | ForEach-Object {
         $_ | Add-Member -NotePropertyName Registrar -NotePropertyValue (Get-DkWhois $_.Domain).Registrar -Force
         Start-Sleep -Milliseconds 1100   # rate limit: 1 request/sec/source IP, see NOTES
@@ -73,10 +79,12 @@ function Get-DkWhois {
         [parameter(Mandatory = $true)] [ValidateNotNullOrEmpty()] [string]$Domain
     )
     try {
+        $ascii = [System.Globalization.IdnMapping]::new().GetAscii($Domain.Trim())
+
         $client = New-Object System.Net.Sockets.TcpClient
         $client.Connect('whois.punktum.dk', 43)
         $stream = $client.GetStream()
-        $bytes = [Text.Encoding]::ASCII.GetBytes("--charset=utf-8 --show-handles $Domain`r`n")
+        $bytes = [Text.Encoding]::ASCII.GetBytes("--charset=utf-8 --show-handles $ascii`r`n")
         $stream.Write($bytes, 0, $bytes.Length)
         $stream.Flush()
 
