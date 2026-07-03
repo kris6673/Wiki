@@ -10,6 +10,7 @@
 6. [Get-IconFromExe.ps1](#get-iconfromexeps1)
 7. [Logging.ps1](#loggingps1)
 8. [Write-ToEventLog.ps1](#write-toeventlogps1)
+9. [Get-DkWhois.ps1](#get-dkwhoisps1)
 
 ## [Install-RequiredModules.ps1](/Scripts/Install-RequiredModules.ps1)
 
@@ -64,3 +65,20 @@ Creates a new event log source if it doesn't exist.
 - **EventID**: The event ID for the log entry (default: 9376).
 - **Category**: The category for the log entry (default: 1).
 - **WriteToHost**: Optional flag to write the message to the host.
+
+## [Get-DkWhois.ps1](/Scripts/Get-DkWhois.ps1)
+
+Looks up a `.dk` domain via the public WHOIS protocol and returns the full record as a
+PSCustomObject - `Domain`, `Registered`, `Expires`, `Registrar` (absent if registrant-managed),
+`Status`, a nested `Registrant` object (handle/name/address/...), a `Nameservers` string array,
+etc. Returns `$null` if the domain doesn't exist. Also includes `Get-DkRegistrar`, a thin wrapper
+that just returns the registrar name (e.g. "One.com A/S", or `$null`/empty if none).
+
+Uses the classic public WHOIS protocol (port 43) against `whois.punktum.dk` - **not** the
+WHOIS REST API (`whois-api.dk-hostmaster.dk`), which requires registrars to be whitelisted and
+isn't reachable otherwise. RDAP isn't an option either, since `.dk` has no RDAP server
+registered with IANA.
+
+Rate limited by Punktum dk to 1 request/second/source IP (temporary ban if exceeded) - the
+function itself doesn't throttle, so bulk callers need a `Start-Sleep -Milliseconds 1100`
+between calls, see the example in the synopsis.
