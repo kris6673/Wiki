@@ -109,7 +109,7 @@ function Get-DkWhois {
         $result = [ordered]@{}
         $section = $null
         $sectionFields = $null
-        foreach ($line in ($text -split "\r?\n")) {
+        foreach ($line in ($text -split '\r?\n')) {
             if ($line -match '^\s*#' -or $line.Trim() -eq '') { continue }
             if ($line -match '^(\S.*?):\s*(.*)$') {
                 $key = ConvertTo-DkWhoisKey $matches[1].Trim()
