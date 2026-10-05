@@ -4,6 +4,7 @@
 
 1. [Grant tenant-wide admin consent to an application](#grant-tenant-wide-admin-consent-to-an-application)
    1. [Commonly used application ID's](#commonly-used-application-ids)
+2. [Restrict app Mail.Send to specific mailboxes](#restrict-app-mailsend-to-specific-mailboxes)
 
 ## Grant tenant-wide admin consent to an application
 
@@ -22,3 +23,7 @@ Fill out the blanks: `https://login.microsoftonline.com/{tenant-id}/adminconsent
 | Miralix Sign-in                | 2d7bb325-1664-4951-9d37-188ad4d4bf9c | SSO app for Miralix phone platform    |
 | Exclaimer Cloud Single Sign-On | c94a8380-d458-4869-84c3-33bef46a49de | SSO app for Exclaimer mail platform   |
 | Admin by Request SSO           | 797db7ff-cf4f-4a86-b10c-92577c0d0997 | SSO app for Admin by Request platform |
+
+## Restrict app Mail.Send to specific mailboxes
+
+See [Exchange RBAC for Applications](Exchange-RBAC-for-Applications.md) for the full guide on restricting Mail.Send to specific mailboxes.

@@ -7,6 +7,7 @@
 3. [Make dynamic distribution group for all UserMailboxes in a tenant](#make-dynamic-distribution-group-for-all-usermailboxes-in-a-tenant)
 4. [Audit log search](#audit-log-search)
    1. [Links to documentation](#links-to-documentation)
+5. [Restrict app Mail.Send to specific mailboxes](#restrict-app-mailsend-to-specific-mailboxes)
 
 ### Start managed folder assistant
 
@@ -113,3 +114,7 @@ $AuditLogs | Export-Csv -Path C:\path\to\file.csv -NoTypeInformation -Delimiter 
 
 [Audited event types and defaults](https://learn.microsoft.com/en-us/purview/audit-mailboxes#mailbox-actions-for-user-mailboxes-and-shared-mailboxes)  
 [Audited events with friendly names too](https://learn.microsoft.com/en-us/purview/audit-log-activities#exchange-mailbox-activities)
+
+### Restrict app Mail.Send to specific mailboxes
+
+See [Exchange RBAC for Applications](Exchange-RBAC-for-Applications.md) for the full guide on restricting Mail.Send to specific mailboxes.
