@@ -1,59 +1,59 @@
-# Guide: Begræns Mail.Send til udvalgte postkasser med Exchange RBAC for Applications
+# Guide: Restrict Mail.Send to specific mailboxes with Exchange RBAC for Applications
 
-Formål: En app (fx en arkivrobot, et scanningsflow eller en integration) skal kunne sende mail via Microsoft Graph, men kun fra bestemte postkasser og ikke fra alle postkasser i kundens tenant.
+Purpose: An app (e.g. an archiving robot, a scanning flow or an integration) needs to send mail via Microsoft Graph, but only from specific mailboxes and not from every mailbox in the customer's tenant.
 
-Princip: Mail.Send tildeles IKKE som application permission i Entra. I stedet tildeles rollen "Application Mail.Send" i Exchange Online og afgrænses med en management scope.
+Principle: Mail.Send is NOT granted as an application permission in Entra. Instead, the "Application Mail.Send" role is assigned in Exchange Online and restricted with a management scope.
 
-Guiden kan bruges hos alle kunder. Udfyld variablerne i trin 0, og kør resten af kommandoerne uændret.
-
----
-
-## Forudsætninger
-
-- App registration findes i kundens Entra.
-- Mail.Send er IKKE tildelt som application permission i Entra (API permissions). Fjern den, hvis den er der, og fjern også admin consent.
-- Du har Exchange Administrator (eller tilsvarende) i kundens tenant og ExchangeOnlineManagement-modulet.
-
-Vigtigt: Exchange giver appen summen af Entra-tilladelser og RBAC-tildelinger. Hvis Mail.Send også ligger i Entra, har appen adgang til alle postkasser, uanset scope.
+The guide can be used for any customer. Fill in the variables in step 0, and run the rest of the commands unchanged.
 
 ---
 
-## Trin 0: Forbind og udfyld variabler
+## Prerequisites
+
+- An app registration exists in the customer's Entra.
+- Mail.Send is NOT granted as an application permission in Entra (API permissions). Remove it if it is there, and also remove the admin consent.
+- You have Exchange Administrator (or equivalent) in the customer's tenant and the ExchangeOnlineManagement module.
+
+Important: Exchange gives the app the sum of its Entra permissions and RBAC assignments. If Mail.Send is also granted in Entra, the app has access to all mailboxes regardless of scope.
+
+---
+
+## Step 0: Connect and fill in variables
 
 ```powershell
-# Forbind til kundens tenant (brug -DelegatedOrganization ved GDAP/partneradgang)
+# Connect to the customer's tenant (use -DelegatedOrganization with GDAP/partner access)
 Connect-ExchangeOnline
-# Connect-ExchangeOnline -DelegatedOrganization kunde.onmicrosoft.com
+# Connect-ExchangeOnline -DelegatedOrganization customer.onmicrosoft.com
 
-# ---- Udfyld pr. kunde ----
+# ---- Fill in per customer ----
 $AppId        = "<Application (client) ID>"            # Entra > App registrations > Overview
 $SpObjectId   = "<Enterprise Application Object ID>"   # Entra > Enterprise applications > Overview
-$AppName      = "<Kunde>-<Appnavn>"                    # fx "FS-SharePoint-Arkivering"
-$Mailbox      = "<postkasse@kundedomæne.dk>"           # Bruges ved metode A
-$GroupName    = "$AppName-MailSend"                    # Bruges ved metode B
-$GroupSmtp    = "<gruppe@kundedomæne.dk>"              # Bruges ved metode B
+$AppName      = "<Customer>-<AppName>"                 # e.g. "FS-SharePoint-Arkivering"
+$Mailbox      = "<mailbox@customerdomain.com>"         # Used with method A
+$GroupName    = "$AppName-MailSend"                    # Used with method B
+$GroupSmtp    = "<group@customerdomain.com>"           # Used with method B
 $ScopeName    = "$AppName-Scope"
 $AssignName   = "$AppName-MailSend"
-$TestMailbox  = "<anden.bruger@kundedomæne.dk>"        # Postkasse der IKKE må være i scope
+$TestMailbox  = "<other.user@customerdomain.com>"      # Mailbox that must NOT be in scope
 ```
 
-Navnestandard: Start alle navne med kundeforkortelse og appnavn, så det er let at se, hvad der hører sammen, når man ser opsætningen igen senere.
+Naming convention: Start all names with the customer abbreviation and app name, so it is easy to see what belongs together when you look at the setup again later.
 
 ---
 
-## Trin 1: Opret service principal i Exchange
+## Step 1: Create the service principal in Exchange
 
 ```powershell
 New-ServicePrincipal -AppId $AppId -ObjectId $SpObjectId -DisplayName $AppName
 ```
 
-Bemærk: $SpObjectId skal være Object ID fra Enterprise Application (service principal) og ikke fra App registration. De er forskellige og nemme at forveksle. Er den forkert, så fjern den og opret den igen:
+Note: $SpObjectId must be the Object ID from the Enterprise Application (service principal), not from the App registration. They are different and easy to mix up. If it is wrong, remove it and create it again:
 
 ```powershell
 Remove-ServicePrincipal -Identity $SpObjectId
 ```
 
-Findes service principal'en allerede (fx fra en tidligere opsætning), så spring trinnet over:
+If the service principal already exists (e.g. from a previous setup), skip this step:
 
 ```powershell
 Get-ServicePrincipal -Identity $SpObjectId
@@ -61,26 +61,26 @@ Get-ServicePrincipal -Identity $SpObjectId
 
 ---
 
-## Trin 2: Opret management scope
+## Step 2: Create the management scope
 
-Vælg enten metode A eller metode B.
+Choose either method A or method B.
 
-|              | Metode A: Én postkasse       | Metode B: Gruppe                                       |
-| ------------ | ---------------------------- | ------------------------------------------------------ |
-| Velegnet når | Der kun er én fast postkasse | Der er flere postkasser, eller der kan komme flere til |
-| Vedligehold  | Ny scope pr. ændring         | Tilføj/fjern gruppemedlemmer                           |
-| Risiko       | Lav                          | Gruppeejere kan reelt udvide appens adgang             |
+|             | Method A: Single mailbox      | Method B: Group                                       |
+| ----------- | ----------------------------- | ----------------------------------------------------- |
+| Suited when | There is only one fixed mailbox | There are several mailboxes, or more may be added   |
+| Maintenance | New scope for each change     | Add/remove group members                              |
+| Risk        | Low                           | Group owners can effectively expand the app's access  |
 
-### Metode A: Én bestemt postkasse
+### Method A: One specific mailbox
 
 ```powershell
 New-ManagementScope -Name $ScopeName `
   -RecipientRestrictionFilter "PrimarySmtpAddress -eq '$Mailbox'"
 ```
 
-### Metode B: Gruppe
+### Method B: Group
 
-1. Opret en mail-enabled security group, luk den og skjul den fra adressebogen:
+1. Create a mail-enabled security group, close it and hide it from the address book:
 
 ```powershell
 New-DistributionGroup -Name $GroupName -Alias ($GroupName -replace '\s','') `
@@ -92,14 +92,14 @@ Set-DistributionGroup -Identity $GroupName `
   -MemberDepartRestriction Closed
 ```
 
-2. Tilføj postkasserne som direkte medlemmer:
+2. Add the mailboxes as direct members:
 
 ```powershell
-Add-DistributionGroupMember -Identity $GroupName -Member "<postkasse1@kundedomæne.dk>"
-Add-DistributionGroupMember -Identity $GroupName -Member "<postkasse2@kundedomæne.dk>"
+Add-DistributionGroupMember -Identity $GroupName -Member "<mailbox1@customerdomain.com>"
+Add-DistributionGroupMember -Identity $GroupName -Member "<mailbox2@customerdomain.com>"
 ```
 
-3. Opret scope ud fra gruppens DistinguishedName (filteret kræver DN og ikke navn eller mailadresse):
+3. Create the scope from the group's DistinguishedName (the filter requires the DN, not the name or email address):
 
 ```powershell
 $GroupDN = (Get-DistributionGroup -Identity $GroupName).DistinguishedName
@@ -108,15 +108,15 @@ New-ManagementScope -Name $ScopeName `
   -RecipientRestrictionFilter "MemberOfGroup -eq '$GroupDN'"
 ```
 
-Ting at vide om gruppe-scope:
+Things to know about group scopes:
 
-- Nested groups understøttes ikke. Postkasserne skal være direkte medlemmer.
-- Ændringer i medlemskab kan tage tid om at slå igennem pga. caching.
-- Den, der kan ændre gruppens medlemmer, kan reelt give appen adgang til at sende som flere postkasser. Sæt ejere bevidst (helst kun admins).
+- Nested groups are not supported. The mailboxes must be direct members.
+- Membership changes can take a while to take effect due to caching.
+- Whoever can change the group's members can effectively let the app send as more mailboxes. Set owners deliberately (preferably admins only).
 
 ---
 
-## Trin 3: Tildel rollen til appen med scope
+## Step 3: Assign the role to the app with the scope
 
 ```powershell
 New-ManagementRoleAssignment -Name $AssignName `
@@ -127,25 +127,25 @@ New-ManagementRoleAssignment -Name $AssignName `
 
 ---
 
-## Trin 4: Test
+## Step 4: Test
 
-Postkasse i scope skal give InScope = True:
+A mailbox in scope should return InScope = True:
 
 ```powershell
 Test-ServicePrincipalAuthorization -Identity $SpObjectId -Resource $Mailbox
 ```
 
-Postkasse uden for scope skal give InScope = False:
+A mailbox outside the scope should return InScope = False:
 
 ```powershell
 Test-ServicePrincipalAuthorization -Identity $SpObjectId -Resource $TestMailbox
 ```
 
-Test-ServicePrincipalAuthorization viser resultatet med det samme. I Graph kan der gå fra ca. 30 minutter til et par timer, før tildelingen virker, fordi den caches. Får appen 403 lige efter opsætningen, så vent, før du fejlsøger videre.
+Test-ServicePrincipalAuthorization shows the result immediately. In Graph it can take from about 30 minutes to a couple of hours before the assignment works, because it is cached. If the app gets a 403 right after setup, wait before troubleshooting further.
 
 ---
 
-## Overblik
+## Overview
 
 ```powershell
 Get-ServicePrincipal -Identity $SpObjectId
@@ -153,33 +153,33 @@ Get-ManagementScope -Identity $ScopeName | Format-List Name, RecipientFilter
 Get-ManagementRoleAssignment -RoleAssignee $SpObjectId |
   Format-Table Name, Role, CustomResourceScope
 
-# Alle apps med RBAC for Applications i tenanten
+# All apps with RBAC for Applications in the tenant
 Get-ServicePrincipal | Format-Table DisplayName, AppId, ObjectId
 ```
 
-## Oprydning (fx ved offboarding af app eller kunde)
+## Cleanup (e.g. when offboarding an app or customer)
 
-Kør i denne rækkefølge:
+Run in this order:
 
 ```powershell
 Remove-ManagementRoleAssignment -Identity $AssignName -Confirm:$false
 Remove-ManagementScope -Identity $ScopeName -Confirm:$false
 Remove-ServicePrincipal -Identity $SpObjectId -Confirm:$false
 
-# Kun ved metode B
+# Method B only
 Remove-DistributionGroup -Identity $GroupName -Confirm:$false
 ```
 
 ---
 
-## Tjekliste pr. kunde
+## Checklist per customer
 
-- [ ] Variabler udfyldt med kundens værdier
-- [ ] Mail.Send er ikke tildelt i Entra (API permissions)
-- [ ] Service principal oprettet med Enterprise Application Object ID
-- [ ] Management scope oprettet (metode A eller B)
-- [ ] Ved metode B: postkasser er direkte medlemmer, gruppen er skjult og lukket
-- [ ] Role assignment "Application Mail.Send" oprettet med CustomResourceScope
-- [ ] Test-ServicePrincipalAuthorization: True for postkasse i scope, False for andre
-- [ ] Ventet på cache før test fra Graph
-- [ ] Opsætningen er dokumenteret i kundens dokumentation (app, scope, postkasser)
+- [ ] Variables filled in with the customer's values
+- [ ] Mail.Send is not granted in Entra (API permissions)
+- [ ] Service principal created with the Enterprise Application Object ID
+- [ ] Management scope created (method A or B)
+- [ ] For method B: mailboxes are direct members, the group is hidden and closed
+- [ ] Role assignment "Application Mail.Send" created with CustomResourceScope
+- [ ] Test-ServicePrincipalAuthorization: True for the mailbox in scope, False for others
+- [ ] Waited for the cache before testing from Graph
+- [ ] The setup is documented in the customer's documentation (app, scope, mailboxes)
