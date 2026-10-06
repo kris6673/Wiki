@@ -65,11 +65,11 @@ Get-ServicePrincipal -Identity $SpObjectId
 
 Choose either method A or method B.
 
-|             | Method A: Single mailbox      | Method B: Group                                       |
-| ----------- | ----------------------------- | ----------------------------------------------------- |
-| Suited when | There is only one fixed mailbox | There are several mailboxes, or more may be added   |
-| Maintenance | New scope for each change     | Add/remove group members                              |
-| Risk        | Low                           | Group owners can effectively expand the app's access  |
+|             | Method A: Single mailbox        | Method B: Group                                      |
+| ----------- | ------------------------------- | ---------------------------------------------------- |
+| Suited when | There is only one fixed mailbox | There are several mailboxes, or more may be added    |
+| Maintenance | New scope for each change       | Add/remove group members                             |
+| Risk        | Low                             | Group owners can effectively expand the app's access |
 
 ### Method A: One specific mailbox
 
